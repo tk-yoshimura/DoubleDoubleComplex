@@ -19,6 +19,11 @@ namespace DoubleDoubleComplex {
 
         public static Complex NaN { get; } = ddouble.NaN;
 
+        public static Complex One { get; } = (1, 0);
+        public static Complex ImaginaryOne { get; } = (0, 1);
+
+        public static Complex Conjugate(Complex c) => new Complex(c.R, -c.I);
+
         public Complex(ddouble r, ddouble i) {
             this.R = r;
             this.I = i;

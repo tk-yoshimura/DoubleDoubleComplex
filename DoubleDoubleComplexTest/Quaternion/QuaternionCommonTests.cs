@@ -55,8 +55,6 @@ namespace DoubleDoubleComplexTests {
             Quaternion c8 = (-2, 0, 0, 0);
             Quaternion c9 = (-2, -3, -1, -1);
 
-            Quaternion c10 = (ddouble.NaN, ddouble.NaN, ddouble.NaN, ddouble.NaN);
-
             Assert.AreEqual("2+3i+1k", c1.ToString());
             Assert.AreEqual("2+1j", c2.ToString());
             Assert.AreEqual("2-3i", c3.ToString());
@@ -69,7 +67,8 @@ namespace DoubleDoubleComplexTests {
             Assert.AreEqual("-2", c8.ToString());
             Assert.AreEqual("-2-3i-1j-1k", c9.ToString());
 
-            Assert.AreEqual(double.NaN.ToString(), c10.ToString());
+            Assert.AreEqual("0", Quaternion.Zero.ToString());
+            Assert.AreEqual(double.NaN.ToString(), Quaternion.NaN.ToString());
         }
     }
 }

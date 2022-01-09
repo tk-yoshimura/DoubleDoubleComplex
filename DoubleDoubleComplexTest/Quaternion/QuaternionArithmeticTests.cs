@@ -9,8 +9,8 @@ namespace DoubleDoubleComplexTests {
     public class QuaternionArithmeticTests {
         [TestMethod()]
         public void AddTest() {
-            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
-                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                     Quaternion c = a + b;
                     NQuaternion nc = (NQuaternion)a + (NQuaternion)b;
 
@@ -18,7 +18,7 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                 foreach (ddouble b in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
                     Quaternion c = a + b;
                     NQuaternion nc = (NQuaternion)a + new NQuaternion(0, 0, 0, (float)(double)b);
@@ -28,7 +28,7 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
-                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                     Quaternion c = a + b;
                     NQuaternion nc = new NQuaternion(0, 0, 0, (float)(double)a) + (NQuaternion)b;
 
@@ -39,8 +39,8 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void SubTest() {
-            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
-                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                     Quaternion c = a - b;
                     NQuaternion nc = (NQuaternion)a - (NQuaternion)b;
 
@@ -48,7 +48,7 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                 foreach (ddouble b in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
                     Quaternion c = a - b;
                     NQuaternion nc = (NQuaternion)a - new NQuaternion(0, 0, 0, (float)(double)b);
@@ -58,7 +58,7 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
-                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                     Quaternion c = a - b;
                     NQuaternion nc = new NQuaternion(0, 0, 0, (float)(double)a) - (NQuaternion)b;
 
@@ -69,8 +69,8 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void MulTest() {
-            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
-                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                     Quaternion c = a * b;
                     NQuaternion nc = (NQuaternion)a * (NQuaternion)b;
 
@@ -78,7 +78,7 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                 foreach (ddouble b in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
                     Quaternion c = a * b;
                     NQuaternion nc = (NQuaternion)a * new NQuaternion(0, 0, 0, (float)(double)b);
@@ -88,7 +88,7 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
-                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                     Quaternion c = a * b;
                     NQuaternion nc = new NQuaternion(0, 0, 0, (float)(double)a) * (NQuaternion)b;
 
@@ -99,8 +99,8 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void DivTest() {
-            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
-                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                     Quaternion c = a / b;
                     NQuaternion nc = (NQuaternion)a / (NQuaternion)b;
 
@@ -109,7 +109,7 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                 foreach (ddouble b in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
                     Quaternion c = a / b;
                     NQuaternion nc = (NQuaternion)a / new NQuaternion(0, 0, 0, (float)(double)b);
@@ -119,7 +119,7 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
-                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2) }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                     Quaternion c = a / b;
                     NQuaternion nc = new NQuaternion(0, 0, 0, (float)(double)a) / (NQuaternion)b;
 

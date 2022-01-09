@@ -9,8 +9,8 @@ namespace DoubleDoubleComplexTests {
     public class ComplexArithmeticTests {
         [TestMethod()]
         public void AddTest() {
-            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
-                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                     Complex c = a + b;
                     NComplex nc = (NComplex)a + (NComplex)b;
 
@@ -18,7 +18,7 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                 foreach (ddouble b in new[] { 1, 3, 4, -1, 2, 7 }) {
                     Complex c = a + b;
                     NComplex nc = (NComplex)a + new NComplex((double)b, 0);
@@ -28,7 +28,7 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 3, 4, -1, 2, 7 }) {
-                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                     Complex c = a + b;
                     NComplex nc = new NComplex((double)a, 0) + (NComplex)b;
 
@@ -39,8 +39,8 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void SubTest() {
-            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
-                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                     Complex c = a - b;
                     NComplex nc = (NComplex)a - (NComplex)b;
 
@@ -48,7 +48,7 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                 foreach (ddouble b in new[] { 1, 3, 4, -1, 2, 7 }) {
                     Complex c = a - b;
                     NComplex nc = (NComplex)a - new NComplex((double)b, 0);
@@ -58,7 +58,7 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 3, 4, -1, 2, 7 }) {
-                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                     Complex c = a - b;
                     NComplex nc = new NComplex((double)a, 0) - (NComplex)b;
 
@@ -69,8 +69,8 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void MulTest() {
-            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
-                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                     Complex c = a * b;
                     NComplex nc = (NComplex)a * (NComplex)b;
 
@@ -78,7 +78,7 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                 foreach (ddouble b in new[] { 1, 3, 4, -1, 2, 7 }) {
                     Complex c = a * b;
                     NComplex nc = (NComplex)a * new NComplex((double)b, 0);
@@ -88,7 +88,7 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 3, 4, -1, 2, 7 }) {
-                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                     Complex c = a * b;
                     NComplex nc = new NComplex((double)a, 0) * (NComplex)b;
 
@@ -99,8 +99,8 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void DivTest() {
-            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
-                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                     Complex c = a / b;
                     NComplex nc = (NComplex)a / (NComplex)b;
 
@@ -109,7 +109,7 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                 foreach (ddouble b in new[] { 1, 3, 4, -1, 2, 7 }) {
                     Complex c = a / b;
                     NComplex nc = (NComplex)a / new NComplex((double)b, 0);
@@ -119,7 +119,7 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 3, 4, -1, 2, 7 }) {
-                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1) }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                     Complex c = a / b;
                     NComplex nc = new NComplex((double)a, 0) / (NComplex)b;
 

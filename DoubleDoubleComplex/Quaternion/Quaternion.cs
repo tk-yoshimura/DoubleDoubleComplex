@@ -11,9 +11,11 @@ namespace DoubleDoubleComplex {
 
         public ddouble Magnitude => ddouble.Sqrt(Norm);
 
-        public static Complex Zero { get; } = ddouble.Zero;
+        public static Quaternion Zero { get; } = ddouble.Zero;
 
-        public static Complex NaN { get; } = ddouble.NaN;
+        public static Quaternion NaN { get; } = ddouble.NaN;
+
+        public static Quaternion Conjugate(Quaternion q) => new(q.R, -q.I, -q.J, -q.K);
 
         public Quaternion(ddouble r, ddouble i, ddouble j, ddouble k) {
             this.R = r;
