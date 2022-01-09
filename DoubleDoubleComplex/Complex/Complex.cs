@@ -44,6 +44,14 @@ namespace DoubleDoubleComplex {
             return (v.R, v.I);
         }
 
+        public static implicit operator Complex(System.Numerics.Complex c) {
+            return new Complex(c.Real, c.Imaginary);
+        }
+
+        public static explicit operator System.Numerics.Complex(Complex c) {
+            return new System.Numerics.Complex((double)c.R, (double)c.I);
+        }
+
         public void Deconstruct(out ddouble r, out ddouble i) => (r, i) = (R, I);
 
         public override string ToString() {
