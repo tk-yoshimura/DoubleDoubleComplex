@@ -1,5 +1,4 @@
-﻿using System;
-using DoubleDouble;
+﻿using DoubleDouble;
 using System.Diagnostics;
 
 namespace DoubleDoubleComplex {
@@ -59,7 +58,7 @@ namespace DoubleDoubleComplex {
 
                 return (I > 0d) ? $"{R}+{I}{ImaginaryUnit}" : $"{R}{I}{ImaginaryUnit}";
             }
-            else { 
+            else {
                 return (I != 0d) ? $"{I}{ImaginaryUnit}" : "0";
             }
         }

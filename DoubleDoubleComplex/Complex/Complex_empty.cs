@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-
-namespace DoubleDoubleComplex {
+﻿namespace DoubleDoubleComplex {
 
     public partial class Complex {
     }
