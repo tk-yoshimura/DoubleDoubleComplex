@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace DoubleDouble.Complex {
+namespace DoubleDoubleComplex {
 
     public partial class Complex {
     }

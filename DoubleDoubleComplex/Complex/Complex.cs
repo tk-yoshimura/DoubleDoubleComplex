@@ -1,7 +1,8 @@
 ﻿using System;
+using DoubleDouble;
 using System.Diagnostics;
 
-namespace DoubleDouble.Complex {
+namespace DoubleDoubleComplex {
 
     [DebuggerDisplay("{ToString(),nq}")]
     public partial class Complex {
@@ -15,6 +16,10 @@ namespace DoubleDouble.Complex {
 
         public ddouble Phase => ddouble.Atan2(I, R);
 
+        public static Complex Zero { get; } = ddouble.Zero;
+
+        public static Complex NaN { get; } = ddouble.NaN;
+
         public Complex(ddouble r, ddouble i) {
             this.R = r;
             this.I = i;
@@ -22,6 +27,14 @@ namespace DoubleDouble.Complex {
 
         public static implicit operator Complex((ddouble r, ddouble i) v) {
             return new(v.r, v.i);
+        }
+
+        public static implicit operator Complex(int v) {
+            return new(v, ddouble.Zero);
+        }
+
+        public static implicit operator Complex(double v) {
+            return new(v, ddouble.Zero);
         }
 
         public static implicit operator Complex(ddouble v) {
@@ -35,6 +48,10 @@ namespace DoubleDouble.Complex {
         public void Deconstruct(out ddouble r, out ddouble i) => (r, i) = (R, I);
 
         public override string ToString() {
+            if (IsNaN(this)) {
+                return double.NaN.ToString();
+            }
+
             if (R != 0d) {
                 if (I == 0d) {
                     return $"{R}";
@@ -43,7 +60,7 @@ namespace DoubleDouble.Complex {
                 return (I > 0d) ? $"{R}+{I}{ImaginaryUnit}" : $"{R}{I}{ImaginaryUnit}";
             }
             else { 
-                return $"{I}{ImaginaryUnit}";
+                return (I != 0d) ? $"{I}{ImaginaryUnit}" : "0";
             }
         }
     }
