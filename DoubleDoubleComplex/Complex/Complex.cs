@@ -22,7 +22,9 @@ namespace DoubleDoubleComplex {
         public static Complex One { get; } = (1, 0);
         public static Complex ImaginaryOne { get; } = (0, 1);
 
-        public static Complex Conjugate(Complex c) => new Complex(c.R, -c.I);
+        public static Complex Conjugate(Complex c) => new(c.R, -c.I);
+
+        public static Complex Normal(Complex c) => c / c.Norm; 
 
         public Complex(ddouble r, ddouble i) {
             this.R = r;

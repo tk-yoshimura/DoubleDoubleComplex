@@ -64,5 +64,11 @@ namespace DoubleDoubleComplex {
         public static Complex operator /(Complex a, ddouble b) {
             return a * (1d / b);
         }
+
+        public static Complex Inverse(Complex z) {
+            ddouble s = 1d / z.Norm;
+
+            return new(z.R * s, -z.I * s);
+        }
     }
 }

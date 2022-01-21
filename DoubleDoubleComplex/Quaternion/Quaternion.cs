@@ -11,11 +11,20 @@ namespace DoubleDoubleComplex {
 
         public ddouble Magnitude => ddouble.Sqrt(Norm);
 
+        public (ddouble x, ddouble y, ddouble z) Vector => (I, J, K);
+
         public static Quaternion Zero { get; } = ddouble.Zero;
 
         public static Quaternion NaN { get; } = ddouble.NaN;
 
+        public static Quaternion One { get; } = (1, 0, 0, 0);
+        public static Quaternion IOne { get; } = (0, 1, 0, 0);
+        public static Quaternion JOne { get; } = (0, 0, 1, 0);
+        public static Quaternion KOne { get; } = (0, 0, 0, 1);
+
         public static Quaternion Conjugate(Quaternion q) => new(q.R, -q.I, -q.J, -q.K);
+
+        public static Quaternion Normal(Quaternion q) => q / q.Norm; 
 
         public Quaternion(ddouble r, ddouble i, ddouble j, ddouble k) {
             this.R = r;
@@ -38,6 +47,14 @@ namespace DoubleDoubleComplex {
 
         public static implicit operator Quaternion(ddouble v) {
             return new(v, ddouble.Zero, ddouble.Zero, ddouble.Zero);
+        }
+
+        public static implicit operator Quaternion(Complex z) {
+            return new(z.R, z.I, ddouble.Zero, ddouble.Zero);
+        }
+
+        public static implicit operator Quaternion((ddouble x, ddouble y, ddouble z) v) {
+            return new(ddouble.Zero, v.x, v.y, v.z);
         }
 
         public static implicit operator (ddouble r, ddouble i, ddouble j, ddouble k)(Quaternion v) {

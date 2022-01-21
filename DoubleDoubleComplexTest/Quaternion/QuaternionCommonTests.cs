@@ -27,6 +27,8 @@ namespace DoubleDoubleComplexTests {
             Assert.AreEqual(0, c3.I);
             Assert.AreEqual(0, c3.J);
             Assert.AreEqual(0, c3.K);
+
+            Assert.AreEqual((3, -1, 6), c1.Vector);
         }
 
         [TestMethod()]

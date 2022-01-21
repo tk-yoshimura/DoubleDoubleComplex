@@ -74,5 +74,11 @@ namespace DoubleDoubleComplex {
         public static Quaternion operator /(Quaternion a, ddouble b) {
             return a * (1d / b);
         }
+
+        public static Quaternion Inverse(Quaternion q) {
+            ddouble s = 1d / q.Norm;
+
+            return new(q.R * s, -q.I * s, -q.J * s, -q.K * s);
+        }
     }
 }

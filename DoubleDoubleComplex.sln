@@ -5,7 +5,10 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoubleDoubleComplex", "DoubleDoubleComplex\DoubleDoubleComplex.csproj", "{D0D2D87A-89B5-4C8F-B867-063838968C47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoubleDoubleComplexTest", "DoubleDoubleComplexTest\DoubleDoubleComplexTest.csproj", "{4C6A52CE-293E-403D-8BCA-1549A32521BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoubleDoubleComplexTest", "DoubleDoubleComplexTest\DoubleDoubleComplexTest.csproj", "{4C6A52CE-293E-403D-8BCA-1549A32521BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D0D2D87A-89B5-4C8F-B867-063838968C47} = {D0D2D87A-89B5-4C8F-B867-063838968C47}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
