@@ -24,7 +24,7 @@ namespace DoubleDoubleComplex {
 
         public static Complex Conjugate(Complex c) => new(c.R, -c.I);
 
-        public static Complex Normal(Complex c) => c / c.Norm; 
+        public static Complex Normal(Complex c) => c / c.Norm;
 
         public Complex(ddouble r, ddouble i) {
             this.R = r;

@@ -24,7 +24,7 @@ namespace DoubleDoubleComplex {
 
         public static Quaternion Conjugate(Quaternion q) => new(q.R, -q.I, -q.J, -q.K);
 
-        public static Quaternion Normal(Quaternion q) => q / q.Norm; 
+        public static Quaternion Normal(Quaternion q) => q / q.Norm;
 
         public Quaternion(ddouble r, ddouble i, ddouble j, ddouble k) {
             this.R = r;
@@ -66,7 +66,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static explicit operator System.Numerics.Quaternion(Quaternion q) {
-            return new System.Numerics.Quaternion((float)(double)q.I, (float)(double)q.J, (float)(double)q.K, (float)(double)q.R);
+            return new System.Numerics.Quaternion((float)q.I, (float)q.J, (float)q.K, (float)q.R);
         }
 
         public void Deconstruct(out ddouble r, out ddouble i, out ddouble j, out ddouble k)
