@@ -104,7 +104,7 @@ namespace DoubleDoubleComplex {
             ddouble phi = ddouble.Acos(q.R / qabs) * p;
 
             Quaternion vec = VectorPart(q);
-            Quaternion vnormal = VectorPart(q) / vec.Magnitude;
+            Quaternion vnormal = vec / vec.Magnitude;
             if (IsNaN(vnormal)) {
                 return Complex.Pow(q.R, p);
             }
@@ -126,7 +126,7 @@ namespace DoubleDoubleComplex {
             ddouble phi = ddouble.Acos(q.R / qabs) / 2;
 
             Quaternion vec = VectorPart(q);
-            Quaternion vnormal = VectorPart(q) / vec.Magnitude;
+            Quaternion vnormal = vec / vec.Magnitude;
             if (IsNaN(vnormal)) {
                 return Complex.Sqrt(q.R);
             }
@@ -148,7 +148,7 @@ namespace DoubleDoubleComplex {
             ddouble phi = ddouble.Acos(q.R / qabs) / 3;
 
             Quaternion vec = VectorPart(q);
-            Quaternion vnormal = VectorPart(q) / vec.Magnitude;
+            Quaternion vnormal = vec / vec.Magnitude;
             if (IsNaN(vnormal)) {
                 return ddouble.Cbrt(q.R);
             }
