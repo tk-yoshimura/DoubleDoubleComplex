@@ -2,7 +2,7 @@
  double-double complex and quaternion implements 
 
 ## Requirement
-.NET 5.0
+.NET 6.0
 
 ## Install
 
