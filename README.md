@@ -1,5 +1,5 @@
 # DoubleDoubleComplex
- double-double complex and quaternion implements 
+ Double-Double Complex and Quaternion Implements
 
 ## Requirement
 .NET 6.0

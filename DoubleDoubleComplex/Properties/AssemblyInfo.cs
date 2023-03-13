@@ -3,11 +3,11 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("DoubleDouble.Complex")]
-[assembly: AssemblyDescription("double-double complex and quaternion implements")]
+[assembly: AssemblyDescription("Double-Double Complex and Quaternion Implements")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DoubleDouble.Complex")]
-[assembly: AssemblyCopyright("Copyright © T.Yoshimura 2022")]
+[assembly: AssemblyCopyright("Copyright © T.Yoshimura 2022-2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -15,6 +15,6 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("1439DF1F-51EC-4989-8686-FB8526A33CE7")]
 
-[assembly: AssemblyVersion("1.2.0.*")]
+[assembly: AssemblyVersion("1.2.1.*")]
 
 [assembly: InternalsVisibleTo("DoubleDoubleComplexTest")]
