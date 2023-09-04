@@ -1,9 +1,18 @@
-﻿
-using DoubleDouble;
+﻿using DoubleDouble;
+using System.Numerics;
 
 namespace DoubleDoubleComplex {
 
-    public partial class Quaternion {
+    public partial class Quaternion:
+        IAdditionOperators<Quaternion, Quaternion, Quaternion>,
+        ISubtractionOperators<Quaternion, Quaternion, Quaternion>,
+        IMultiplyOperators<Quaternion, Quaternion, Quaternion>,
+        IDivisionOperators<Quaternion, Quaternion, Quaternion>,
+
+        IUnaryPlusOperators<Quaternion, Quaternion>,
+        IUnaryNegationOperators<Quaternion, Quaternion>,
+
+        IEqualityOperators<Quaternion, Quaternion, bool> {
 
         public static Quaternion operator +(Quaternion q) {
             return q;

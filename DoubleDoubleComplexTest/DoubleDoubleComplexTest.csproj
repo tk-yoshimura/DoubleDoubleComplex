@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -11,12 +11,12 @@
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
     <PackageReference Include="coverlet.collector" Version="3.1.0" />
-    <PackageReference Include="TYoshimura.DoubleDouble" Version="2.8.5" />
+    <PackageReference Include="TYoshimura.DoubleDouble" Version="2.9.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="DoubleDoubleComplex">
-      <HintPath>..\DoubleDoubleComplex\bin\Debug\net6.0\DoubleDoubleComplex.dll</HintPath>
+      <HintPath>..\DoubleDoubleComplex\bin\Debug\net7.0\DoubleDoubleComplex.dll</HintPath>
     </Reference>
   </ItemGroup>
 

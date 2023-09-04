@@ -1,9 +1,18 @@
-﻿
-using DoubleDouble;
+﻿using DoubleDouble;
+using System.Numerics;
 
 namespace DoubleDoubleComplex {
 
-    public partial class Complex {
+    public partial class Complex:
+        IAdditionOperators<Complex, Complex, Complex>,
+        ISubtractionOperators<Complex, Complex, Complex>,
+        IMultiplyOperators<Complex, Complex, Complex>,
+        IDivisionOperators<Complex, Complex, Complex>,
+
+        IUnaryPlusOperators<Complex, Complex>,
+        IUnaryNegationOperators<Complex, Complex>,
+
+        IEqualityOperators<Complex, Complex, bool> {
 
         public static Complex operator +(Complex c) {
             return c;
