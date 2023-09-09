@@ -9,7 +9,19 @@ namespace DoubleDoubleComplex {
 
         public ddouble Norm => R * R + I * I + J * J + K * K;
 
-        public ddouble Magnitude => ddouble.Sqrt(Norm);
+        public ddouble Magnitude { 
+            get {
+                if (ddouble.IsInfinity(R) || ddouble.IsInfinity(I) || ddouble.IsInfinity(J) || ddouble.IsInfinity(K)) {
+                    return ddouble.PositiveInfinity;
+                }
+
+                (int scale, (ddouble r, ddouble i, ddouble j, ddouble k)) = ddouble.AdjustScale(0, (R, I, J, K));
+
+                ddouble w = ddouble.Ldexp(ddouble.Sqrt(r * r + i * i + j * j + k * k), -scale);
+
+                return w;
+            }
+        }
 
         public (ddouble x, ddouble y, ddouble z) Vector => (I, J, K);
 

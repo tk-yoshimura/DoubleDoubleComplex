@@ -11,7 +11,7 @@ namespace DoubleDoubleComplex {
 
         public ddouble Norm => R * R + I * I;
 
-        public ddouble Magnitude => ddouble.Sqrt(Norm);
+        public ddouble Magnitude => ddouble.Hypot(R, I);
 
         public ddouble Phase => ddouble.Atan2(I, R);
 
