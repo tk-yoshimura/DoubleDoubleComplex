@@ -47,6 +47,10 @@ namespace DoubleDoubleComplex {
             return new(v, ddouble.Zero);
         }
 
+        public static implicit operator Complex(string v) {
+            return Parse(v);
+        }
+
         public static implicit operator (ddouble r, ddouble i)(Complex v) {
             return (v.R, v.I);
         }
