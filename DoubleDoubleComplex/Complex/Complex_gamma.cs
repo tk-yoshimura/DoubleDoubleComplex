@@ -10,12 +10,12 @@ namespace DoubleDoubleComplex {
             }
 
             if (z.R < ddouble.Point5) {
-                Complex y = ddouble.PI / (Sin(z * ddouble.PI) * Gamma(1 - z));
+                Complex y = ddouble.PI / (SinPI(z) * Gamma(One - z));
 
                 return y;
             }
 
-            if (z.Norm < 15) { 
+            if (z.Norm < 225d) {
                 ReadOnlyCollection<ddouble> lanczos_table = Consts.Gamma.LanczosTable;
 
                 z -= One;
