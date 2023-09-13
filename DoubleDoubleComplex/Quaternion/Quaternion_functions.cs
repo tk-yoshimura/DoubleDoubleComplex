@@ -35,27 +35,27 @@ namespace DoubleDoubleComplex {
         }
 
         public static Quaternion Sin(Quaternion q) {
-            ddouble abs = VectorPart(q).Magnitude;
-            ddouble w = ddouble.Cos(q.R) * ddouble.Sinhc(abs);
+            ddouble vnorm = VectorPart(q).Magnitude;
+            ddouble w = ddouble.Cos(q.R) * ddouble.Sinhc(vnorm);
 
-            Quaternion p = new(ddouble.Sin(q.R) * ddouble.Cosh(abs), w * q.I, w * q.J, w * q.K);
+            Quaternion p = new(ddouble.Sin(q.R) * ddouble.Cosh(vnorm), w * q.I, w * q.J, w * q.K);
 
             return p;
         }
 
         public static Quaternion Cos(Quaternion q) {
-            ddouble abs = VectorPart(q).Magnitude;
-            ddouble w = -ddouble.Sin(q.R) * ddouble.Sinhc(abs);
+            ddouble vnorm = VectorPart(q).Magnitude;
+            ddouble w = -ddouble.Sin(q.R) * ddouble.Sinhc(vnorm);
 
-            Quaternion p = new(ddouble.Cos(q.R) * ddouble.Cosh(abs), w * q.I, w * q.J, w * q.K);
+            Quaternion p = new(ddouble.Cos(q.R) * ddouble.Cosh(vnorm), w * q.I, w * q.J, w * q.K);
 
             return p;
         }
 
         public static Quaternion Tan(Quaternion q) {
-            ddouble abs = VectorPart(q).Magnitude;
+            ddouble vnorm = VectorPart(q).Magnitude;
 
-            ddouble sinhc = ddouble.Sinhc(abs), cosh = ddouble.Cosh(abs);
+            ddouble sinhc = ddouble.Sinhc(vnorm), cosh = ddouble.Cosh(vnorm);
             ddouble cos = ddouble.Cos(q.R), sin = ddouble.Sin(q.R);
 
             ddouble wcos = cos * sinhc, wsin = -sin * sinhc;
@@ -67,10 +67,10 @@ namespace DoubleDoubleComplex {
         }
 
         public static Quaternion Exp(Quaternion q) {
-            ddouble abs = VectorPart(q).Magnitude;
-            ddouble w = ddouble.Sinc(abs, normalized: false);
+            ddouble vnorm = VectorPart(q).Magnitude;
+            ddouble w = ddouble.Sinc(vnorm, normalized: false);
 
-            Quaternion p = new Quaternion(ddouble.Cos(abs), w * q.I, w * q.J, w * q.K) * ddouble.Exp(q.R);
+            Quaternion p = new Quaternion(ddouble.Cos(vnorm), w * q.I, w * q.J, w * q.K) * ddouble.Exp(q.R);
 
             return p;
         }
@@ -80,16 +80,16 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            ddouble qabs = q.Magnitude;
-            ddouble vabs = VectorPart(q).Magnitude;
+            ddouble qnorm = q.Magnitude;
+            ddouble vnorm = VectorPart(q).Magnitude;
 
-            if (IsZero(vabs)) {
-                return Complex.Log(qabs);
+            if (IsZero(vnorm)) {
+                return Complex.Log(qnorm);
             }
 
-            ddouble w = ddouble.Acos(q.R / qabs) / vabs;
+            ddouble w = ddouble.Acos(q.R / qnorm) / vnorm;
 
-            Quaternion p = new(ddouble.Log(qabs), w * q.I, w * q.J, w * q.K);
+            Quaternion p = new(ddouble.Log(qnorm), w * q.I, w * q.J, w * q.K);
 
             return p;
         }
@@ -99,9 +99,9 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            ddouble qabs = q.Magnitude;
+            ddouble qnorm = q.Magnitude;
 
-            ddouble phi = ddouble.Acos(q.R / qabs) * p;
+            ddouble phi = ddouble.Acos(q.R / qnorm) * p;
 
             Quaternion vec = VectorPart(q);
             Quaternion vnormal = vec / vec.Magnitude;
@@ -111,7 +111,29 @@ namespace DoubleDoubleComplex {
 
             ddouble c = ddouble.Cos(phi), s = ddouble.Sin(phi);
 
-            Quaternion r = new Quaternion(c, s * vnormal.I, s * vnormal.J, s * vnormal.K) * ddouble.Pow(qabs, p);
+            Quaternion r = new Quaternion(c, s * vnormal.I, s * vnormal.J, s * vnormal.K) * ddouble.Pow(qnorm, p);
+
+            return r;
+        }
+
+        public static Quaternion Pow(Quaternion q, long n) {
+            if (IsNaN(q)) {
+                return NaN;
+            }
+
+            ddouble qnorm = q.Magnitude;
+
+            ddouble phi = ddouble.Acos(q.R / qnorm) * n;
+
+            Quaternion vec = VectorPart(q);
+            Quaternion vnormal = vec / vec.Magnitude;
+            if (IsNaN(vnormal)) {
+                return Complex.Pow(q.R, n);
+            }
+
+            ddouble c = ddouble.Cos(phi), s = ddouble.Sin(phi);
+
+            Quaternion r = new Quaternion(c, s * vnormal.I, s * vnormal.J, s * vnormal.K) * ddouble.Pow(qnorm, n);
 
             return r;
         }
@@ -121,9 +143,9 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            ddouble qabs = q.Magnitude;
+            ddouble qnorm = q.Magnitude;
 
-            ddouble phi = ddouble.Acos(q.R / qabs) / 2;
+            ddouble phi = ddouble.Acos(q.R / qnorm) / 2;
 
             Quaternion vec = VectorPart(q);
             Quaternion vnormal = vec / vec.Magnitude;
@@ -133,7 +155,7 @@ namespace DoubleDoubleComplex {
 
             ddouble c = ddouble.Cos(phi), s = ddouble.Sin(phi);
 
-            Quaternion r = new Quaternion(c, s * vnormal.I, s * vnormal.J, s * vnormal.K) * ddouble.Sqrt(qabs);
+            Quaternion r = new Quaternion(c, s * vnormal.I, s * vnormal.J, s * vnormal.K) * ddouble.Sqrt(qnorm);
 
             return r;
         }
@@ -143,9 +165,9 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            ddouble qabs = q.Magnitude;
+            ddouble qnorm = q.Magnitude;
 
-            ddouble phi = ddouble.Acos(q.R / qabs) / 3;
+            ddouble phi = ddouble.Acos(q.R / qnorm) / 3;
 
             Quaternion vec = VectorPart(q);
             Quaternion vnormal = vec / vec.Magnitude;
@@ -155,7 +177,29 @@ namespace DoubleDoubleComplex {
 
             ddouble c = ddouble.Cos(phi), s = ddouble.Sin(phi);
 
-            Quaternion r = new Quaternion(c, s * vnormal.I, s * vnormal.J, s * vnormal.K) * ddouble.Cbrt(qabs);
+            Quaternion r = new Quaternion(c, s * vnormal.I, s * vnormal.J, s * vnormal.K) * ddouble.Cbrt(qnorm);
+
+            return r;
+        }
+
+        public static Quaternion RootN(Quaternion q, int n) {
+            if (IsNaN(q)) {
+                return NaN;
+            }
+
+            ddouble qnorm = q.Magnitude;
+
+            ddouble phi = ddouble.Acos(q.R / qnorm) / n;
+
+            Quaternion vec = VectorPart(q);
+            Quaternion vnormal = vec / vec.Magnitude;
+            if (IsNaN(vnormal)) {
+                return ((n & 1) == 0) ? Complex.RootN(q.R, n) : ddouble.RootN(q.R, n);
+            }
+
+            ddouble c = ddouble.Cos(phi), s = ddouble.Sin(phi);
+
+            Quaternion r = new Quaternion(c, s * vnormal.I, s * vnormal.J, s * vnormal.K) * ddouble.RootN(qnorm, n);
 
             return r;
         }

@@ -115,5 +115,22 @@ namespace DoubleDoubleComplexTests {
                 QuaternionAssert.AreEqual(q, cbrt * cbrt * cbrt, 1e-25);
             }
         }
+
+        [TestMethod()]
+        public void RootNTest() {
+            foreach (int n in new[] { 1, 2, 3, 4, 5, 6, 7, 8 }) {
+                foreach (Quaternion q in new[] { 1, 2, 4, 5 }) {
+                    Quaternion root_n = Quaternion.RootN(q, n);
+
+                    QuaternionAssert.AreEqual(ddouble.RootN(q.R, n), root_n.R, 1e-25);
+                }
+
+                foreach (Quaternion q in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1), (-2, 0, 0, 0), (-8, 0, 0, 0), (-8, 4, 0, 0) }) {
+                    Quaternion root_n = Quaternion.RootN(q, n);
+
+                    QuaternionAssert.AreEqual(q, Quaternion.Pow(root_n, n), 1e-25);
+                }
+            }
+        }
     }
 }

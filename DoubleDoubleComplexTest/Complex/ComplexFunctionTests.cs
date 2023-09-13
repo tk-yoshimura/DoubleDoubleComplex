@@ -1,5 +1,7 @@
-﻿using DoubleDoubleComplex;
+﻿using DoubleDouble;
+using DoubleDoubleComplex;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace DoubleDoubleComplexTests {
     using NComplex = System.Numerics.Complex;
@@ -26,6 +28,16 @@ namespace DoubleDoubleComplexTests {
         }
 
         [TestMethod()]
+        public void SinPITest() {
+            foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                Complex c = Complex.SinPI(z);
+                NComplex nc = NComplex.Sin((NComplex)(z * ddouble.PI));
+
+                ComplexAssert.AreEqual(nc, c, 1e-2);
+            }
+        }
+
+        [TestMethod()]
         public void CosTest() {
             foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                 Complex c = Complex.Cos(z);
@@ -36,10 +48,30 @@ namespace DoubleDoubleComplexTests {
         }
 
         [TestMethod()]
+        public void CosPITest() {
+            foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                Complex c = Complex.CosPI(z);
+                NComplex nc = NComplex.Cos((NComplex)(z * ddouble.PI));
+
+                ComplexAssert.AreEqual(nc, c, 1e-2);
+            }
+        }
+
+        [TestMethod()]
         public void TanTest() {
             foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                 Complex c = Complex.Tan(z);
                 NComplex nc = NComplex.Tan((NComplex)z);
+
+                ComplexAssert.AreEqual(nc, c, 1e-7);
+            }
+        }
+
+        [TestMethod()]
+        public void TanPITest() {
+            foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                Complex c = Complex.TanPI(z);
+                NComplex nc = NComplex.Tan((NComplex)(z * ddouble.PI));
 
                 ComplexAssert.AreEqual(nc, c, 1e-7);
             }
@@ -198,6 +230,18 @@ namespace DoubleDoubleComplexTests {
                 NComplex nc = NComplex.Pow((NComplex)z, 1d / 3d);
 
                 ComplexAssert.AreEqual(nc, c, 1e-7);
+            }
+        }
+
+        [TestMethod()]
+        public void RootNTest() {
+            foreach (int n in new[] { 1, 2, 3, 4, 5, 6, 7, 8 }) {
+                foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                    Complex c = Complex.RootN(z, n);
+                    NComplex nc = NComplex.Pow((NComplex)z, 1d / n);
+
+                    ComplexAssert.AreEqual(nc, c, 1e-7);
+                }
             }
         }
     }

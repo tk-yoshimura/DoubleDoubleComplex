@@ -15,6 +15,15 @@ namespace DoubleDoubleComplex {
             );
         }
 
+        public static Complex SinPI(Complex z) {
+            ddouble i_pi = z.I * ddouble.PI;
+
+            return new Complex(
+                ddouble.SinPI(z.R) * ddouble.Cosh(i_pi),
+                ddouble.CosPI(z.R) * ddouble.Sinh(i_pi)
+            );
+        }
+
         public static Complex Cos(Complex z) {
             return new Complex(
                 ddouble.Cos(z.R) * ddouble.Cosh(z.I),
@@ -22,8 +31,35 @@ namespace DoubleDoubleComplex {
             );
         }
 
+        public static Complex CosPI(Complex z) {
+            ddouble i_pi = z.I * ddouble.PI;
+
+            return new Complex(
+                ddouble.CosPI(z.R) * ddouble.Cosh(i_pi),
+                -ddouble.SinPI(z.R) * ddouble.Sinh(i_pi)
+            );
+        }
+
         public static Complex Tan(Complex z) {
-            return Sin(z) / Cos(z);
+            ddouble r_sin = ddouble.Sin(z.R), r_cos = ddouble.Cos(z.R);
+            ddouble i_sinh = ddouble.Sinh(z.I), i_cosh = ddouble.Cosh(z.I);
+
+            Complex s = new(r_sin * i_cosh, r_cos * i_sinh);
+            Complex c = new(r_cos * i_cosh, -r_sin * i_sinh);
+
+            return s / c;
+        }
+
+        public static Complex TanPI(Complex z) {
+            ddouble i_pi = z.I * ddouble.PI;
+
+            ddouble r_sin = ddouble.SinPI(z.R), r_cos = ddouble.CosPI(z.R);
+            ddouble i_sinh = ddouble.Sinh(i_pi), i_cosh = ddouble.Cosh(i_pi);
+
+            Complex s = new(r_sin * i_cosh, r_cos * i_sinh);
+            Complex c = new(r_cos * i_cosh, -r_sin * i_sinh);
+
+            return s / c;
         }
 
         public static Complex Sinh(Complex z) {
@@ -41,7 +77,13 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Tanh(Complex z) {
-            return Sinh(z) / Cosh(z);
+            ddouble r_sinh = ddouble.Sinh(z.R), r_cosh = ddouble.Cosh(z.R);
+            ddouble i_sin = ddouble.Sin(z.I), i_cos = ddouble.Cos(z.I);
+
+            Complex s = new(r_sinh * i_cos, r_cosh * i_sin);
+            Complex c = new(r_cosh * i_cos, r_sinh * i_sin);
+
+            return s / c;
         }
 
         public static Complex Asin(Complex z) {
@@ -104,12 +146,20 @@ namespace DoubleDoubleComplex {
             return FromPolarCoordinates(ddouble.Pow(z.Magnitude, p), z.Phase * p);
         }
 
+        public static Complex Pow(Complex z, long n) {
+            return FromPolarCoordinates(ddouble.Pow(z.Magnitude, n), z.Phase * n);
+        }
+
         public static Complex Sqrt(Complex z) {
             return FromPolarCoordinates(ddouble.Sqrt(z.Magnitude), z.Phase / 2);
         }
 
         public static Complex Cbrt(Complex z) {
             return FromPolarCoordinates(ddouble.Cbrt(z.Magnitude), z.Phase / 3);
+        }
+
+        public static Complex RootN(Complex z, int n) {
+            return FromPolarCoordinates(ddouble.RootN(z.Magnitude, n), z.Phase / n);
         }
     }
 }
