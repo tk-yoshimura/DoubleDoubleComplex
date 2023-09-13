@@ -11,7 +11,7 @@ namespace DoubleDoubleComplex.Util {
 
             do {
                 index = str.IndexOfAny(new[] { '+', '-' }, index + 1);
-            } while (index > 0 && str[index - 1] == 'e');
+            } while (index > 0 && (str[index - 1] == 'e' || str[index - 1] == 'E'));
 
             return index;
         }
