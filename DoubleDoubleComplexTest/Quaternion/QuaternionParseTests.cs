@@ -8,18 +8,29 @@ namespace DoubleDoubleComplexTests {
     public class QuaternionParseTests {
         [TestMethod()]
         public void NormalTest() {
-            foreach ((ddouble v, string s) r in new[] { (0, ""), (1, "1"), (-1, "-1"), (+1, "+1") }) {
-                foreach ((ddouble v, string s) i in new[] { (0, ""), (2, "2i"), (-2, "-2i"), (+2, "+2i") }) {
+            foreach ((ddouble v, string s) r in new[] { 
+                (0, ""), (1, "1"), (-1, "-1"), (+1, "+1"), 
+                (+0.25, "+0.25"), (-0.25, "-0.25"), (+0.125, "+1.25e-1"), (125, "+1.25e+2") }) {
+
+                foreach ((ddouble v, string s) i in new[] { 
+                    (0, ""), (2, "2i"), (-2, "-2i"), (+2, "+2i"), 
+                    (+0.25, "+0.25i"), (-0.25, "-0.25i"), (+0.125, "+1.25e-1i"), (125, "+1.25e+2i") }) {
                     if (r.s != "" && i.s == "2i") {
                         continue;
                     }
 
-                    foreach ((ddouble v, string s) j in new[] { (0, ""), (3, "3j"), (-3, "-3j"), (+3, "+3j") }) {
+                    foreach ((ddouble v, string s) j in new[] { 
+                        (0, ""), (3, "3j"), (-3, "-3j"), (+3, "+3j"), 
+                        (+0.25, "+0.25j"), (-0.25, "-0.25j"), (+0.125, "+1.25e-1j"), (125, "+1.25e+2j") }) {
+
                         if ((r.s != "" || i.s != "") && j.s == "3j") {
                             continue;
                         }
 
-                        foreach ((ddouble v, string s) k in new[] { (0, ""), (4, "4k"), (-4, "-4k"), (+4, "+4k") }) {
+                        foreach ((ddouble v, string s) k in new[] { 
+                            (0, ""), (4, "4k"), (-4, "-4k"), (+4, "+4k"), 
+                            (+0.25, "+0.25k"), (-0.25, "-0.25k"), (+0.125, "+1.25e-1k"), (125, "+1.25e+2k") }) {
+
                             if ((r.s != "" || i.s != "" || j.s != "") && k.s == "4k") {
                                 continue;
                             }
