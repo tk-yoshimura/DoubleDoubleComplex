@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace DoubleDoubleComplex {
 
-    public partial class Complex:
+    public partial class Complex :
         IAdditionOperators<Complex, Complex, Complex>,
         ISubtractionOperators<Complex, Complex, Complex>,
         IMultiplyOperators<Complex, Complex, Complex>,

@@ -1,5 +1,5 @@
-﻿using System;
-using DoubleDouble;
+﻿using DoubleDouble;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DoubleDoubleComplex {
@@ -13,7 +13,7 @@ namespace DoubleDoubleComplex {
             (ddouble v, bool set) r = (ddouble.Zero, false), i = (ddouble.Zero, false);
 
             int index_e0 = (s[0] == '+' || s[0] == '-') ? 1 : 0;
-            int index_e1 = int.Max(s.IndexOf('+', index_e0), s.IndexOf('-', index_e0));
+            int index_e1 = s.IndexOfAny(new[] { '+', '-' }, index_e0);
 
             string e0 = (index_e1 > 0) ? s[..index_e1] : s;
             string e1 = (index_e1 > 0) ? s[index_e1..] : string.Empty;

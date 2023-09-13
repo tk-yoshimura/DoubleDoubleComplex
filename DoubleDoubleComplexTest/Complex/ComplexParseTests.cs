@@ -79,6 +79,14 @@ namespace DoubleDoubleComplexTests {
             });
 
             Assert.ThrowsException<FormatException>(() => {
+                Complex _ = "+1++i";
+            });
+
+            Assert.ThrowsException<FormatException>(() => {
+                Complex _ = "+1+-i";
+            });
+
+            Assert.ThrowsException<FormatException>(() => {
                 Complex _ = "1+i";
             });
 
@@ -104,6 +112,14 @@ namespace DoubleDoubleComplexTests {
 
             Assert.ThrowsException<FormatException>(() => {
                 Complex _ = "2+2i-";
+            });
+
+            Assert.ThrowsException<FormatException>(() => {
+                Complex _ = "2+2i-2i";
+            });
+
+            Assert.ThrowsException<FormatException>(() => {
+                Complex _ = "2+2i-2";
             });
 
             Assert.ThrowsException<FormatException>(() => {

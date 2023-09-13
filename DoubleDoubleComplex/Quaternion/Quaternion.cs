@@ -9,7 +9,7 @@ namespace DoubleDoubleComplex {
 
         public ddouble Norm => R * R + I * I + J * J + K * K;
 
-        public ddouble Magnitude { 
+        public ddouble Magnitude {
             get {
                 if (ddouble.IsInfinity(R) || ddouble.IsInfinity(I) || ddouble.IsInfinity(J) || ddouble.IsInfinity(K)) {
                     return ddouble.PositiveInfinity;
@@ -75,6 +75,10 @@ namespace DoubleDoubleComplex {
 
         public static implicit operator Quaternion(System.Numerics.Quaternion q) {
             return new Quaternion(q.W, q.X, q.Y, q.Z);
+        }
+
+        public static implicit operator Quaternion(string v) {
+            return Parse(v);
         }
 
         public static explicit operator System.Numerics.Quaternion(Quaternion q) {
