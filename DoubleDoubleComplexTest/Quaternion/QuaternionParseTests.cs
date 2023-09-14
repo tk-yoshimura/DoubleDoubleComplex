@@ -59,101 +59,46 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void BadParseTest() {
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "";
-            });
+            string[] tests = {
+                "",
+                "+",
+                "-",
+                "++",
+                "+-",
+                "--",
+                "-+",
+                "+1-",
+                "+1+i",
+                "+1++i",
+                "+1+-i",
+                "1+i",
+                "i",
+                "1i+",
+                "1i+1i",
+                "2+2",
+                "2+2i-",
+                "2+2i-2i",
+                "2+2i-2",
+                "2+2p",
+                "2+2e",
+                "2+2e1",
+                "2+e",
+                "e",
+                "2+2jk",
+                "2+2j+2k+2k",
+                "2+2j+2k+2k+1i",
+                "2+2j++2k+2k+1i",
+                "2+2j++2k+2k+ei",
+                "+4k+1+3j+2i+"
+            };
 
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "+";
-            });
+            foreach (string test in tests) {
+                Console.WriteLine(test);
 
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "-";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "++";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "+-";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "--";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "-+";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "-1+";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "+1-";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "+1+i";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "1+i";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "i";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "1i+";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "1i+";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "1i+1i";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "2+2";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "2+2i-";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "2+2p";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "2+2jk";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "2+2j2k";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "2+2j+2k+2k";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "2+2j+2k+2k+1i";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "2+2j++2k+2k+1i";
-            });
-
-            Assert.ThrowsException<FormatException>(() => {
-                Quaternion _ = "+4k+1+3j+2i+";
-            });
+                Assert.ThrowsException<FormatException>(() => {
+                    Quaternion _ = test;
+                });
+            }
         }
     }
 }
