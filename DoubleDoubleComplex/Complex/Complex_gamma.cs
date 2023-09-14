@@ -1,6 +1,5 @@
 ﻿using DoubleDouble;
 using System.Collections.ObjectModel;
-using System.Reflection.Metadata.Ecma335;
 
 namespace DoubleDoubleComplex {
 
