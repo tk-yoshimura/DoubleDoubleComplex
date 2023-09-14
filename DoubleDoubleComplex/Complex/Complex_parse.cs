@@ -62,7 +62,7 @@ namespace DoubleDoubleComplex {
             }
         }
 
-        internal static void ValidateElem(string s, out ddouble v, out char symbol) {
+        private static void ValidateElem(string s, out ddouble v, out char symbol) {
             if (string.IsNullOrEmpty(s)) {
                 (v, symbol) = (ddouble.Zero, '_');
             }
