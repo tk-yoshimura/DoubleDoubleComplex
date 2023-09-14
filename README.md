@@ -11,6 +11,15 @@
 
 - Import DoubleDouble(https://github.com/tk-yoshimura/DoubleDouble)
 
+## Usage
+
+```csharp
+Complex z = "1+16i"; // z = (1, 16), new Complex(1, 16);
+Complex c = Complex.Gamma(z);
+
+Console.WriteLine(c);
+```
+
 ## Licence
 [MIT](https://github.com/tk-yoshimura/DoubleDoubleComplex/blob/main/LICENSE)
 
