@@ -543,17 +543,30 @@ namespace DoubleDoubleComplexTests {
                 "-1.81797768923042403670660575562633243796e-22-4.984925868916385884430254993847089280056e-21i"
             };
 
-            foreach ((ddouble r, Complex[] expecteds) in new[] { (0.5, expected_r0p50), (0.75, expected_r0p75), (1, expected_r1), (1.25, expected_r1p25) }) {
-                for ((ddouble i, int index) = (-32, 0); index < expecteds.Length; i += 0.5, index++) {
-                    Complex expected = expecteds[index];
-                    Complex actual = Complex.Gamma((r, i));
+            for (int rn = 0; rn < 32; rn++) {
+                foreach ((ddouble r, Complex[] expecteds) in new[] {
+                    (0.5, expected_r0p50), (0.75, expected_r0p75), (1, expected_r1), (1.25, expected_r1p25) }) {
 
-                    Console.WriteLine($"z = {(r, i)}");
-                    Console.WriteLine(expected);
-                    Console.WriteLine(actual);
+                    for ((ddouble i, int index) = (-32, 0); index < expecteds.Length; i += 0.5, index++) {
+                        Complex z = (r + rn, i);
+
+                        Complex expected = expecteds[index];
+
+                        for (int k = 0; k < rn; k++) {
+                            expected *= (r + k, i);
+                        }
+
+                        Complex actual = Complex.Gamma(z);
+                        ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+
+                        Console.WriteLine($"{z},{err}");
+                        Console.WriteLine(expected);
+                        Console.WriteLine(actual);
+
+                        Assert.IsTrue(err < 8e-30, $"\n{expected}\n{actual}");
+                    }
                 }
             }
-            
         }
     }
 }
