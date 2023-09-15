@@ -75,10 +75,6 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            static Complex pv(Complex z) {
-                return (z.R, z.I % ddouble.Ldexp(ddouble.PI, 1));
-            };
-
             if (z.R < ddouble.Point5) {
                 Complex y = Log(ddouble.PI / (SinPI(z) * Gamma(One - z)));
 
@@ -103,6 +99,10 @@ namespace DoubleDoubleComplex {
 
                 return y;
             }
+
+            static Complex pv(Complex z) {
+                return (z.R, z.I % ddouble.Ldexp(ddouble.PI, 1));
+            };
 
             if (z.Norm >= Consts.Gamma.StirlingConvergenceNorm) {
                 return pv(stirling(z));
