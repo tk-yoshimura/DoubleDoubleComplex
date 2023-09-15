@@ -10,7 +10,12 @@ namespace DoubleDoubleComplexTests {
         public void SandboxTest() {
             Complex c = Complex.Gamma((1, 16));
 
+            Complex c1 = Complex.LogGamma((1, 1d / 65536));
+            Complex c2 = Complex.LogGamma((1, -1d / 65536));
+
             Console.WriteLine(c);
+            Console.WriteLine(c1);
+            Console.WriteLine(c2);
         }
 
         [TestMethod()]
@@ -1129,6 +1134,61 @@ namespace DoubleDoubleComplexTests {
 
                     Assert.IsTrue(err < 8e-30, $"\n{expected}\n{actual}");
                 }
+            }
+        }
+
+        [TestMethod()]
+        public void LogGammaTest() {
+            Complex[] tests = new Complex[] {
+                (-32, 0.25),
+                (-16, 0.5),
+                (-8, 1),
+                (-4, 2),
+                (-2, 4),
+                (-1, 8),
+                (-0.5, 16),
+                (-0.25, 32),
+                (32, 0.25),
+                (16, 0.5),
+                (8, 1),
+                (4, 2),
+                (2, 4),
+                (1, 8),
+                (0.5, 16),
+                (0.25, 32),
+
+                (-32, -0.25),
+                (-16, -0.5),
+                (-8, -1),
+                (-4, -2),
+                (-2, -4),
+                (-1, -8),
+                (-0.5, -16),
+                (-0.25, -32),
+                (32, -0.25),
+                (16, -0.5),
+                (8, -1),
+                (4, -2),
+                (2, -4),
+                (1, -8),
+                (0.5, -16),
+                (0.25, -32),
+
+                (4, 0),
+                (-2.5, -1d/64),
+                (-2.5, 0),
+                (-2.5, 1d/64),
+                (-3.5, -1d/64),
+                (-3.5, 0),
+                (-3.5, 1d/64),
+            };
+
+            foreach (Complex test in tests) {
+                Complex z = Complex.LogGamma(test);
+
+                Console.WriteLine($"lngamma({test})={z}");
+
+                ComplexAssert.AreEqual(Complex.Gamma(test), Complex.Exp(z), Complex.Gamma(test).Magnitude * 1e-29, $"{test}");
             }
         }
     }

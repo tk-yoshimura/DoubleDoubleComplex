@@ -32,7 +32,7 @@ namespace DoubleDoubleComplex {
                 x *= v;
 
                 Complex r = Sqrt(2 * ddouble.PI / z);
-                Complex p = Pow(z / ddouble.E, z);
+                Complex p = Pow(z * ddouble.RcpE, z);
                 Complex s = Exp(x);
 
                 Complex y = r * p * s;
@@ -66,9 +66,74 @@ namespace DoubleDoubleComplex {
             }
         }
 
+        public static Complex LogGamma(Complex z) {
+            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+                return ddouble.IsPositive(z.R) ? ddouble.LogGamma(z.R) : Log(ddouble.Gamma(z.R));
+            }
+
+            if (!ddouble.IsFinite(z.I)) {
+                return NaN;
+            }
+
+            static Complex pv(Complex z) {
+                return (z.R, z.I % ddouble.Ldexp(ddouble.PI, 1));
+            };
+
+            if (z.R < ddouble.Point5) {
+                Complex y = Log(ddouble.PI / (SinPI(z) * Gamma(One - z)));
+
+                return y;
+            }
+
+            static Complex stirling(Complex z) {
+                Complex x = Zero, u = One;
+                Complex v = One / z, w = v * v;
+
+                foreach (Complex t in Consts.Gamma.StirlingTable) {
+                    Complex c = u * t;
+                    x += c;
+                    u *= w;
+                }
+
+                x *= v;
+
+                Complex r = Consts.Gamma.StirlingLogBias - z + (z - ddouble.Point5) * Log(z);
+
+                Complex y = r + x;
+
+                return y;
+            }
+
+            if (z.Norm >= Consts.Gamma.StirlingConvergenceNorm) {
+                return pv(stirling(z));
+            }
+            else {
+                int rn = (int)double.Floor((double)z.R);
+                ddouble rf = z.R - rn;
+
+                double zid = (double)z.I, zrd = double.Sqrt(Consts.Gamma.StirlingConvergenceNorm - zid * zid);
+                int rk = (int)double.Ceiling(zrd);
+
+                if (double.IsNaN(zrd) || rn >= rk) {
+                    return pv(stirling(z));
+                }
+
+                Complex c = stirling((rf + rk, z.I));
+                Complex m = z;
+                for (int k = rn + 1; k < rk; k++) {
+                    m *= (rf + k, z.I);
+                }
+
+                Complex y = c - Log(m);
+
+                return pv(y);
+            }
+        }
+
         internal static partial class Consts {
             public static class Gamma {
                 public const double StirlingConvergenceNorm = 230.5d;
+                public static readonly ddouble StirlingLogBias = ddouble.Log(ddouble.Sqrt(2 * ddouble.PI));
 
                 public static readonly ReadOnlyCollection<ddouble> StirlingTable = new(new ddouble[] {
                     (+1, -4, 0xAAAAAAAAAAAAAAAAuL, 0xAAAAAAAAAAAAAAAAuL),
