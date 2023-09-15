@@ -48,7 +48,7 @@ namespace DoubleDoubleComplex {
 
                 Complex f = One;
 
-                for (int k = 4 * n - 3; k >= 1; k -= 4) { 
+                for (int k = 4 * n - 3; k >= 1; k -= 4) {
                     Complex c0 = (k + 2) * f;
                     Complex c1 = w * ((k + 3) + f * 2d);
                     Complex d0 = (k + 1) * (k + 3) + (4 * k + 6) * f;
@@ -71,14 +71,14 @@ namespace DoubleDoubleComplex {
                 public static readonly ddouble RcpSqrtPI = 1d / ddouble.Sqrt(ddouble.PI);
 
                 const int min_c_frac_iter = 8;
-                static readonly int[,] c_frac_iter_table = 
+                static readonly int[,] c_frac_iter_table =
                     { {38, 25, 17, 12,  9,  8},
                       {39, 25, 17, 13, 10,  8},
                       {39, 25, 18, 13, 10,  8},
                       {36, 25, 18, 14, 11,  8},
                       {30, 21, 17, 14, 11,  9},
-                      {24, 17, 14, 12, 11, 10},                    
-                      {17, 14, 12, 10,  9,  8},
+                      {24, 17, 14, 12, 11, 10},
+                      {17, 14, 12, 10,  9,  9},
                       {12, 10,  9,  9,  8,  8},
                       { 9,  8,  8,  8,  8,  8} };
 
