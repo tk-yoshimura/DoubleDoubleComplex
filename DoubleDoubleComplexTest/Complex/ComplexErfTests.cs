@@ -1399,5 +1399,22 @@ namespace DoubleDoubleComplexTests {
                 }
             }
         }
+
+        [TestMethod()]
+        public void ZerosTest() {
+            Complex[] zeros = new Complex[] {
+                (1.4506161632, 1.8809430002),
+                (2.2446592738, 2.6165751407),
+                (2.8397410469, 3.1756280996),
+                (3.3354607354, 3.6461743764),
+                (3.7690055670, 4.0606972339),
+            };
+
+            foreach (Complex zero in zeros) {
+                Complex c = Complex.Erf(zero);
+
+                Assert.IsTrue(c.Magnitude < 8e-10);
+            }
+        }
     }
 }
