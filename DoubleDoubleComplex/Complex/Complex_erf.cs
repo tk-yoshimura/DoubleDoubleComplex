@@ -92,7 +92,7 @@ namespace DoubleDoubleComplex {
                     int r_index = (int)double.Floor(((double)z.R - MinCFracR) * 2);
                     int i_index = (int)double.Floor((double)z.I);
 
-                    if (r_index >= c_frac_iter_table.GetLength(1) || i_index >= c_frac_iter_table.GetLength(1)) {
+                    if (r_index >= c_frac_iter_table.GetLength(1) || i_index >= c_frac_iter_table.GetLength(0)) {
                         return min_c_frac_iter;
                     }
 
