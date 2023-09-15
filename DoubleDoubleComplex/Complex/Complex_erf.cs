@@ -26,7 +26,7 @@ namespace DoubleDoubleComplex {
 
             if (z.R < Consts.Erf.MinCFracR) {
                 Complex c = One, u = -w;
-                for (int k = 1, convergence_time = 0; k < 1024 && convergence_time < 4; k++) {
+                for (int k = 1, convergence_time = 0; k < 1280 && convergence_time < 4; k++) {
                     Complex dc = u / (2 * k + 1);
                     c += dc;
 
