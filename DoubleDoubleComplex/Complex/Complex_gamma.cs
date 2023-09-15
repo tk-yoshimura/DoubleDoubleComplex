@@ -5,7 +5,7 @@ namespace DoubleDoubleComplex {
 
     public partial class Complex {
         public static Complex Gamma(Complex z) {
-            if (!ddouble.IsFinite(z.R) || ddouble.Abs(z.I) <= ddouble.Abs(z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
                 return ddouble.Gamma(z.R);
             }
 
@@ -66,29 +66,28 @@ namespace DoubleDoubleComplex {
             }
         }
 
-    }
+        internal static partial class Consts {
+            public static class Gamma {
+                public const double StirlingConvergenceNorm = 230.5d;
 
-    internal static partial class Consts {
-        public static class Gamma {
-            public const double StirlingConvergenceNorm = 230.5d;
-
-            public static readonly ReadOnlyCollection<ddouble> StirlingTable = new(new ddouble[] {
-                (+1, -4, 0xAAAAAAAAAAAAAAAAuL, 0xAAAAAAAAAAAAAAAAuL),
-                (-1, -9, 0xB60B60B60B60B60BuL, 0x60B60B60B60B60B6uL),
-                (+1, -11, 0xD00D00D00D00D00DuL, 0x00D00D00D00D00D0uL),
-                (-1, -11, 0x9C09C09C09C09C09uL, 0xC09C09C09C09C09CuL),
-                (+1, -11, 0xDCA8F158C7F91AB8uL, 0x7539C0372A3C5631uL),
-                (-1, -10, 0xFB5586CCC9E3E40FuL, 0xB5586CCC9E3E40FBuL),
-                (+1, -8, 0xD20D20D20D20D20DuL, 0x20D20D20D20D20D2uL),
-                (-1, -6, 0xF21436587A9CBEE1uL, 0x032547698BADCFF2uL),
-                (+1, -3, 0xB7F4B1C0F033FFD0uL, 0xC3B7F4B1C0F033FFuL),
-                (-1, 0, 0xB23B3808C0F9CF6DuL, 0xEDCE7312CC3EA607uL),
-                (+1, 3, 0xD672219167002D3AuL, 0x7A9C886459C00B4EuL),
-                (-1, 7, 0x9CD9292E6660D55BuL, 0x3F712EB9E07CA39DuL),
-                (+1, 11, 0x8911A740DA740DA7uL, 0x40DA740DA740DA74uL),
-                (-1, 15, 0x8D0CC570E255BF59uL, 0xFF6EEC24B48FF1B3uL),
-                (+1, 19, 0xA8D1044D3708D1C2uL, 0x19EE4FDC4469CCAEuL),
-            });
+                public static readonly ReadOnlyCollection<ddouble> StirlingTable = new(new ddouble[] {
+                    (+1, -4, 0xAAAAAAAAAAAAAAAAuL, 0xAAAAAAAAAAAAAAAAuL),
+                    (-1, -9, 0xB60B60B60B60B60BuL, 0x60B60B60B60B60B6uL),
+                    (+1, -11, 0xD00D00D00D00D00DuL, 0x00D00D00D00D00D0uL),
+                    (-1, -11, 0x9C09C09C09C09C09uL, 0xC09C09C09C09C09CuL),
+                    (+1, -11, 0xDCA8F158C7F91AB8uL, 0x7539C0372A3C5631uL),
+                    (-1, -10, 0xFB5586CCC9E3E40FuL, 0xB5586CCC9E3E40FBuL),
+                    (+1, -8, 0xD20D20D20D20D20DuL, 0x20D20D20D20D20D2uL),
+                    (-1, -6, 0xF21436587A9CBEE1uL, 0x032547698BADCFF2uL),
+                    (+1, -3, 0xB7F4B1C0F033FFD0uL, 0xC3B7F4B1C0F033FFuL),
+                    (-1, 0, 0xB23B3808C0F9CF6DuL, 0xEDCE7312CC3EA607uL),
+                    (+1, 3, 0xD672219167002D3AuL, 0x7A9C886459C00B4EuL),
+                    (-1, 7, 0x9CD9292E6660D55BuL, 0x3F712EB9E07CA39DuL),
+                    (+1, 11, 0x8911A740DA740DA7uL, 0x40DA740DA740DA74uL),
+                    (-1, 15, 0x8D0CC570E255BF59uL, 0xFF6EEC24B48FF1B3uL),
+                    (+1, 19, 0xA8D1044D3708D1C2uL, 0x19EE4FDC4469CCAEuL),
+                });
+            }
         }
     }
 }
