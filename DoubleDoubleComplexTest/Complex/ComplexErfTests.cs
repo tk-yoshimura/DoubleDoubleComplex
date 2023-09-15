@@ -1416,5 +1416,15 @@ namespace DoubleDoubleComplexTests {
                 Assert.IsTrue(c.Magnitude < 8e-10);
             }
         }
+
+        [TestMethod()]
+        public void NegateTest() {
+            Assert.AreEqual(-Complex.Erf((1, 2)), Complex.Erf((-1, -2)));
+            Assert.AreEqual(-Complex.Erf((1, -2)), Complex.Erf((-1, 2)));
+            Assert.AreEqual(-Complex.Erf((-1, 2)), Complex.Erf((1, -2)));
+
+            Assert.AreEqual(-Complex.Erf((1, 0)), Complex.Erf((-1, 0)));
+            Assert.AreEqual(-Complex.Erf((0, 1)), Complex.Erf((0, -1)));
+        }
     }
 }
