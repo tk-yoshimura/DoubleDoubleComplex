@@ -8,12 +8,12 @@ namespace DoubleDoubleComplexTests {
     public class ComplexParseTests {
         [TestMethod()]
         public void NormalTest() {
-            foreach ((ddouble v, string s) r in new[] { 
-                (0, ""), (1, "1"), (-1, "-1"), (+1, "+1"), 
+            foreach ((ddouble v, string s) r in new[] {
+                (0, ""), (1, "1"), (-1, "-1"), (+1, "+1"),
                 (+0.25, "+0.25"), (-0.25, "-0.25"), (+0.125, "+1.25e-1"), (125, "+1.25e+2"), (125, "+1.25e2") }) {
 
-                foreach ((ddouble v, string s) i in new[] { 
-                    (0, ""), (2, "2i"), (-2, "-2i"), (+2, "+2i"), 
+                foreach ((ddouble v, string s) i in new[] {
+                    (0, ""), (2, "2i"), (-2, "-2i"), (+2, "+2i"),
                     (+0.25, "+0.25i"), (-0.25, "-0.25i"), (+0.125, "+1.25e-1i"), (125, "+1.25e+2i"), (-125, "-1.25e2i") }) {
                     if (r.s != "" && i.s == "2i") {
                         continue;

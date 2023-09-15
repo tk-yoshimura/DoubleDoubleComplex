@@ -1353,7 +1353,7 @@ namespace DoubleDoubleComplexTests {
             };
 
             foreach ((ddouble r, Complex[] expecteds) in new[] {
-                    (1d / 64, expected_rrcp64), (1d / 16, expected_rrcp16), (1d / 4, expected_rrcp4), 
+                    (1d / 64, expected_rrcp64), (1d / 16, expected_rrcp16), (1d / 4, expected_rrcp4),
                     (1d / 2, expected_rrcp2), (1d, expected_r1), (2d, expected_r2),
                     (4d, expected_r4), (16d, expected_r16) }) {
 
@@ -1374,7 +1374,7 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach ((ddouble i, Complex[] expecteds) in new[] {
-                    (1d / 64, expected_ircp64), (1d / 16, expected_ircp16), (1d / 4, expected_ircp4), 
+                    (1d / 64, expected_ircp64), (1d / 16, expected_ircp16), (1d / 4, expected_ircp4),
                     (1d / 2, expected_ircp2), (1d, expected_i1), (2d, expected_i2),
                     (4d, expected_i4), (16d, expected_i16), (26.5d, expected_i26p5) }) {
 
@@ -1393,7 +1393,7 @@ namespace DoubleDoubleComplexTests {
                     if (i < 26.5) {
                         Assert.IsTrue(err < 1e-28, $"\n{expected}\n{actual}");
                     }
-                    else { 
+                    else {
                         Assert.IsTrue(err < 1e-27, $"\n{expected}\n{actual}");
                     }
                 }
