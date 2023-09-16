@@ -14,9 +14,15 @@
     <PackageReference Include="TYoshimura.DoubleDouble" Version="2.9.7" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
     <Reference Include="DoubleDoubleComplex">
       <HintPath>..\DoubleDoubleComplex\bin\Debug\net7.0\DoubleDoubleComplex.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Release'">
+    <Reference Include="DoubleDoubleComplex">
+      <HintPath>..\DoubleDoubleComplex\bin\Release\net7.0\DoubleDoubleComplex.dll</HintPath>
     </Reference>
   </ItemGroup>
 
