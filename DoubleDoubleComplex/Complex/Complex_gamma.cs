@@ -74,7 +74,7 @@ namespace DoubleDoubleComplex {
             if (!ddouble.IsFinite(z.I)) {
                 return NaN;
             }
-                        
+
             static Complex pv(Complex z) {
                 return (z.R, z.I % ddouble.Ldexp(ddouble.PI, 1));
             };

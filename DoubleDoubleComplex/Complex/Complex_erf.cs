@@ -115,7 +115,7 @@ namespace DoubleDoubleComplex {
             }
 
             Complex w = z * z;
-            
+
             if (!ddouble.IsFinite(z.I) || z.R < Consts.Erf.MinCFracR) {
                 return Erfc(z) * Exp(w);
             }

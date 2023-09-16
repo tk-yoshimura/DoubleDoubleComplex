@@ -98,7 +98,7 @@ namespace DoubleDoubleComplex {
                     return $"{R.ToString(format)}";
                 }
 
-                return (I > 0d) 
+                return (I > 0d)
                     ? $"{R.ToString(format)}+{I.ToString(format)}{ImaginaryUnit}"
                     : $"{R.ToString(format)}{I.ToString(format)}{ImaginaryUnit}";
             }
