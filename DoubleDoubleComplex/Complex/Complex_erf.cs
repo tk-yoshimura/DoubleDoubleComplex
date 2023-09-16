@@ -110,6 +110,10 @@ namespace DoubleDoubleComplex {
                 return ddouble.Erfcx(z.R);
             }
 
+            if (ddouble.IsNegative(z.I)) {
+                return Conjugate(Erfcx(Conjugate(z)));
+            }
+
             Complex w = z * z;
             
             if (!ddouble.IsFinite(z.I) || z.R < Consts.Erf.MinCFracR) {
