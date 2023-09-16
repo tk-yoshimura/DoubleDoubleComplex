@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TYoshimura.DoubleDouble" Version="2.9.6" />
+    <PackageReference Include="TYoshimura.DoubleDouble" Version="2.9.7" />
   </ItemGroup>
 
 </Project>

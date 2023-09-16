@@ -65,6 +65,76 @@ namespace DoubleDoubleComplex {
             }
         }
 
+        public static Complex Erfc(Complex z) {
+            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+                return ddouble.Erfc(z.R);
+            }
+            if (double.Abs((double)z.R) <= double.Abs((double)z.I) * 5e-31) {
+                return (1, -ddouble.Erfi(z.I));
+            }
+            if (!ddouble.IsFinite(z.I)) {
+                return NaN;
+            }
+
+            if (ddouble.IsNegative(z.I)) {
+                return Conjugate(Erfc(Conjugate(z)));
+            }
+
+            if (z.R < Consts.Erf.MinCFracR) {
+                return One - Erf(z);
+            }
+            else {
+                int n = Consts.Erf.CFracIter(z) + 4;
+
+                Complex f = One, w = z * z;
+
+                for (int k = 4 * n - 3; k >= 1; k -= 4) {
+                    Complex c0 = (k + 2) * f;
+                    Complex c1 = w * ((k + 3) + f * 2d);
+                    Complex d0 = (k + 1) * (k + 3) + (4 * k + 6) * f;
+                    Complex d1 = c1 * 2d;
+
+                    f = w + k * (c0 + c1) / (d0 + d1);
+                }
+
+                Complex c = z * Exp(-w) * Consts.Erf.RcpSqrtPI;
+
+                Complex y = c / f;
+
+                return y;
+            }
+        }
+
+        public static Complex Erfcx(Complex z) {
+            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+                return ddouble.Erfcx(z.R);
+            }
+
+            Complex w = z * z;
+            
+            if (!ddouble.IsFinite(z.I) || z.R < Consts.Erf.MinCFracR) {
+                return Erfc(z) * Exp(w);
+            }
+            else {
+                int n = Consts.Erf.CFracIter(z) + 4;
+
+                Complex f = One;
+
+                for (int k = 4 * n - 3; k >= 1; k -= 4) {
+                    Complex c0 = (k + 2) * f;
+                    Complex c1 = w * ((k + 3) + f * 2d);
+                    Complex d0 = (k + 1) * (k + 3) + (4 * k + 6) * f;
+                    Complex d1 = c1 * 2d;
+
+                    f = w + k * (c0 + c1) / (d0 + d1);
+                }
+
+                Complex y = z * Consts.Erf.RcpSqrtPI / f;
+
+                return y;
+            }
+        }
+
         internal static partial class Consts {
             public static class Erf {
                 public const double MinCFracR = 2d;

@@ -19,7 +19,7 @@ namespace DoubleDoubleComplexTests {
         }
 
         [TestMethod()]
-        public void ExpectedTest() {
+        public void GammaTest() {
             Complex[] expected_r0p50 = new Complex[]{
                 "-3.463115147151715025412214447064451950172e-22+1.323470436840146790232909921623089248539e-22i",
                 "-1.670481401807855550340320977325656576886e-22-7.957905205711564135492470774221334794293e-22i",
