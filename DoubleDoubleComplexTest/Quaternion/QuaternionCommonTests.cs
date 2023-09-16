@@ -57,6 +57,22 @@ namespace DoubleDoubleComplexTests {
             Quaternion c8 = (-2, 0, 0, 0);
             Quaternion c9 = (-2, -3, -1, -1);
 
+            Quaternion c10 = (ddouble.Rcp(3), ddouble.Rcp(6), 1 + ddouble.Rcp(3), 1 + ddouble.Rcp(6));
+            Quaternion c11 = (0, ddouble.Rcp(6), 1 + ddouble.Rcp(3), 1 + ddouble.Rcp(6));
+            Quaternion c12 = (0, 0, 1 + ddouble.Rcp(3), 1 + ddouble.Rcp(6));
+            Quaternion c13 = (0, 0, 0, 1 + ddouble.Rcp(6));
+            Quaternion c14 = (0, 0, 0, 0);
+            Quaternion c15 = (ddouble.Rcp(3), 0, 1 + ddouble.Rcp(3), 1 + ddouble.Rcp(6));
+            Quaternion c16 = (ddouble.Rcp(3), 0, 0, 1 + ddouble.Rcp(6));
+            Quaternion c17 = (ddouble.Rcp(3), 0, 0, 0);
+            Quaternion c18 = (ddouble.Rcp(3), ddouble.Rcp(6), 0, 1 + ddouble.Rcp(6));
+            Quaternion c19 = (ddouble.Rcp(3), ddouble.Rcp(6), 0, 0);
+            Quaternion c20 = (ddouble.Rcp(3), ddouble.Rcp(6), 1 + ddouble.Rcp(3), 0);
+            Quaternion c21 = (-ddouble.Rcp(3), ddouble.Rcp(6), 1 + ddouble.Rcp(3), 1 + ddouble.Rcp(6));
+            Quaternion c22 = (ddouble.Rcp(3), -ddouble.Rcp(6), 1 + ddouble.Rcp(3), 1 + ddouble.Rcp(6));
+            Quaternion c23 = (ddouble.Rcp(3), ddouble.Rcp(6), -1 - ddouble.Rcp(3), 1 + ddouble.Rcp(6));
+            Quaternion c24 = (ddouble.Rcp(3), ddouble.Rcp(6), 1 + ddouble.Rcp(3), -1 - ddouble.Rcp(6));
+
             Assert.AreEqual("2+3i+1k", c1.ToString());
             Assert.AreEqual("2+1j", c2.ToString());
             Assert.AreEqual("2-3i", c3.ToString());
@@ -71,6 +87,22 @@ namespace DoubleDoubleComplexTests {
 
             Assert.AreEqual("0", Quaternion.Zero.ToString());
             Assert.AreEqual(double.NaN.ToString(), Quaternion.NaN.ToString());
+
+            Assert.AreEqual("3.333e-1+1.667e-1i+1.333e0j+1.167e0k", $"{c10:e3}");
+            Assert.AreEqual("1.667e-1i+1.333e0j+1.167e0k", $"{c11:e3}");
+            Assert.AreEqual("1.333e0j+1.167e0k", $"{c12:e3}");
+            Assert.AreEqual("1.167e0k", $"{c13:e3}");
+            Assert.AreEqual("0", $"{c14:e3}");
+            Assert.AreEqual("3.333e-1+1.333e0j+1.167e0k", $"{c15:e3}");
+            Assert.AreEqual("3.333e-1+1.167e0k", $"{c16:e3}");
+            Assert.AreEqual("3.333e-1", $"{c17:e3}");
+            Assert.AreEqual("3.333e-1+1.667e-1i+1.167e0k", $"{c18:e3}");
+            Assert.AreEqual("3.333e-1+1.667e-1i", $"{c19:e3}");
+            Assert.AreEqual("3.333e-1+1.667e-1i+1.333e0j", $"{c20:e3}");
+            Assert.AreEqual("-3.333e-1+1.667e-1i+1.333e0j+1.167e0k", $"{c21:e3}");
+            Assert.AreEqual("3.333e-1-1.667e-1i+1.333e0j+1.167e0k", $"{c22:e3}");
+            Assert.AreEqual("3.333e-1+1.667e-1i-1.333e0j+1.167e0k", $"{c23:e3}");
+            Assert.AreEqual("3.333e-1+1.667e-1i+1.333e0j-1.167e0k", $"{c24:e3}");
         }
     }
 }

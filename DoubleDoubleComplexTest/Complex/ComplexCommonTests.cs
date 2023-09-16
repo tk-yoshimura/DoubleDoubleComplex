@@ -48,6 +48,14 @@ namespace DoubleDoubleComplexTests {
             Complex c8 = (-2, 0);
             Complex c9 = (-2, -3);
 
+            Complex c10 = (ddouble.Rcp(3), ddouble.Rcp(6));
+            Complex c11 = (0, ddouble.Rcp(6));
+            Complex c12 = (ddouble.Rcp(3), 0);
+            Complex c13 = (0, 0);
+
+            Complex c14 = (ddouble.Rcp(3), -ddouble.Rcp(6));
+            Complex c15 = (-ddouble.Rcp(3), ddouble.Rcp(6));
+
             Assert.AreEqual("2+3i", c1.ToString());
             Assert.AreEqual("2", c2.ToString());
             Assert.AreEqual("2-3i", c3.ToString());
@@ -62,6 +70,14 @@ namespace DoubleDoubleComplexTests {
 
             Assert.AreEqual("0", Complex.Zero.ToString());
             Assert.AreEqual(double.NaN.ToString(), Complex.NaN.ToString());
+
+            Assert.AreEqual("3.333e-1+1.667e-1i", $"{c10:e3}");
+            Assert.AreEqual("1.667e-1i", $"{c11:e3}");
+            Assert.AreEqual("3.333e-1", $"{c12:e3}");
+            Assert.AreEqual("0", $"{c13:e3}");
+
+            Assert.AreEqual("3.333e-1-1.667e-1i", $"{c14:e3}");
+            Assert.AreEqual("-3.333e-1+1.667e-1i", $"{c15:e3}");
         }
     }
 }

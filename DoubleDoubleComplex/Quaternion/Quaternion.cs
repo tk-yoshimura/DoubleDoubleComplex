@@ -1,10 +1,13 @@
 ﻿using DoubleDouble;
+using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace DoubleDoubleComplex {
 
     [DebuggerDisplay("{ToString(),nq}")]
-    public partial class Quaternion {
+    public partial class Quaternion : IFormattable {
         public readonly ddouble R, I, J, K;
 
         public ddouble Norm => R * R + I * I + J * J + K * K;
@@ -93,16 +96,61 @@ namespace DoubleDoubleComplex {
                 return double.NaN.ToString();
             }
 
-            string str = string.Empty;
+            StringBuilder str = new();
 
-            str += R == 0 ? string.Empty : $"{R}";
-            str += I == 0 ? string.Empty : I > 0 ? $"+{I}i" : $"{I}i";
-            str += J == 0 ? string.Empty : J > 0 ? $"+{J}j" : $"{J}j";
-            str += K == 0 ? string.Empty : K > 0 ? $"+{K}k" : $"{K}k";
+            if (R != 0d) {
+                str.Append($"{R}");
+            }
+            if (I != 0d) {
+                str.Append(I > 0d ? $"+{I}i" : $"{I}i");
+            }
+            if (J != 0d) {
+                str.Append(J > 0d ? $"+{J}j" : $"{J}j");
+            }
+            if (K != 0d) {
+                str.Append(K > 0d ? $"+{K}k" : $"{K}k");
+            }
 
-            str = str.TrimStart('+');
+            if (str.Length > 0 && str[0] == '+') {
+                str.Remove(0, 1);
+            }
 
-            return (str.Length > 0) ? str : "0";
+            return (str.Length > 0) ? str.ToString() : "0";
+        }
+
+        public string ToString([AllowNull] string format, [AllowNull] IFormatProvider formatProvider) {
+            if (string.IsNullOrWhiteSpace(format)) {
+                return ToString();
+            }
+
+            if (IsNaN(this)) {
+                return double.NaN.ToString();
+            }
+
+            StringBuilder str = new();
+
+            if (R != 0d) {
+                str.Append($"{R.ToString(format)}");
+            }
+            if (I != 0d) {
+                str.Append(I > 0d ? $"+{I.ToString(format)}i" : $"{I.ToString(format)}i");
+            }
+            if (J != 0d) {
+                str.Append(J > 0d ? $"+{J.ToString(format)}j" : $"{J.ToString(format)}j");
+            }
+            if (K != 0d) {
+                str.Append(K > 0d ? $"+{K.ToString(format)}k" : $"{K.ToString(format)}k");
+            }
+
+            if (str.Length > 0 && str[0] == '+') {
+                str.Remove(0, 1);
+            }
+
+            return (str.Length > 0) ? str.ToString() : "0";
+        }
+
+        public string ToString(string format) {
+            return ToString(format, null);
         }
     }
 }

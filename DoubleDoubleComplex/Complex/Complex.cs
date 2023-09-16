@@ -1,10 +1,12 @@
 ﻿using DoubleDouble;
+using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DoubleDoubleComplex {
 
     [DebuggerDisplay("{ToString(),nq}")]
-    public partial class Complex {
+    public partial class Complex : IFormattable {
         public const char ImaginaryUnit = 'i';
 
         public readonly ddouble R, I;
@@ -80,6 +82,33 @@ namespace DoubleDoubleComplex {
             else {
                 return (I != 0d) ? $"{I}{ImaginaryUnit}" : "0";
             }
+        }
+
+        public string ToString([AllowNull] string format, [AllowNull] IFormatProvider formatProvider) {
+            if (string.IsNullOrWhiteSpace(format)) {
+                return ToString();
+            }
+
+            if (IsNaN(this)) {
+                return double.NaN.ToString();
+            }
+
+            if (R != 0d) {
+                if (I == 0d) {
+                    return $"{R.ToString(format)}";
+                }
+
+                return (I > 0d) 
+                    ? $"{R.ToString(format)}+{I.ToString(format)}{ImaginaryUnit}"
+                    : $"{R.ToString(format)}{I.ToString(format)}{ImaginaryUnit}";
+            }
+            else {
+                return (I != 0d) ? $"{I.ToString(format)}{ImaginaryUnit}" : "0";
+            }
+        }
+
+        public string ToString(string format) {
+            return ToString(format, null);
         }
     }
 }
