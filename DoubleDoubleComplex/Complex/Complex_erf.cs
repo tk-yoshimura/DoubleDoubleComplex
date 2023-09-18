@@ -24,7 +24,7 @@ namespace DoubleDoubleComplex {
 
             Complex w = z * z;
 
-            if (z.R < Consts.Erf.MinCFracR) {
+            if (!Consts.Erf.UseCFrac(z)) {
                 Complex c = One, u = -w;
                 for (int k = 1, convergence_time = 0; k < 1280 && convergence_time < 4; k++) {
                     Complex dc = u / (2 * k + 1);
@@ -80,11 +80,11 @@ namespace DoubleDoubleComplex {
                 return Conjugate(Erfc(Conjugate(z)));
             }
 
-            if (z.R < Consts.Erf.MinCFracR) {
+            if (ddouble.IsNegative(z.R) || !Consts.Erf.UseCFrac(z)) {
                 return One - Erf(z);
             }
             else {
-                int n = Consts.Erf.CFracIter(z) + 4;
+                int n = Consts.Erf.CFracIter(z);
 
                 Complex f = One, w = z * z;
 
@@ -116,11 +116,11 @@ namespace DoubleDoubleComplex {
 
             Complex w = z * z;
 
-            if (!ddouble.IsFinite(z.I) || z.R < Consts.Erf.MinCFracR) {
-                return Erfc(z) * Exp(w);
+            if (!ddouble.IsFinite(z.I) || ddouble.IsNegative(z.R) || !Consts.Erf.UseCFrac(z)) {
+                return (One - Erf(z)) * Exp(w);
             }
             else {
-                int n = Consts.Erf.CFracIter(z) + 4;
+                int n = Consts.Erf.CFracIter(z);
 
                 Complex f = One;
 
@@ -141,38 +141,53 @@ namespace DoubleDoubleComplex {
 
         internal static partial class Consts {
             public static class Erf {
-                public const double MinCFracR = 2d;
                 public static readonly ddouble RcpSqrtPI = 1d / ddouble.Sqrt(ddouble.PI);
 
                 const int min_c_frac_iter = 8;
                 static readonly int[,] c_frac_iter_table =
-                    { {38, 25, 17, 12,  9,  8},
-                      {39, 25, 17, 13, 10,  8},
-                      {39, 25, 18, 13, 10,  8},
-                      {36, 25, 18, 14, 11,  8},
-                      {30, 21, 17, 14, 11,  9},
-                      {24, 17, 14, 12, 11, 10},
-                      {17, 14, 12, 10,  9,  9},
-                      {12, 10,  9,  9,  8,  8},
-                      { 9,  8,  8,  8,  8,  8} };
+                    { {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40},
+                      {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 25, 11,  8},
+                      {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 28, 19, 12,  9,  8},
+                      {40, 40, 40, 40, 40, 40, 40, 40, 40, 37, 31, 26, 21, 16, 13, 10,  8,  8},
+                      {39, 39, 38, 37, 36, 34, 32, 29, 26, 23, 20, 17, 15, 12, 10,  9,  8,  8},
+                      {27, 27, 26, 26, 25, 24, 22, 21, 19, 17, 15, 14, 12, 10,  9,  8,  8,  8},
+                      {20, 20, 20, 19, 19, 18, 17, 16, 15, 14, 12, 11, 10,  9,  8,  8,  8,  8},
+                      {16, 16, 16, 16, 15, 15, 14, 13, 12, 12, 11, 10,  9,  8,  8,  8,  8,  8},
+                      {13, 13, 13, 13, 13, 12, 12, 11, 11, 10, 10,  9,  8,  8,  8,  8,  8,  8},
+                      {12, 12, 11, 11, 11, 11, 10, 10, 10,  9,  9,  8,  8,  8,  8,  8,  8,  8},
+                      {10, 10, 10, 10, 10, 10,  9,  9,  9,  8,  8,  8,  8,  8,  8,  8,  8,  8},
+                      { 9,  9,  9,  9,  9,  9,  9,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8} };
 
                 public static int CFracIter(Complex z) {
 #if DEBUG
-                    if (!(z.R >= MinCFracR && ddouble.IsPositive(z.I))) {
+                    if (!(ddouble.IsPositive(z.R) && ddouble.IsPositive(z.I))) {
                         throw new ArgumentOutOfRangeException(nameof(z));
                     }
 #endif
 
-                    int r_index = (int)double.Floor(((double)z.R - MinCFracR) * 2);
-                    int i_index = (int)double.Floor((double)z.I);
+                    int r_index = (int)double.Floor((double)z.R * 2);
+                    int i_index = (int)double.Floor((double)z.I * 2);
 
-                    if (r_index >= c_frac_iter_table.GetLength(1) || i_index >= c_frac_iter_table.GetLength(0)) {
+                    if (r_index >= c_frac_iter_table.GetLength(0) || i_index >= c_frac_iter_table.GetLength(1)) {
                         return min_c_frac_iter;
                     }
 
-                    int n = c_frac_iter_table[i_index, r_index];
+                    int n = c_frac_iter_table[r_index, i_index];
 
                     return n;
+                }
+
+                public static bool UseCFrac(Complex z) {
+#if DEBUG
+                    if (!(ddouble.IsPositive(z.R) && ddouble.IsPositive(z.I))) {
+                        throw new ArgumentOutOfRangeException(nameof(z));
+                    }
+#endif
+
+                    double zid = (double)z.I;
+                    double zr_thr = 2d - 7d / 256 * zid * zid;
+
+                    return zr_thr <= z.R;
                 }
             }
         }
