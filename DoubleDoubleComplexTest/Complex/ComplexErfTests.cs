@@ -1385,12 +1385,7 @@ namespace DoubleDoubleComplexTests {
                     Console.WriteLine(expected);
                     Console.WriteLine(actual);
 
-                    if (i < 26.5) {
-                        Assert.IsTrue(err < 1e-28, $"\n{expected}\n{actual}");
-                    }
-                    else {
-                        Assert.IsTrue(err < 1e-27, $"\n{expected}\n{actual}");
-                    }
+                    Assert.IsTrue(err < 1e-28, $"\n{expected}\n{actual}");
                 }
             }
         }
