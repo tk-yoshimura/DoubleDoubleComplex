@@ -24,41 +24,17 @@ namespace DoubleDoubleComplex {
 
             Complex w = z * z;
 
-            if (!Consts.Erf.UseCFrac(z)) {
-                Complex c = One, u = -w;
+            if (!ErfUtil.UseCFrac(z)) {
+                Complex c = ErfUtil.ErfNearZero(w);
 
-                for (int k = 1, convergence_time = 0; k <= 196 && convergence_time < 4; k++) {
-                    Complex dc = u / (2 * k + 1);
-                    c += dc;
-
-                    u *= w / -(k + 1);
-
-                    if ((double.Abs((double)dc.R) <= double.Abs((double)c.R) * 1e-30) &&
-                        (double.Abs((double)dc.I) <= double.Abs((double)c.I) * 1e-30)) {
-
-                        convergence_time++;
-                    }
-                }
-
-                Complex y = c * z * (2 * Consts.Erf.RcpSqrtPI);
+                Complex y = c * z * (2 * ErfUtil.RcpSqrtPI);
 
                 return y;
             }
             else {
-                int n = Consts.Erf.CFracIter(z);
+                Complex c = z * Exp(-w) * ErfUtil.RcpSqrtPI;
 
-                Complex f = One;
-
-                for (int k = 4 * n - 3; k >= 1; k -= 4) {
-                    Complex c0 = (k + 2) * f;
-                    Complex c1 = w * ((k + 3) + f * 2d);
-                    Complex d0 = (k + 1) * (k + 3) + (4 * k + 6) * f;
-                    Complex d1 = c1 * 2d;
-
-                    f = w + k * (c0 + c1) / (d0 + d1);
-                }
-
-                Complex c = z * Exp(-w) * Consts.Erf.RcpSqrtPI;
+                Complex f = ErfUtil.ErfcxCFrac(z, w);
 
                 Complex y = One - c / f;
 
@@ -81,24 +57,14 @@ namespace DoubleDoubleComplex {
                 return Conjugate(Erfc(Conjugate(z)));
             }
 
-            if (ddouble.IsNegative(z.R) || !Consts.Erf.UseCFrac(z)) {
+            if (ddouble.IsNegative(z.R) || !ErfUtil.UseCFrac(z)) {
                 return One - Erf(z);
             }
             else {
-                int n = Consts.Erf.CFracIter(z);
+                Complex w = z * z;
+                Complex c = z * Exp(-w) * ErfUtil.RcpSqrtPI;
 
-                Complex f = One, w = z * z;
-
-                for (int k = 4 * n - 3; k >= 1; k -= 4) {
-                    Complex c0 = (k + 2) * f;
-                    Complex c1 = w * ((k + 3) + f * 2d);
-                    Complex d0 = (k + 1) * (k + 3) + (4 * k + 6) * f;
-                    Complex d1 = c1 * 2d;
-
-                    f = w + k * (c0 + c1) / (d0 + d1);
-                }
-
-                Complex c = z * Exp(-w) * Consts.Erf.RcpSqrtPI;
+                Complex f = ErfUtil.ErfcxCFrac(z, w);
 
                 Complex y = c / f;
 
@@ -117,36 +83,25 @@ namespace DoubleDoubleComplex {
 
             Complex w = z * z;
 
-            if (!ddouble.IsFinite(z.I) || ddouble.IsNegative(z.R) || !Consts.Erf.UseCFrac(z)) {
+            if (!ddouble.IsFinite(z.I) || ddouble.IsNegative(z.R) || !ErfUtil.UseCFrac(z)) {
                 return (One - Erf(z)) * Exp(w);
             }
             else {
-                int n = Consts.Erf.CFracIter(z);
+                Complex f = ErfUtil.ErfcxCFrac(z, w);
 
-                Complex f = One;
-
-                for (int k = 4 * n - 3; k >= 1; k -= 4) {
-                    Complex c0 = (k + 2) * f;
-                    Complex c1 = w * ((k + 3) + f * 2d);
-                    Complex d0 = (k + 1) * (k + 3) + (4 * k + 6) * f;
-                    Complex d1 = c1 * 2d;
-
-                    f = w + k * (c0 + c1) / (d0 + d1);
-                }
-
-                Complex y = z * Consts.Erf.RcpSqrtPI / f;
+                Complex y = z * ErfUtil.RcpSqrtPI / f;
 
                 return y;
             }
         }
 
-        internal static partial class Consts {
-            public static class Erf {
-                public static readonly ddouble RcpSqrtPI = 1d / ddouble.Sqrt(ddouble.PI);
 
-                const int min_c_frac_iter = 8;
-                static readonly int[,] c_frac_iter_table =
-                    { {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40},
+        internal static class ErfUtil {
+            public static readonly ddouble RcpSqrtPI = 1d / ddouble.Sqrt(ddouble.PI);
+
+            const int min_c_frac_iter = 8;
+            static readonly int[,] c_frac_iter_table =
+                { {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40},
                       {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 25, 11,  8},
                       {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 28, 19, 12,  9,  8},
                       {40, 40, 40, 40, 40, 40, 40, 40, 40, 37, 31, 26, 21, 16, 13, 10,  8,  8},
@@ -159,37 +114,73 @@ namespace DoubleDoubleComplex {
                       {10, 10, 10, 10, 10, 10,  9,  9,  9,  8,  8,  8,  8,  8,  8,  8,  8,  8},
                       { 9,  9,  9,  9,  9,  9,  9,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8} };
 
-                public static int CFracIter(Complex z) {
+            static int CFracIter(Complex z) {
 #if DEBUG
-                    if (!(ddouble.IsPositive(z.R) && ddouble.IsPositive(z.I))) {
-                        throw new ArgumentOutOfRangeException(nameof(z));
-                    }
+                if (!(ddouble.IsPositive(z.R) && ddouble.IsPositive(z.I))) {
+                    throw new ArgumentOutOfRangeException(nameof(z));
+                }
 #endif
 
-                    int r_index = (int)double.Floor((double)z.R * 2);
-                    int i_index = (int)double.Floor((double)z.I * 2);
+                int r_index = (int)double.Floor((double)z.R * 2);
+                int i_index = (int)double.Floor((double)z.I * 2);
 
-                    if (r_index >= c_frac_iter_table.GetLength(0) || i_index >= c_frac_iter_table.GetLength(1)) {
-                        return min_c_frac_iter;
-                    }
-
-                    int n = c_frac_iter_table[r_index, i_index];
-
-                    return n;
+                if (r_index >= c_frac_iter_table.GetLength(0) || i_index >= c_frac_iter_table.GetLength(1)) {
+                    return min_c_frac_iter;
                 }
 
-                public static bool UseCFrac(Complex z) {
+                int n = c_frac_iter_table[r_index, i_index];
+
+                return n;
+            }
+
+            public static bool UseCFrac(Complex z) {
 #if DEBUG
-                    if (!(ddouble.IsPositive(z.R) && ddouble.IsPositive(z.I))) {
-                        throw new ArgumentOutOfRangeException(nameof(z));
-                    }
+                if (!(ddouble.IsPositive(z.R) && ddouble.IsPositive(z.I))) {
+                    throw new ArgumentOutOfRangeException(nameof(z));
+                }
 #endif
 
-                    double zid = (double)z.I;
-                    double zr_thr = 2d - 7d / 256 * zid * zid;
+                double zid = (double)z.I;
+                double zr_thr = 2d - 7d / 256 * zid * zid;
 
-                    return zr_thr <= z.R;
+                return zr_thr <= z.R;
+            }
+
+
+            public static Complex ErfcxCFrac(Complex z, Complex w) {
+                int n = CFracIter(z);
+
+                Complex f = One;
+
+                for (int k = 4 * n - 3; k >= 1; k -= 4) {
+                    Complex c0 = (k + 2) * f;
+                    Complex c1 = w * ((k + 3) + f * 2d);
+                    Complex d0 = (k + 1) * (k + 3) + (4 * k + 6) * f;
+                    Complex d1 = c1 * 2d;
+
+                    f = w + k * (c0 + c1) / (d0 + d1);
                 }
+
+                return f;
+            }
+
+            public static Complex ErfNearZero(Complex w) {
+                Complex c = One, u = -w;
+
+                for (int k = 1, convergence_time = 0; k <= 196 && convergence_time < 4; k++) {
+                    Complex dc = u / (2 * k + 1);
+                    c += dc;
+
+                    u *= w / -(k + 1);
+
+                    if ((double.Abs((double)dc.R) <= double.Abs((double)c.R) * 1e-30) &&
+                        (double.Abs((double)dc.I) <= double.Abs((double)c.I) * 1e-30)) {
+
+                        convergence_time++;
+                    }
+                }
+
+                return c;
             }
         }
     }
