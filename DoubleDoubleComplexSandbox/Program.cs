@@ -5,40 +5,51 @@ namespace DoubleDoubleComplexSandbox {
     internal class Program {
         static void Main() {
             const int max_n = 1024;
-            using StreamWriter sw = new("../../erf_cfrac_result.csv");
+            using StreamWriter sw = new("../../erf_cfrac_result_4.csv");
 
-            for (ddouble r = 0; r <= 4; r += 1d / 256) {
-                sw.Write($",{r}");
+            sw.Write("[r] n-i");
+            for (ddouble i = 0; i <= 32; i += 1d / 64) {
+                sw.Write($",{i}");
             }
             sw.Write("\n");
 
-            for (ddouble i = 0; i <= 256; i += 0.125) {
-                sw.Write($"{i}");
+            for(int target_n = 4; target_n <= 64; target_n++){
+                sw.Write($"{target_n}");
 
-                for (ddouble r = 1d / 256; r <= 4; r += 1d / 256) {
-                    Complex z = (r, i);
+                for (ddouble i = 0; i <= 32; i += 1d / 64) {
+                    ddouble r = 0, dr = 16;
 
-                    Complex c_expected = ErfCFrac(z, max_n);
+                    while (dr >= double.ScaleB(1, -20)) {
+                        Complex z = (r + dr, i);
 
-                    if (!Complex.IsFinite(c_expected)) {
-                        sw.Write(",-1");
-                        continue;
-                    }
+                        Complex c_expected = ErfCFrac(z, max_n);
 
-                    for (int n = 2; n <= max_n; n++) {
-                        Complex c_actual = ErfCFrac(z, n);
+                        for (int n = 2; n <= target_n + 1; n++) {
+                            Complex c_actual = ErfCFrac(z, n);
 
-                        ddouble err = (c_expected - c_actual).Magnitude / c_expected.Magnitude;
+                            ddouble err = (c_expected - c_actual).Magnitude / c_expected.Magnitude;
 
-                        if (err < 1e-28) {
-                            sw.Write($",{(n < max_n ? n : -1)}");
-                            Console.WriteLine($"{r},{i},{(n < max_n ? n : -1)}");
-                            break;
+                            if (err < 1e-28 && n < target_n) {
+                                dr /= 2;
+                                break;
+                            }
+                            if (n >= target_n) {
+                                r += dr;
+                                break;
+                            }
                         }
                     }
 
+                    Console.WriteLine($"{r},{i},{target_n}");
+
+                    sw.Write($",{r}");
+
+                    if (r == 0d) {
+                        break;
+                    }
                 }
                 sw.Write("\n");
+
                 sw.Flush();
             }
 
@@ -63,6 +74,13 @@ namespace DoubleDoubleComplexSandbox {
             }
 
             return f;
+        }
+
+        static bool UseCFrac(Complex z) {
+            double zid = (double)z.I;
+            double zr_thr = 2d - 7d / 256 * zid * zid;
+
+            return zr_thr >= z.R;
         }
     }
 }
