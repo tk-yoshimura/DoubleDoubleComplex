@@ -27,7 +27,7 @@ namespace DoubleDoubleComplex {
             if (!Consts.Erf.UseCFrac(z)) {
                 Complex c = One, u = -w;
 
-                for (int k = 1, convergence_time = 0; k < 256 && convergence_time < 4; k++) {
+                for (int k = 1, convergence_time = 0; k <= 196 && convergence_time < 4; k++) {
                     Complex dc = u / (2 * k + 1);
                     c += dc;
 

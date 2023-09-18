@@ -1,44 +1,24 @@
 ﻿using DoubleDouble;
 using DoubleDoubleComplex;
+using System.Security.Cryptography;
 
 namespace DoubleDoubleComplexSandbox {
     internal class Program {
         static void Main() {
-            const int max_n = 1024;
-            using StreamWriter sw = new("../../erf_cfrac_result_5.csv");
+            using StreamWriter sw = new("../../erf_cfrac_result_6.csv");
 
-            sw.Write("[n] r-i");
-            for (ddouble i = 0; i <= 8.5; i += 0.5) {
-                sw.Write($",{i}");
-            }
-            sw.Write("\n");
-
-            for (ddouble r = 0; r <= 6; r += 0.5) {
-                sw.Write($"{r}");
-
-                for (ddouble i = 0; i <= 8.5; i += 0.5) {
-                    Complex z = (r, i);
-
-                    if (!UseCFrac(z)) { 
-                        sw.Write(", 40");
-                        continue;
-                    }
-
-                    Complex c_expected = ErfCFrac(z, max_n);
-
-                    for (int n = 2; n <= max_n; n++) {
-                        Complex c_actual = ErfCFrac(z, n);
-
-                        ddouble err = (c_expected - c_actual).Magnitude / c_expected.Magnitude;
-
-                        if (err < 1e-28) {
-                            Console.WriteLine($"{r},{i},{n}");
-                            sw.Write($", {int.Max(8, n),2}");
-                            break;
-                        }
-                    }
+            for (ddouble i = 0; i <= 8.75; i += 1d / 1024) {
+                ddouble r = 2 - 7d / 256 * i * i;
+                
+                if (r < 0) {
+                    break;
                 }
-                sw.Write("\n");
+
+                Complex z = (r, i);
+
+                int n = ErfNZ(z);
+
+                sw.WriteLine($"{r},{i},{n}");
 
                 sw.Flush();
             }
@@ -64,6 +44,28 @@ namespace DoubleDoubleComplexSandbox {
             }
 
             return f;
+        }
+
+        static int ErfNZ(Complex z) {
+            Complex w = z * z;
+            Complex c = Complex.One, u = -w;
+
+            int k = 1;
+
+            for (int convergence_time = 0; k < 256 && convergence_time < 4; k++) {
+                Complex dc = u / (2 * k + 1);
+                c += dc;
+
+                u *= w / -(k + 1);
+
+                if ((double.Abs((double)dc.R) <= double.Abs((double)c.R) * 1e-30) &&
+                    (double.Abs((double)dc.I) <= double.Abs((double)c.I) * 1e-30)) {
+
+                    convergence_time++;
+                }
+            }
+
+            return k;
         }
 
         static bool UseCFrac(Complex z) {
