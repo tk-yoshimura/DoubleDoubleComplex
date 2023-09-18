@@ -8,7 +8,7 @@ namespace DoubleDoubleComplexTests {
     public class ComplexErfTests {
         [TestMethod()]
         public void SandboxTest() {
-            Complex c = Complex.Erf((2, 6));
+            Complex c = Complex.Erfcx((0.7, 200));
 
             Console.WriteLine(c);
         }
