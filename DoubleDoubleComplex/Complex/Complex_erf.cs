@@ -143,6 +143,10 @@ namespace DoubleDoubleComplex {
                 }
 #endif
 
+                if (!(z.R < 6d && z.I < 9d)) {
+                    return min_c_frac_iter;
+                }
+
                 int r_index = (int)double.Floor((double)z.R * 2);
                 int i_index = (int)double.Floor((double)z.I * 2);
 

@@ -1,6 +1,5 @@
 ﻿using DoubleDouble;
 using DoubleDoubleComplex;
-using System.Security.Cryptography;
 
 namespace DoubleDoubleComplexSandbox {
     internal class Program {
@@ -9,7 +8,7 @@ namespace DoubleDoubleComplexSandbox {
 
             for (ddouble i = 0; i <= 8.75; i += 1d / 1024) {
                 ddouble r = 2 - 7d / 256 * i * i;
-                
+
                 if (r < 0) {
                     break;
                 }

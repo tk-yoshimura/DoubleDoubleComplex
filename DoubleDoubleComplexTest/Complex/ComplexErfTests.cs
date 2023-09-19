@@ -8,7 +8,7 @@ namespace DoubleDoubleComplexTests {
     public class ComplexErfTests {
         [TestMethod()]
         public void SandboxTest() {
-            Complex c = Complex.Erfcx(("1e-29", 20000));
+            Complex c = Complex.Erfcx("0.7071067811865475244008443621048+1.395461759171855799150700126785e9i");
 
             Console.WriteLine(c);
         }
@@ -2804,7 +2804,7 @@ namespace DoubleDoubleComplexTests {
                 "0.02285535464817533587891262203251380667160-0.00380281712189469676849794720811259816764i"
             };
 
-            Complex[] expected_i8 = new Complex[] { 
+            Complex[] expected_i8 = new Complex[] {
                 "-0.02860274785395495676399287738785229482666-0.05648422254928216236172127274728437212971i",
                 "-0.02750488463738778103318785862694482133752-0.05791791946650814658376939725586021499557i",
                 "-0.02630496186714466456156121806873412931408-0.05932817213857462795141151728814738207045i",
