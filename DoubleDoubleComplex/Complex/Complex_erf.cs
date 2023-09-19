@@ -24,7 +24,7 @@ namespace DoubleDoubleComplex {
 
             Complex w = z * z;
 
-            if (!ErfUtil.UseCFrac(z)) {
+            if (ErfUtil.UseNeroZero(z)) {
                 Complex c = ErfUtil.ErfNearZero(w);
 
                 Complex y = c * z * (2 * ErfUtil.RcpSqrtPI);
@@ -57,7 +57,7 @@ namespace DoubleDoubleComplex {
                 return Conjugate(Erfc(Conjugate(z)));
             }
 
-            if (ddouble.IsNegative(z.R) || !ErfUtil.UseCFrac(z)) {
+            if (ddouble.IsNegative(z.R) || ErfUtil.UseNeroZero(z)) {
                 return One - Erf(z);
             }
             else {
@@ -86,7 +86,7 @@ namespace DoubleDoubleComplex {
 
             Complex w = z * z;
 
-            if (!ErfUtil.UseCFrac((ddouble.Abs(z.R), z.I))) {
+            if (ErfUtil.UseNeroZero((ddouble.Abs(z.R), z.I))) {
                 return (One - Erf(z)) * Exp(w);
             }
             else if (ddouble.IsPositive(z.R)) {
@@ -155,7 +155,7 @@ namespace DoubleDoubleComplex {
                 return n;
             }
 
-            public static bool UseCFrac(Complex z) {
+            public static bool UseNeroZero(Complex z) {
 #if DEBUG
                 if (!(ddouble.IsPositive(z.R) && ddouble.IsPositive(z.I))) {
                     throw new ArgumentOutOfRangeException(nameof(z));
@@ -165,7 +165,7 @@ namespace DoubleDoubleComplex {
                 double zid = (double)z.I;
                 double zr_thr = 2d - 7d / 256 * zid * zid;
 
-                return zr_thr <= z.R;
+                return zr_thr > z.R;
             }
 
 
