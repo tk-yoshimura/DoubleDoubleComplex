@@ -76,6 +76,9 @@ namespace DoubleDoubleComplex {
             if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
                 return ddouble.Erfcx(z.R);
             }
+            if (!ddouble.IsFinite(z.I)) {
+                return NaN;
+            }
 
             if (ddouble.IsNegative(z.I)) {
                 return Conjugate(Erfcx(Conjugate(z)));
@@ -83,15 +86,34 @@ namespace DoubleDoubleComplex {
 
             Complex w = z * z;
 
-            if (!ddouble.IsFinite(z.I) || ddouble.IsNegative(z.R) || !ErfUtil.UseCFrac(z)) {
+            if (!ErfUtil.UseCFrac((ddouble.Abs(z.R), z.I))) {
                 return (One - Erf(z)) * Exp(w);
             }
-            else {
+            else if (ddouble.IsPositive(z.R)) {
                 Complex f = ErfUtil.ErfcxCFrac(z, w);
 
                 Complex y = z * ErfUtil.RcpSqrtPI / f;
 
                 return y;
+            }
+            else {
+                Complex z_neg = (-z.R, z.I);
+
+                Complex f = ErfUtil.ErfcxCFrac(z_neg, Conjugate(w));
+
+                Complex erfcx = z_neg * ErfUtil.RcpSqrtPI / f;
+                Complex erfc = erfcx * Exp((-w.R, w.I));
+
+                if (IsFinite(erfc)) {
+                    Complex y = Conjugate((2 / erfc - 1) * erfcx);
+
+                    return y;
+                }
+                else {
+                    Complex y = (-erfcx.R, erfcx.I);
+
+                    return y;
+                }
             }
         }
 
@@ -102,17 +124,17 @@ namespace DoubleDoubleComplex {
             const int min_c_frac_iter = 8;
             static readonly int[,] c_frac_iter_table =
                 { {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40},
-                      {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 25, 11,  8},
-                      {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 28, 19, 12,  9,  8},
-                      {40, 40, 40, 40, 40, 40, 40, 40, 40, 37, 31, 26, 21, 16, 13, 10,  8,  8},
-                      {39, 39, 38, 37, 36, 34, 32, 29, 26, 23, 20, 17, 15, 12, 10,  9,  8,  8},
-                      {27, 27, 26, 26, 25, 24, 22, 21, 19, 17, 15, 14, 12, 10,  9,  8,  8,  8},
-                      {20, 20, 20, 19, 19, 18, 17, 16, 15, 14, 12, 11, 10,  9,  8,  8,  8,  8},
-                      {16, 16, 16, 16, 15, 15, 14, 13, 12, 12, 11, 10,  9,  8,  8,  8,  8,  8},
-                      {13, 13, 13, 13, 13, 12, 12, 11, 11, 10, 10,  9,  8,  8,  8,  8,  8,  8},
-                      {12, 12, 11, 11, 11, 11, 10, 10, 10,  9,  9,  8,  8,  8,  8,  8,  8,  8},
-                      {10, 10, 10, 10, 10, 10,  9,  9,  9,  8,  8,  8,  8,  8,  8,  8,  8,  8},
-                      { 9,  9,  9,  9,  9,  9,  9,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8} };
+                  {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 25, 11,  8},
+                  {40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 28, 19, 12,  9,  8},
+                  {40, 40, 40, 40, 40, 40, 40, 40, 40, 37, 31, 26, 21, 16, 13, 10,  8,  8},
+                  {39, 39, 38, 37, 36, 34, 32, 29, 26, 23, 20, 17, 15, 12, 10,  9,  8,  8},
+                  {27, 27, 26, 26, 25, 24, 22, 21, 19, 17, 15, 14, 12, 10,  9,  8,  8,  8},
+                  {20, 20, 20, 19, 19, 18, 17, 16, 15, 14, 12, 11, 10,  9,  8,  8,  8,  8},
+                  {16, 16, 16, 16, 15, 15, 14, 13, 12, 12, 11, 10,  9,  8,  8,  8,  8,  8},
+                  {13, 13, 13, 13, 13, 12, 12, 11, 11, 10, 10,  9,  8,  8,  8,  8,  8,  8},
+                  {12, 12, 11, 11, 11, 11, 10, 10, 10,  9,  9,  8,  8,  8,  8,  8,  8,  8},
+                  {10, 10, 10, 10, 10, 10,  9,  9,  9,  8,  8,  8,  8,  8,  8,  8,  8,  8},
+                  { 9,  9,  9,  9,  9,  9,  9,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8} };
 
             static int CFracIter(Complex z) {
 #if DEBUG
