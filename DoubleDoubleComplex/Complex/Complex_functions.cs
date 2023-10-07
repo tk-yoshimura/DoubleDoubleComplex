@@ -150,9 +150,9 @@ namespace DoubleDoubleComplex {
             return FromPolarCoordinates(ddouble.Pow(z.Magnitude, n), z.Phase * n);
         }
 
-        public static Complex Pow2(Complex x) {
-            ddouble phi = x.I * ddouble.Ln2;
-            ddouble s = ddouble.Pow2(x.R);
+        public static Complex Pow2(Complex z) {
+            ddouble phi = z.I * ddouble.Ln2;
+            ddouble s = ddouble.Pow2(z.R);
 
             return new Complex(ddouble.Cos(phi) * s, ddouble.Sin(phi) * s);
         }
