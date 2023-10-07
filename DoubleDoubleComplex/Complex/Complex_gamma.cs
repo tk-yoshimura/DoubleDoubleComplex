@@ -31,11 +31,9 @@ namespace DoubleDoubleComplex {
 
                 x *= v;
 
-                Complex r = Sqrt(2 * ddouble.PI / z);
-                Complex p = Pow(z * ddouble.RcpE, z);
-                Complex s = Exp(x);
+                Complex p = (z - 0.5d) * Log2(z);
 
-                Complex y = r * p * s;
+                Complex y = Consts.Gamma.SqrtPI2 * Pow2(p + (x - z) * ddouble.LbE);
 
                 return y;
             }
@@ -134,6 +132,8 @@ namespace DoubleDoubleComplex {
             public static class Gamma {
                 public const double StirlingConvergenceNorm = 230.5d;
                 public static readonly ddouble StirlingLogBias = ddouble.Log(ddouble.Sqrt(2 * ddouble.PI));
+
+                public static readonly ddouble SqrtPI2 = (+1, 1, 0xA06C98FFB1382CB2uL, 0xBE520FD739167717uL);
 
                 public static readonly ReadOnlyCollection<ddouble> StirlingTable = new(new ddouble[] {
                     (+1, -4, 0xAAAAAAAAAAAAAAAAuL, 0xAAAAAAAAAAAAAAAAuL),
