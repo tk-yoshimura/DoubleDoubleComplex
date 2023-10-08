@@ -106,7 +106,7 @@ namespace DoubleDoubleComplex {
             Quaternion vec = VectorPart(q);
             Quaternion vnormal = vec / vec.Magnitude;
             if (IsNaN(vnormal)) {
-                return Complex.Pow(q.R, p);
+                return ddouble.Pow(q.R, p);
             }
 
             ddouble c = ddouble.Cos(phi), s = ddouble.Sin(phi);
@@ -128,7 +128,7 @@ namespace DoubleDoubleComplex {
             Quaternion vec = VectorPart(q);
             Quaternion vnormal = vec / vec.Magnitude;
             if (IsNaN(vnormal)) {
-                return Complex.Pow(q.R, n);
+                return ddouble.Pow(q.R, n);
             }
 
             ddouble c = ddouble.Cos(phi), s = ddouble.Sin(phi);

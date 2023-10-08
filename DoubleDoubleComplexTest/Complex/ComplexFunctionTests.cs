@@ -198,6 +198,34 @@ namespace DoubleDoubleComplexTests {
                     ComplexAssert.AreEqual(nc, c, nc.Magnitude * 1e-7);
                 }
             }
+
+            foreach (Complex p in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                foreach (ddouble x in new[] { 1, 1.5, 2, 2.5, 3, 6, 7, 10 }) {
+                    Complex c = Complex.Pow(x, p);
+                    NComplex nc = NComplex.Pow((double)x, (NComplex)p);
+
+                    ComplexAssert.AreEqual(nc, c, nc.Magnitude * 1e-7);
+                }
+            }
+
+            foreach (ddouble p in new[] { 1, 1.5, 2, 2.5, 3, 6, 7, 10 }) {
+                foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                    Complex c = Complex.Pow(z, p);
+                    NComplex nc = NComplex.Pow((NComplex)z, (double)p);
+
+                    ComplexAssert.AreEqual(nc, c, nc.Magnitude * 1e-7);
+                }
+            }
+        }
+
+        [TestMethod()]
+        public void Pow2Test() {
+            foreach (Complex p in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                Complex c = Complex.Pow2(p);
+                NComplex nc = NComplex.Pow(2, (NComplex)p);
+
+                ComplexAssert.AreEqual(nc, c, nc.Magnitude * 1e-7);
+            }
         }
 
         [TestMethod()]

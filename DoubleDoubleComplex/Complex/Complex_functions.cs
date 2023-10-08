@@ -157,6 +157,13 @@ namespace DoubleDoubleComplex {
             return new Complex(ddouble.Cos(phi) * s, ddouble.Sin(phi) * s);
         }
 
+        public static Complex Pow(ddouble x, Complex z) {
+            ddouble phi = z.I * ddouble.Log(x);
+            ddouble s = ddouble.Pow(x, z.R);
+
+            return new Complex(ddouble.Cos(phi) * s, ddouble.Sin(phi) * s);
+        }
+
         public static Complex Sqrt(Complex z) {
             return FromPolarCoordinates(ddouble.Sqrt(z.Magnitude), z.Phase / 2);
         }

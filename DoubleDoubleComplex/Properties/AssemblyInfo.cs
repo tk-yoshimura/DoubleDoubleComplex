@@ -15,6 +15,6 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("1439DF1F-51EC-4989-8686-FB8526A33CE7")]
 
-[assembly: AssemblyVersion("1.3.8.*")]
+[assembly: AssemblyVersion("1.3.9.*")]
 
 [assembly: InternalsVisibleTo("DoubleDoubleComplexTest")]

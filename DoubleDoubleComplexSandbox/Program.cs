@@ -4,6 +4,8 @@ using DoubleDoubleComplex;
 namespace DoubleDoubleComplexSandbox {
     internal class Program {
         static void Main() {
+            Complex m = Complex.Gamma((16, 1));
+
             using StreamWriter sw = new("../../erf_cfrac_result_6.csv");
 
             for (ddouble i = 0; i <= 8.75; i += 1d / 1024) {
