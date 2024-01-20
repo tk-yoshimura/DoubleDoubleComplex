@@ -2,14 +2,13 @@
  Double-Double Complex and Quaternion Implements 
 
 ## Requirement
-.NET 7.0
+.NET 8.0  
+[DoubleDouble](https://github.com/tk-yoshimura/DoubleDouble)
 
 ## Install
 
 [Download DLL](https://github.com/tk-yoshimura/DoubleDoubleComplex/releases)  
 [Download Nuget](https://www.nuget.org/packages/tyoshimura.doubledouble.complex/)  
-
-- Import DoubleDouble(https://github.com/tk-yoshimura/DoubleDouble)
 
 ## Usage
 
