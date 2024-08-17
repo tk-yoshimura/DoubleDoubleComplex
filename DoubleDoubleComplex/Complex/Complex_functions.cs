@@ -42,26 +42,32 @@ namespace DoubleDoubleComplex {
 
         public static Complex Tan(Complex z) {
             ddouble u = ddouble.Exp(-ddouble.Abs(2d * z.I));
-            ddouble norm = 1d + u * (2d * ddouble.Cos(2d * z.R) + u);
 
-            Complex c = new Complex(2d * u * ddouble.Sin(2d * z.R), (u + 1d) * (u - 1d)) / norm;
-
-            if (z.I > 0d) {
-                c = Conjugate(c);
+            if (u == 1.0) {
+                return ddouble.Tan(z.R);
             }
+
+            ddouble n = 1d + u * (2d * ddouble.Cos(2d * z.R) + u);
+
+            ddouble r = 2d * u * ddouble.Sin(2d * z.R) / n;
+            ddouble i = (u + 1d) * (u - 1d) / n;
+            Complex c = (z.I > 0d) ? (r, -i) : (r, i);
 
             return c; 
         }
 
         public static Complex TanPI(Complex z) {
             ddouble u = ddouble.Exp(-ddouble.Abs(2d * z.I * ddouble.PI));
-            ddouble norm = 1d + u * (2d * ddouble.CosPI(2d * z.R) + u);
-
-            Complex c = new Complex(2d * u * ddouble.SinPI(2d * z.R), (u + 1d) * (u - 1d)) / norm;
-
-            if (z.I > 0d) {
-                c = Conjugate(c);
+            
+            if (u == 1.0) {
+                return ddouble.TanPI(z.R);
             }
+
+            ddouble n = 1d + u * (2d * ddouble.CosPI(2d * z.R) + u);
+
+            ddouble r = 2d * u * ddouble.SinPI(2d * z.R) / n;
+            ddouble i = (u + 1d) * (u - 1d) / n;
+            Complex c = (z.I > 0d) ? (r, -i) : (r, i);
 
             return c;
         }
