@@ -41,6 +41,11 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Tan(Complex z) {
+            // Im(z) > bits * log(2)
+            if (ddouble.Abs(z.I) > 73.4739) {
+                return (0, ddouble.Sign(z.I)); 
+            }
+
             ddouble r_sin = ddouble.Sin(z.R), r_cos = ddouble.Cos(z.R);
             ddouble i_sinh = ddouble.Sinh(z.I), i_cosh = ddouble.Cosh(z.I);
 
@@ -51,6 +56,11 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex TanPI(Complex z) {
+            // Im(z) * pi > bits * log(2)
+            if (ddouble.Abs(z.I) > 23.38784) {
+                return (0, ddouble.Sign(z.I)); 
+            }
+
             ddouble i_pi = z.I * ddouble.PI;
 
             ddouble r_sin = ddouble.SinPI(z.R), r_cos = ddouble.CosPI(z.R);
