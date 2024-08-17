@@ -41,35 +41,29 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Tan(Complex z) {
-            // Im(z) > bits * log(2)
-            if (ddouble.Abs(z.I) > 73.4739) {
-                return (0, ddouble.Sign(z.I)); 
+            ddouble u = ddouble.Exp(-ddouble.Abs(2d * z.I));
+            ddouble norm = 1d + u * (2d * ddouble.Cos(2d * z.R) + u);
+
+            Complex c = new Complex(2d * u * ddouble.Sin(2d * z.R), (u + 1d) * (u - 1d)) / norm;
+
+            if (z.I > 0d) {
+                c = Conjugate(c);
             }
 
-            ddouble r_sin = ddouble.Sin(z.R), r_cos = ddouble.Cos(z.R);
-            ddouble i_sinh = ddouble.Sinh(z.I), i_cosh = ddouble.Cosh(z.I);
-
-            Complex s = new(r_sin * i_cosh, r_cos * i_sinh);
-            Complex c = new(r_cos * i_cosh, -r_sin * i_sinh);
-
-            return s / c;
+            return c; 
         }
 
         public static Complex TanPI(Complex z) {
-            // Im(z) * pi > bits * log(2)
-            if (ddouble.Abs(z.I) > 23.38784) {
-                return (0, ddouble.Sign(z.I)); 
+            ddouble u = ddouble.Exp(-ddouble.Abs(2d * z.I * ddouble.PI));
+            ddouble norm = 1d + u * (2d * ddouble.CosPI(2d * z.R) + u);
+
+            Complex c = new Complex(2d * u * ddouble.SinPI(2d * z.R), (u + 1d) * (u - 1d)) / norm;
+
+            if (z.I > 0d) {
+                c = Conjugate(c);
             }
 
-            ddouble i_pi = z.I * ddouble.PI;
-
-            ddouble r_sin = ddouble.SinPI(z.R), r_cos = ddouble.CosPI(z.R);
-            ddouble i_sinh = ddouble.Sinh(i_pi), i_cosh = ddouble.Cosh(i_pi);
-
-            Complex s = new(r_sin * i_cosh, r_cos * i_sinh);
-            Complex c = new(r_cos * i_cosh, -r_sin * i_sinh);
-
-            return s / c;
+            return c;
         }
 
         public static Complex Sinh(Complex z) {

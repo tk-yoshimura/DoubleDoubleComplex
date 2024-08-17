@@ -58,7 +58,8 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void TanTest() {
-            foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1), 
+            foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (-6, -3), (-7, -4), 
+                (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1), 
                 (-2, 73), (-2, -73), (-2, 74), (-2, -74) }) {
                 Complex c = Complex.Tan(z);
                 NComplex nc = NComplex.Tan((NComplex)z);
@@ -69,7 +70,8 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void TanPITest() {
-            foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1), 
+            foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (-6, -3), (-7, -4), 
+                (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1), 
                 (-2, 23), (-2, -23), (-2, 24), (-2, -24), (-2, 1024), (-2, -1024) }) {
                 Complex c = Complex.TanPI(z);
                 NComplex nc = NComplex.Tan((NComplex)(z * ddouble.PI));
