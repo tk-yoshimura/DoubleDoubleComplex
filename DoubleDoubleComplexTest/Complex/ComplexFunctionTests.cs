@@ -1,6 +1,7 @@
 ﻿using DoubleDouble;
 using DoubleDoubleComplex;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace DoubleDoubleComplexTests {
     using NComplex = System.Numerics.Complex;
@@ -69,6 +70,44 @@ namespace DoubleDoubleComplexTests {
         }
 
         [TestMethod()]
+        public void TanNearPoleTest() {
+            for (ddouble eps = "0.1"; eps >= "1e-8"; eps /= 10) {
+                foreach (ddouble x in new[] { -4.5, -3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5, 4.5 }) {
+                    foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
+
+                        Complex c = Complex.Tan((z + x) * ddouble.PI);
+                        NComplex nc = -1 / NComplex.Tan((NComplex)(z * ddouble.PI));
+
+                        Console.WriteLine(z);
+                        Console.WriteLine(c);
+                        Console.WriteLine(nc);
+
+                        Assert.AreEqual(nc.Real, (double)c.R, double.Abs(nc.Real) * 1e-7 + 1e-15);
+                        Assert.AreEqual(nc.Imaginary, (double)c.I, double.Abs(nc.Imaginary) * 1e-7 + 1e-15);
+                    }
+                }
+            }
+
+            for (ddouble eps = 1d / 128; eps >= 1d / 65536; eps /= 2) {
+                foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
+                    Complex z_pi = z * ddouble.PI, z_pi2 = z_pi * z_pi;
+
+                    Complex expected = -638512875 / (z_pi * (638512875 + z_pi2 * (212837625 + z_pi2 * (85135050 + 
+                        z_pi2 * (34459425 + z_pi2 * (13963950 + z_pi2 * (5659290 + z_pi2 * (2293620 + z_pi2 * 929569))))))));
+
+                    Complex actual = Complex.Tan(z_pi + 0.5 * ddouble.PI);
+
+                    Console.WriteLine(z);
+                    Console.WriteLine(expected);
+                    Console.WriteLine(actual);
+
+                    Assert.IsTrue(ddouble.Abs(expected.R - actual.R) < ddouble.Abs(expected.R) * 1e-25 + 1e-20);
+                    Assert.IsTrue(ddouble.Abs(expected.I - actual.I) < ddouble.Abs(expected.I) * 1e-25 + 1e-20);
+                }
+            }
+        }
+
+        [TestMethod()]
         public void TanPITest() {
             foreach (Complex z in new[] { (0, 0), (0, 0.25), (1, 2), (2, 5), (6, -3), (7, -4), (-6, -3), (-7, -4), 
                 (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1), 
@@ -77,6 +116,45 @@ namespace DoubleDoubleComplexTests {
                 NComplex nc = NComplex.Tan((NComplex)(z * ddouble.PI));
 
                 ComplexAssert.AreEqual(nc, c, 1e-7);
+            }
+        }
+                
+
+        [TestMethod()]
+        public void TanPINearPoleTest() {
+            for (ddouble eps = "0.1"; eps >= "1e-8"; eps /= 10) {
+                foreach (ddouble x in new[] { -4.5, -3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5, 4.5 }) {
+                    foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
+
+                        Complex c = Complex.TanPI(z + x);
+                        NComplex nc = -1 / NComplex.Tan((NComplex)(z * ddouble.PI));
+
+                        Console.WriteLine(z);
+                        Console.WriteLine(c);
+                        Console.WriteLine(nc);
+
+                        Assert.AreEqual(nc.Real, (double)c.R, double.Abs(nc.Real) * 1e-7 + 1e-280);
+                        Assert.AreEqual(nc.Imaginary, (double)c.I, double.Abs(nc.Imaginary) * 1e-7 + 1e-280);
+                    }
+                }
+            }
+
+            for (ddouble eps = 1d / 128; eps >= 1d / 65536; eps /= 2) {
+                foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
+                    Complex z_pi = z * ddouble.PI, z_pi2 = z_pi * z_pi;
+
+                    Complex expected = -638512875 / (z_pi * (638512875 + z_pi2 * (212837625 + z_pi2 * (85135050 + 
+                        z_pi2 * (34459425 + z_pi2 * (13963950 + z_pi2 * (5659290 + z_pi2 * (2293620 + z_pi2 * 929569))))))));
+
+                    Complex actual = Complex.TanPI(z + 0.5);
+
+                    Console.WriteLine(z);
+                    Console.WriteLine(expected);
+                    Console.WriteLine(actual);
+
+                    Assert.IsTrue(ddouble.Abs(expected.R - actual.R) < ddouble.Abs(expected.R) * 1e-25 + 1e-20);
+                    Assert.IsTrue(ddouble.Abs(expected.I - actual.I) < ddouble.Abs(expected.I) * 1e-25 + 1e-20);
+                }
             }
         }
 

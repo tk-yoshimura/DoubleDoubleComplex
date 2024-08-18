@@ -49,11 +49,23 @@ namespace DoubleDoubleComplex {
 
             ddouble n = 1d + u * (2d * ddouble.Cos(2d * z.R) + u);
 
-            ddouble r = 2d * u * ddouble.Sin(2d * z.R) / n;
-            ddouble i = (u + 1d) * (u - 1d) / n;
-            Complex c = (z.I > 0d) ? (r, -i) : (r, i);
+            if (ddouble.Abs(n) > 1e-6) {
+                ddouble r = 2d * u * ddouble.Sin(2d * z.R) / n;
+                ddouble i = (u + 1d) * (u - 1d) / n;
+                Complex c = (z.I > 0d) ? (r, -i) : (r, i);
 
-            return c; 
+                return c;
+            }
+            else {
+                ddouble x = z.R * ddouble.RcpPI - 0.5d;
+                x = (x - ddouble.Round(x)) * ddouble.PI;
+
+                Complex w = (x, z.I), w2 = w * w;
+
+                Complex c = -155925d / (w * (155925d + w2 * (51975d + w2 * (20790d + w2 * (8415d + w2 * (3410d + w2 * 1382d))))));
+
+                return c;
+            }
         }
 
         public static Complex TanPI(Complex z) {
@@ -65,11 +77,23 @@ namespace DoubleDoubleComplex {
 
             ddouble n = 1d + u * (2d * ddouble.CosPI(2d * z.R) + u);
 
-            ddouble r = 2d * u * ddouble.SinPI(2d * z.R) / n;
-            ddouble i = (u + 1d) * (u - 1d) / n;
-            Complex c = (z.I > 0d) ? (r, -i) : (r, i);
+            if (ddouble.Abs(n) > 1e-6) {
+                ddouble r = 2d * u * ddouble.SinPI(2d * z.R) / n;
+                ddouble i = (u + 1d) * (u - 1d) / n;
+                Complex c = (z.I > 0d) ? (r, -i) : (r, i);
 
-            return c;
+                return c;
+            }
+            else {
+                ddouble x = z.R - 0.5d;
+                x = (x - ddouble.Round(x)) * ddouble.PI;
+
+                Complex w = (x, z.I * ddouble.PI), w2 = w * w;
+
+                Complex c = -155925d / (w * (155925d + w2 * (51975d + w2 * (20790d + w2 * (8415d + w2 * (3410d + w2 * 1382d))))));
+
+                return c;
+            }
         }
 
         public static Complex Sinh(Complex z) {
