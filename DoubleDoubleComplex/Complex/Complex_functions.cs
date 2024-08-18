@@ -70,7 +70,7 @@ namespace DoubleDoubleComplex {
 
         public static Complex TanPI(Complex z) {
             ddouble u = ddouble.Exp(-ddouble.Abs(2d * z.I * ddouble.PI));
-            
+
             if (u == 1.0) {
                 return ddouble.TanPI(z.R);
             }

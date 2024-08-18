@@ -59,8 +59,8 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void TanTest() {
-            foreach (Complex z in new[] { (0, 0), (0, 0.25), (1, 2), (2, 5), (6, -3), (7, -4), (-6, -3), (-7, -4), 
-                (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1), 
+            foreach (Complex z in new[] { (0, 0), (0, 0.25), (1, 2), (2, 5), (6, -3), (7, -4), (-6, -3), (-7, -4),
+                (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1),
                 (-2, 73), (-2, -73), (-2, 74), (-2, -74) }) {
                 Complex c = Complex.Tan(z);
                 NComplex nc = NComplex.Tan((NComplex)z);
@@ -92,7 +92,7 @@ namespace DoubleDoubleComplexTests {
                 foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
                     Complex z_pi = z * ddouble.PI, z_pi2 = z_pi * z_pi;
 
-                    Complex expected = -638512875 / (z_pi * (638512875 + z_pi2 * (212837625 + z_pi2 * (85135050 + 
+                    Complex expected = -638512875 / (z_pi * (638512875 + z_pi2 * (212837625 + z_pi2 * (85135050 +
                         z_pi2 * (34459425 + z_pi2 * (13963950 + z_pi2 * (5659290 + z_pi2 * (2293620 + z_pi2 * 929569))))))));
 
                     Complex actual = Complex.Tan(z_pi + 0.5 * ddouble.PI);
@@ -109,8 +109,8 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void TanPITest() {
-            foreach (Complex z in new[] { (0, 0), (0, 0.25), (1, 2), (2, 5), (6, -3), (7, -4), (-6, -3), (-7, -4), 
-                (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1), 
+            foreach (Complex z in new[] { (0, 0), (0, 0.25), (1, 2), (2, 5), (6, -3), (7, -4), (-6, -3), (-7, -4),
+                (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1),
                 (-2, 23), (-2, -23), (-2, 24), (-2, -24), (-2, 1024), (-2, -1024) }) {
                 Complex c = Complex.TanPI(z);
                 NComplex nc = NComplex.Tan((NComplex)(z * ddouble.PI));
@@ -118,7 +118,7 @@ namespace DoubleDoubleComplexTests {
                 ComplexAssert.AreEqual(nc, c, 1e-7);
             }
         }
-                
+
 
         [TestMethod()]
         public void TanPINearPoleTest() {
@@ -143,7 +143,7 @@ namespace DoubleDoubleComplexTests {
                 foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
                     Complex z_pi = z * ddouble.PI, z_pi2 = z_pi * z_pi;
 
-                    Complex expected = -638512875 / (z_pi * (638512875 + z_pi2 * (212837625 + z_pi2 * (85135050 + 
+                    Complex expected = -638512875 / (z_pi * (638512875 + z_pi2 * (212837625 + z_pi2 * (85135050 +
                         z_pi2 * (34459425 + z_pi2 * (13963950 + z_pi2 * (5659290 + z_pi2 * (2293620 + z_pi2 * 929569))))))));
 
                     Complex actual = Complex.TanPI(z + 0.5);
