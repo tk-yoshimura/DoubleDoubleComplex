@@ -88,7 +88,7 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            for (ddouble eps = 1d / 128; eps >= 1d / 65536; eps /= 2) {
+            for (ddouble eps = 1d / 128; eps >= 1d / 262144; eps /= 2) {
                 foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
                     Complex z_pi = z * ddouble.PI, z_pi2 = z_pi * z_pi;
 
@@ -101,8 +101,8 @@ namespace DoubleDoubleComplexTests {
                     Console.WriteLine(expected);
                     Console.WriteLine(actual);
 
-                    Assert.IsTrue(ddouble.Abs(expected.R - actual.R) < ddouble.Abs(expected.R) * 1e-25 + 1e-20);
-                    Assert.IsTrue(ddouble.Abs(expected.I - actual.I) < ddouble.Abs(expected.I) * 1e-25 + 1e-20);
+                    Assert.IsTrue(ddouble.Abs(expected.R - actual.R) < ddouble.Abs(expected.R) * 1e-30 + 1e-20);
+                    Assert.IsTrue(ddouble.Abs(expected.I - actual.I) < ddouble.Abs(expected.I) * 1e-30 + 1e-20);
                 }
             }
         }
@@ -139,7 +139,7 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            for (ddouble eps = 1d / 128; eps >= 1d / 65536; eps /= 2) {
+            for (ddouble eps = 1d / 128; eps >= 1d / 262144; eps /= 2) {
                 foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
                     Complex z_pi = z * ddouble.PI, z_pi2 = z_pi * z_pi;
 
@@ -152,8 +152,8 @@ namespace DoubleDoubleComplexTests {
                     Console.WriteLine(expected);
                     Console.WriteLine(actual);
 
-                    Assert.IsTrue(ddouble.Abs(expected.R - actual.R) < ddouble.Abs(expected.R) * 1e-25 + 1e-20);
-                    Assert.IsTrue(ddouble.Abs(expected.I - actual.I) < ddouble.Abs(expected.I) * 1e-25 + 1e-20);
+                    Assert.IsTrue(ddouble.Abs(expected.R - actual.R) < ddouble.Abs(expected.R) * 1e-30 + 1e-20);
+                    Assert.IsTrue(ddouble.Abs(expected.I - actual.I) < ddouble.Abs(expected.I) * 1e-30 + 1e-20);
                 }
             }
         }
