@@ -49,7 +49,7 @@ namespace DoubleDoubleComplex {
 
             ddouble n = 1d + u * (2d * ddouble.Cos(2d * z.R) + u);
 
-            if (ddouble.Abs(n) > 1e-6) {
+            if (ddouble.Abs(n) > 0.00390625) {
                 ddouble r = 2d * u * ddouble.Sin(2d * z.R) / n;
                 ddouble i = (u + 1d) * (u - 1d) / n;
                 Complex c = (z.I > 0d) ? (r, -i) : (r, i);
@@ -62,7 +62,12 @@ namespace DoubleDoubleComplex {
 
                 Complex w = (x, z.I), w2 = w * w;
 
-                Complex c = -155925d / (w * (155925d + w2 * (51975d + w2 * (20790d + w2 * (8415d + w2 * (3410d + w2 * 1382d))))));
+                Complex c = -1856156927625d /
+                    (w * (1856156927625d + w2 * (618718975875d
+                    + w2 * (247487590350d + w2 * (100173548475d
+                    + w2 * (40593202650d + w2 * (16451556030d
+                    + w2 * (6667553340d + w2 * (2702257083d
+                    + w2 * (1095183522d + w2 * 443861162d))))))))));
 
                 return c;
             }
@@ -77,7 +82,7 @@ namespace DoubleDoubleComplex {
 
             ddouble n = 1d + u * (2d * ddouble.CosPI(2d * z.R) + u);
 
-            if (ddouble.Abs(n) > 1e-6) {
+            if (ddouble.Abs(n) > 0.00390625) {
                 ddouble r = 2d * u * ddouble.SinPI(2d * z.R) / n;
                 ddouble i = (u + 1d) * (u - 1d) / n;
                 Complex c = (z.I > 0d) ? (r, -i) : (r, i);
@@ -90,7 +95,12 @@ namespace DoubleDoubleComplex {
 
                 Complex w = (x, z.I * ddouble.PI), w2 = w * w;
 
-                Complex c = -155925d / (w * (155925d + w2 * (51975d + w2 * (20790d + w2 * (8415d + w2 * (3410d + w2 * 1382d))))));
+                Complex c = -1856156927625d /
+                    (w * (1856156927625d + w2 * (618718975875d
+                    + w2 * (247487590350d + w2 * (100173548475d
+                    + w2 * (40593202650d + w2 * (16451556030d
+                    + w2 * (6667553340d + w2 * (2702257083d
+                    + w2 * (1095183522d + w2 * 443861162d))))))))));
 
                 return c;
             }

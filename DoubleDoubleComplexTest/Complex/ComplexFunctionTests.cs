@@ -88,14 +88,11 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            for (ddouble eps = 1d / 128; eps >= 1d / 262144; eps /= 2) {
+            for (ddouble eps = 1d / 4; eps >= 1d / 262144; eps /= 2) {
                 foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
-                    Complex z_pi = z * ddouble.PI, z_pi2 = z_pi * z_pi;
+                    Complex expected = -Complex.CosPI(z) / Complex.SinPI(z);
 
-                    Complex expected = -638512875 / (z_pi * (638512875 + z_pi2 * (212837625 + z_pi2 * (85135050 +
-                        z_pi2 * (34459425 + z_pi2 * (13963950 + z_pi2 * (5659290 + z_pi2 * (2293620 + z_pi2 * 929569))))))));
-
-                    Complex actual = Complex.Tan(z_pi + 0.5 * ddouble.PI);
+                    Complex actual = Complex.Tan((z + 0.5) * ddouble.PI);
 
                     Console.WriteLine(z);
                     Console.WriteLine(expected);
@@ -139,12 +136,9 @@ namespace DoubleDoubleComplexTests {
                 }
             }
 
-            for (ddouble eps = 1d / 128; eps >= 1d / 262144; eps /= 2) {
+            for (ddouble eps = 1d / 4; eps >= 1d / 262144; eps /= 2) {
                 foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
-                    Complex z_pi = z * ddouble.PI, z_pi2 = z_pi * z_pi;
-
-                    Complex expected = -638512875 / (z_pi * (638512875 + z_pi2 * (212837625 + z_pi2 * (85135050 +
-                        z_pi2 * (34459425 + z_pi2 * (13963950 + z_pi2 * (5659290 + z_pi2 * (2293620 + z_pi2 * 929569))))))));
+                    Complex expected = -Complex.CosPI(z) / Complex.SinPI(z);
 
                     Complex actual = Complex.TanPI(z + 0.5);
 
