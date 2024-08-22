@@ -3,7 +3,7 @@
 namespace DoubleDoubleComplex {
 
     public partial class Complex {
-    	
+
         public static Complex Sin(Complex z) {
             return new Complex(
                 ddouble.Sin(z.R) * ddouble.Cosh(z.I),

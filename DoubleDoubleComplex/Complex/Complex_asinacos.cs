@@ -1,6 +1,4 @@
-﻿using DoubleDouble;
-
-namespace DoubleDoubleComplex {
+﻿namespace DoubleDoubleComplex {
 
     public partial class Complex {
 
