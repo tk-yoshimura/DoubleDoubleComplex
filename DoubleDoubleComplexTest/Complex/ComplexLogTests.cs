@@ -1,7 +1,5 @@
-﻿using DoubleDouble;
-using DoubleDoubleComplex;
+﻿using DoubleDoubleComplex;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace DoubleDoubleComplexTests {
     using NComplex = System.Numerics.Complex;

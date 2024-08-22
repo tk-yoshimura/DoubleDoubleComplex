@@ -151,7 +151,7 @@ namespace DoubleDoubleComplexTests {
             }
         }
 
-        
+
         [TestMethod()]
         public void InverseTest() {
             foreach (Quaternion q in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
