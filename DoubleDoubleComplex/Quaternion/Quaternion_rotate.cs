@@ -25,13 +25,5 @@ namespace DoubleDoubleComplex {
                 cy * cp * sr - sy * sp * cr
             );
         }
-
-        public static Quaternion VectorPart(Quaternion q) {
-            return new Quaternion(ddouble.Zero, q.I, q.J, q.K);
-        }
-
-        public static Quaternion RealPart(Quaternion q) {
-            return new Quaternion(q.R, ddouble.Zero, ddouble.Zero, ddouble.Zero);
-        }
     }
 }
