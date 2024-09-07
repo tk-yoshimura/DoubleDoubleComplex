@@ -6,7 +6,7 @@ namespace DoubleDoubleComplex {
 
     public static class ComplexEnumerableExpand {
         public static Complex Sum(this IEnumerable<Complex> source) {
-            Complex acc = 0d, carry = 0d;
+            Complex acc = Complex.Zero, carry = Complex.Zero;
 
             foreach (var v in source) {
                 Complex d = v - carry;

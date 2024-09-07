@@ -6,7 +6,7 @@ namespace DoubleDoubleComplex {
 
     public static class QuaternionEnumerableExpand {
         public static Quaternion Sum(this IEnumerable<Quaternion> source) {
-            Quaternion acc = 0d, carry = 0d;
+            Quaternion acc = Quaternion.Zero, carry = Quaternion.Zero;
 
             foreach (var v in source) {
                 Quaternion d = v - carry;
