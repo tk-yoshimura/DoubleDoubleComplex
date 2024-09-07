@@ -68,5 +68,12 @@ namespace DoubleDoubleQuaternionTests {
 
             CollectionAssert.AreEqual(new Quaternion[] { qs[0].Conj, qs[1].Conj, qs[2].Conj, qs[3].Conj }, qs.Conjugate().ToArray());
         }
+
+        [TestMethod()]
+        public void QuaternionNormalTest() {
+            Quaternion[] qs = { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1) };
+
+            CollectionAssert.AreEqual(new Quaternion[] { Quaternion.Normal(qs[0]), Quaternion.Normal(qs[1]), Quaternion.Normal(qs[2]), Quaternion.Normal(qs[3]) }, qs.Normal().ToArray());
+        }
     }
 }

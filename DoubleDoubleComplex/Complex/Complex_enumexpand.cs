@@ -58,5 +58,11 @@ namespace DoubleDoubleComplex {
                 yield return v.Conj;
             }
         }
+
+        public static IEnumerable<Complex> Normal(this IEnumerable<Complex> source) {
+            foreach (var v in source) {
+                yield return Complex.Normal(v);
+            }
+        }
     }
 }

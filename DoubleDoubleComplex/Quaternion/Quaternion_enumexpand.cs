@@ -64,5 +64,11 @@ namespace DoubleDoubleComplex {
                 yield return v.Conj;
             }
         }
+
+        public static IEnumerable<Quaternion> Normal(this IEnumerable<Quaternion> source) {
+            foreach (var v in source) {
+                yield return Quaternion.Normal(v);
+            }
+        }
     }
 }

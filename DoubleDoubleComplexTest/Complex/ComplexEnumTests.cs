@@ -61,5 +61,12 @@ namespace DoubleDoubleComplexTests {
 
             CollectionAssert.AreEqual(new Complex[] { cs[0].Conj, cs[1].Conj, cs[2].Conj, cs[3].Conj }, cs.Conjugate().ToArray());
         }
+
+        [TestMethod()]
+        public void ComplexNormalTest() {
+            Complex[] cs = { (1, 2), (2, 5), (6, -3), (7, -3) };
+
+            CollectionAssert.AreEqual(new Complex[] { Complex.Normal(cs[0]), Complex.Normal(cs[1]), Complex.Normal(cs[2]), Complex.Normal(cs[3]) }, cs.Normal().ToArray());
+        }
     }
 }
