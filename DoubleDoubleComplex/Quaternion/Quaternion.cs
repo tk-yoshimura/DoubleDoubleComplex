@@ -10,8 +10,10 @@ namespace DoubleDoubleComplex {
     public partial class Quaternion : IFormattable {
         public readonly ddouble R, I, J, K;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Norm => R * R + I * I + J * J + K * K;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Magnitude {
             get {
                 if (ddouble.IsInfinity(R) || ddouble.IsInfinity(I) || ddouble.IsInfinity(J) || ddouble.IsInfinity(K)) {
@@ -26,16 +28,29 @@ namespace DoubleDoubleComplex {
             }
         }
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public (ddouble x, ddouble y, ddouble z) Vector => (I, J, K);
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static Quaternion Zero { get; } = ddouble.Zero;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static Quaternion NaN { get; } = ddouble.NaN;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static Quaternion One { get; } = (1, 0, 0, 0);
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static Quaternion IOne { get; } = (0, 1, 0, 0);
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static Quaternion JOne { get; } = (0, 0, 1, 0);
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static Quaternion KOne { get; } = (0, 0, 0, 1);
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Quaternion Conj => Conjugate(this);
 
         public static Quaternion Conjugate(Quaternion q) => new(q.R, -q.I, -q.J, -q.K);
 

@@ -7,22 +7,35 @@ namespace DoubleDoubleComplex {
 
     [DebuggerDisplay("{ToString(),nq}")]
     public partial class Complex : IFormattable {
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public const char ImaginaryUnit = 'i';
 
         public readonly ddouble R, I;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Norm => R * R + I * I;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Magnitude => ddouble.Hypot(R, I);
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Phase => ddouble.Atan2(I, R);
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static Complex Zero { get; } = ddouble.Zero;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static Complex NaN { get; } = ddouble.NaN;
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static Complex One { get; } = (1, 0);
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static Complex ImaginaryOne { get; } = (0, 1);
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Complex Conj => Conjugate(this);
 
         public static Complex Conjugate(Complex c) => new(c.R, -c.I);
 
