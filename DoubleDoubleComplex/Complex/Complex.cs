@@ -13,13 +13,10 @@ namespace DoubleDoubleComplex {
 
         public readonly ddouble R, I;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Norm => R * R + I * I;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Magnitude => ddouble.Hypot(R, I);
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Phase => ddouble.Atan2(I, R);
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

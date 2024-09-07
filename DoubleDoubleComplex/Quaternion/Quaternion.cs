@@ -10,10 +10,8 @@ namespace DoubleDoubleComplex {
     public partial class Quaternion : IFormattable {
         public readonly ddouble R, I, J, K;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Norm => R * R + I * I + J * J + K * K;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Magnitude {
             get {
                 if (ddouble.IsInfinity(R) || ddouble.IsInfinity(I) || ddouble.IsInfinity(J) || ddouble.IsInfinity(K)) {
