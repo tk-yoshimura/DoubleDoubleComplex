@@ -24,49 +24,49 @@ namespace DoubleDoubleQuaternionTests {
         public void QuaternionRTest() {
             Quaternion[] qs = { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1) };
 
-            CollectionAssert.AreEqual(new ddouble[]{ 1, 2, 6, 7 }, qs.R().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { 1, 2, 6, 7 }, qs.R().ToArray());
         }
 
         [TestMethod()]
         public void QuaternionITest() {
             Quaternion[] qs = { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1) };
 
-            CollectionAssert.AreEqual(new ddouble[]{ 2, 5, -3, -3 }, qs.I().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { 2, 5, -3, -3 }, qs.I().ToArray());
         }
 
         [TestMethod()]
         public void QuaternionJTest() {
             Quaternion[] qs = { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1) };
 
-            CollectionAssert.AreEqual(new ddouble[]{ 3, -2, 1, 5 }, qs.J().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { 3, -2, 1, 5 }, qs.J().ToArray());
         }
 
         [TestMethod()]
         public void QuaternionKTest() {
             Quaternion[] qs = { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1) };
 
-            CollectionAssert.AreEqual(new ddouble[]{ 4, 6, 2, 1 }, qs.K().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { 4, 6, 2, 1 }, qs.K().ToArray());
         }
 
         [TestMethod()]
         public void QuaternionNormTest() {
             Quaternion[] qs = { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1) };
 
-            CollectionAssert.AreEqual(new ddouble[]{ qs[0].Norm, qs[1].Norm, qs[2].Norm, qs[3].Norm }, qs.Norm().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { qs[0].Norm, qs[1].Norm, qs[2].Norm, qs[3].Norm }, qs.Norm().ToArray());
         }
 
         [TestMethod()]
         public void QuaternionMagnitudeTest() {
             Quaternion[] qs = { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1) };
 
-            CollectionAssert.AreEqual(new ddouble[]{ qs[0].Magnitude, qs[1].Magnitude, qs[2].Magnitude, qs[3].Magnitude }, qs.Magnitude().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { qs[0].Magnitude, qs[1].Magnitude, qs[2].Magnitude, qs[3].Magnitude }, qs.Magnitude().ToArray());
         }
 
         [TestMethod()]
         public void QuaternionConjugateTest() {
             Quaternion[] qs = { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1) };
 
-            CollectionAssert.AreEqual(new Quaternion[]{ qs[0].Conj, qs[1].Conj, qs[2].Conj, qs[3].Conj }, qs.Conjugate().ToArray());
+            CollectionAssert.AreEqual(new Quaternion[] { qs[0].Conj, qs[1].Conj, qs[2].Conj, qs[3].Conj }, qs.Conjugate().ToArray());
         }
     }
 }
