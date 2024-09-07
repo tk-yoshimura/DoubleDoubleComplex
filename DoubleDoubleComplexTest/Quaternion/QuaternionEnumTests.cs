@@ -3,7 +3,7 @@ using DoubleDoubleComplex;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace DoubleDoubleQuaternionTests {
+namespace DoubleDoubleComplexTests {
     [TestClass()]
     public class QuaternionEnumTests {
         [TestMethod()]
