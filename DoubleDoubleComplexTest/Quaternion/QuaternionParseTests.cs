@@ -59,7 +59,7 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void BadParseTest() {
-            string[] tests = {
+            string[] tests = [
                 "",
                 "+",
                 "-",
@@ -90,7 +90,7 @@ namespace DoubleDoubleComplexTests {
                 "2+2j++2k+2k+1i",
                 "2+2j++2k+2k+ei",
                 "+4k+1+3j+2i+"
-            };
+            ];
 
             foreach (string test in tests) {
                 Console.WriteLine(test);

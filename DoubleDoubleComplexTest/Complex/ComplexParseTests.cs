@@ -38,7 +38,7 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void BadParseTest() {
-            string[] tests = {
+            string[] tests = [
                 "",
                 "+",
                 "-",
@@ -63,7 +63,7 @@ namespace DoubleDoubleComplexTests {
                 "2+2e1",
                 "2+e",
                 "e"
-            };
+            ];
 
             foreach (string test in tests) {
                 Console.WriteLine(test);
