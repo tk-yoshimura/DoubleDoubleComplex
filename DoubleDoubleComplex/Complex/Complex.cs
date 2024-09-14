@@ -75,6 +75,14 @@ namespace DoubleDoubleComplex {
             return new System.Numerics.Complex((double)c.R, (double)c.I);
         }
 
+        public static int ILogB(Complex c){
+            return int.Max(ddouble.ILogB(c.R), ddouble.ILogB(c.I));
+        }
+
+        public static Complex Ldexp(Complex c, int n){
+            return (ddouble.Ldexp(c.R, n), ddouble.Ldexp(c.I, n));
+        }
+
         public void Deconstruct(out ddouble r, out ddouble i) => (r, i) = (R, I);
 
         public override string ToString() {

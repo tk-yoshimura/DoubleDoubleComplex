@@ -35,6 +35,22 @@ namespace DoubleDoubleComplexTests {
         }
 
         [TestMethod()]
+        public void ILogBTest() {
+            Complex c1 = new(2, 6);
+            Complex c2 = new(9, 1);
+
+            Assert.AreEqual(2, Complex.ILogB(c1));
+            Assert.AreEqual(3, Complex.ILogB(c2));
+        }
+
+        [TestMethod()]
+        public void LdexpTest() {
+            Complex c1 = new(2, 6);
+
+            Assert.AreEqual((8, 24), Complex.Ldexp(c1, 2));
+        }
+
+        [TestMethod()]
         public void ToStringTest() {
             Complex c1 = (2, 3);
             Complex c2 = (2, 0);

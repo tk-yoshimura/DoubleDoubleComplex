@@ -101,6 +101,17 @@ namespace DoubleDoubleComplex {
             return new Quaternion(q.W, q.X, q.Y, q.Z);
         }
 
+        public static int ILogB(Quaternion q){
+            return int.Max(
+                int.Max(ddouble.ILogB(q.R), ddouble.ILogB(q.I)), 
+                int.Max(ddouble.ILogB(q.J), ddouble.ILogB(q.K))
+            );
+        }
+
+        public static Quaternion Ldexp(Quaternion q, int n){
+            return (ddouble.Ldexp(q.R, n), ddouble.Ldexp(q.I, n), ddouble.Ldexp(q.J, n), ddouble.Ldexp(q.K, n));
+        }
+
         public static implicit operator Quaternion(string v) {
             return Parse(v);
         }

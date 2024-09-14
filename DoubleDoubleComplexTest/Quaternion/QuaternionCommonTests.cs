@@ -44,6 +44,26 @@ namespace DoubleDoubleComplexTests {
         }
 
         [TestMethod()]
+        public void ILogBTest() {
+            Quaternion c1 = new(2, 6, 0, 1);
+            Quaternion c2 = new(9, 1, 2, 3);
+            Quaternion c3 = new(2, 1, 16, 3);
+            Quaternion c4 = new(2, 1, 2, 34);
+
+            Assert.AreEqual(2, Quaternion.ILogB(c1));
+            Assert.AreEqual(3, Quaternion.ILogB(c2));
+            Assert.AreEqual(4, Quaternion.ILogB(c3));
+            Assert.AreEqual(5, Quaternion.ILogB(c4));
+        }
+
+        [TestMethod()]
+        public void LdexpTest() {
+            Quaternion c1 = new(2, 6, 3, 1);
+
+            Assert.AreEqual((8, 24, 12, 4), Quaternion.Ldexp(c1, 2));
+        }
+
+        [TestMethod()]
         public void ToStringTest() {
             Quaternion c1 = (2, 3, 0, 1);
             Quaternion c2 = (2, 0, 1, 0);
