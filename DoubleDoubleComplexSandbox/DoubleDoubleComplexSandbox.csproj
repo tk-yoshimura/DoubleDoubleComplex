@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <Reference Include="DoubleDoubleComplex">
-      <HintPath>..\DoubleDoubleComplex\bin\Release\net8.0\DoubleDoubleComplex.dll</HintPath>
+      <HintPath>..\DoubleDoubleComplex\bin\Debug\net8.0\DoubleDoubleComplex.dll</HintPath>
     </Reference>
   </ItemGroup>
 

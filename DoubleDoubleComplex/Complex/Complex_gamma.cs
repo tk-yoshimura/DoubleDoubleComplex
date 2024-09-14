@@ -131,9 +131,8 @@ namespace DoubleDoubleComplex {
         internal static partial class Consts {
             public static class Gamma {
                 public const double StirlingConvergenceNorm = 230.5d;
-                public static readonly ddouble StirlingLogBias = ddouble.Log(ddouble.Sqrt(2 * ddouble.PI));
-
                 public static readonly ddouble SqrtPI2 = (+1, 1, 0xA06C98FFB1382CB2uL, 0xBE520FD739167717uL);
+                public static readonly ddouble StirlingLogBias = ddouble.Log(SqrtPI2);
 
                 public static readonly ReadOnlyCollection<ddouble> StirlingTable = new([
                     (+1, -4, 0xAAAAAAAAAAAAAAAAuL, 0xAAAAAAAAAAAAAAAAuL),
