@@ -135,7 +135,7 @@ namespace DoubleDoubleComplex {
 
                 public static readonly ddouble SqrtPI2 = (+1, 1, 0xA06C98FFB1382CB2uL, 0xBE520FD739167717uL);
 
-                public static readonly ReadOnlyCollection<ddouble> StirlingTable = new(new ddouble[] {
+                public static readonly ReadOnlyCollection<ddouble> StirlingTable = new([
                     (+1, -4, 0xAAAAAAAAAAAAAAAAuL, 0xAAAAAAAAAAAAAAAAuL),
                     (-1, -9, 0xB60B60B60B60B60BuL, 0x60B60B60B60B60B6uL),
                     (+1, -11, 0xD00D00D00D00D00DuL, 0x00D00D00D00D00D0uL),
@@ -151,7 +151,7 @@ namespace DoubleDoubleComplex {
                     (+1, 11, 0x8911A740DA740DA7uL, 0x40DA740DA740DA74uL),
                     (-1, 15, 0x8D0CC570E255BF59uL, 0xFF6EEC24B48FF1B3uL),
                     (+1, 19, 0xA8D1044D3708D1C2uL, 0x19EE4FDC4469CCAEuL),
-                });
+                ]);
             }
         }
     }

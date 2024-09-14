@@ -10,7 +10,7 @@ namespace DoubleDoubleComplex.Util {
             int index = start_index - 1;
 
             do {
-                index = str.IndexOfAny(new[] { '+', '-' }, index + 1);
+                index = str.IndexOfAny(['+', '-'], index + 1);
             } while (index > 0 && (str[index - 1] == 'e' || str[index - 1] == 'E'));
 
             return index;
