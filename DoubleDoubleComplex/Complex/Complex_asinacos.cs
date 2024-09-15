@@ -11,7 +11,7 @@
         }
 
         public static Complex Atan(Complex z) {
-            return ImaginaryOne / 2 * (Log(One - ImaginaryOne * z) - Log(One + ImaginaryOne * z));
+            return ImaginaryOne / 2 * (Log1p(-ImaginaryOne * z) - Log1p(ImaginaryOne * z));
         }
     }
 }
