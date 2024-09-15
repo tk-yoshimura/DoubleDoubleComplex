@@ -1,9 +1,10 @@
 ﻿
 using DoubleDouble;
+using System;
 
 namespace DoubleDoubleComplex {
 
-    public partial class Quaternion {
+    public partial class Quaternion : IEquatable<Quaternion> {
 
         public static bool IsNaN(Quaternion q)
             => ddouble.IsNaN(q.R) || ddouble.IsNaN(q.I) || ddouble.IsNaN(q.J) || ddouble.IsNaN(q.K);
@@ -25,9 +26,13 @@ namespace DoubleDoubleComplex {
         public override bool Equals(object obj) {
             return (obj is not null && obj is Quaternion q) && q == this;
         }
+        public bool Equals(Quaternion other) {
+            return this == other;
+        }
 
         public override int GetHashCode() {
             return R.GetHashCode() ^ I.GetHashCode();
         }
+
     }
 }

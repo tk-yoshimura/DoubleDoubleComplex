@@ -1,9 +1,10 @@
 ﻿
 using DoubleDouble;
+using System;
 
 namespace DoubleDoubleComplex {
 
-    public partial class Complex {
+    public partial class Complex : IEquatable<Complex> {
 
         public static bool IsNaN(Complex c) => ddouble.IsNaN(c.R) || ddouble.IsNaN(c.I);
 
@@ -23,8 +24,13 @@ namespace DoubleDoubleComplex {
             return (obj is not null && obj is Complex c) && c == this;
         }
 
+        public bool Equals(Complex other) {
+            return this == other;
+        }
+
         public override int GetHashCode() {
             return R.GetHashCode() ^ I.GetHashCode();
         }
+
     }
 }
