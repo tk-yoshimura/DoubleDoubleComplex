@@ -2,8 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DoubleDoubleComplexTests {
-    using NComplex = System.Numerics.Complex;
-
     [TestClass()]
     public class ComplexArsinhArcoshTests {
 

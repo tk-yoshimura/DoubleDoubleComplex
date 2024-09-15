@@ -10,7 +10,7 @@ namespace DoubleDoubleComplex {
 
         public static Complex Arcosh(Complex z) {
             Complex y = ImaginaryOne * Acos(z);
-            
+
             if (ddouble.IsNegative(y.R)) {
                 y = -y;
             }
