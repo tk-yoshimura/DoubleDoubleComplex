@@ -520,7 +520,8 @@ namespace DoubleDoubleComplex {
                 int exp_sum = 0;
 
                 for (int k = 1; k < n; k++) {
-                    (int exp, (y0, y1)) = ddouble.AdjustScale(0, (y0, y1));
+                    int exp = int.Max(ILogB(y0), ILogB(y1));
+                    (y0, y1) = (Ldexp(y0, -exp), Ldexp(y1, -exp));
                     (y1, y0) = ((2 * k) * v * y1 - y0, y1);
 
                     exp_sum += exp;
@@ -1914,38 +1915,38 @@ namespace DoubleDoubleComplex {
             private static readonly Dictionary<ddouble, ReadOnlyCollection<(ddouble c, ddouble s)>> cds_coef_table = new();
 
             static BesselYoshidaPade() {
-                Dictionary<string, ReadOnlyCollection<ddouble>> tables =
-                    ResourceUnpack.NumTable(Resource.BesselKTable);
+                //Dictionary<string, ReadOnlyCollection<ddouble>> tables =
+                //    ResourceUnpack.NumTable(Resource.BesselKTable);
 
-                ReadOnlyCollection<ddouble> cs0 = tables["CS0Table"], cs1 = tables["CS1Table"];
-                ReadOnlyCollection<ddouble> ds0 = tables["DS0Table"], ds1 = tables["DS1Table"];
+                //ReadOnlyCollection<ddouble> cs0 = tables["CS0Table"], cs1 = tables["CS1Table"];
+                //ReadOnlyCollection<ddouble> ds0 = tables["DS0Table"], ds1 = tables["DS1Table"];
 
-                if (cs0.Count != ds0.Count || cs1.Count != ds1.Count) {
-                    throw new IOException("The format of resource file is invalid.");
-                }
+                //if (cs0.Count != ds0.Count || cs1.Count != ds1.Count) {
+                //    throw new IOException("The format of resource file is invalid.");
+                //}
 
-                List<(ddouble c, ddouble s)> cd0 = new(), cd1 = new();
+                //List<(ddouble c, ddouble s)> cd0 = new(), cd1 = new();
 
-                for (int i = 0; i < cs0.Count; i++) {
-                    cd0.Add((cs0[i], ds0[i]));
-                }
-                for (int i = 0; i < cs1.Count; i++) {
-                    cd1.Add((cs1[i], ds1[i]));
-                }
+                //for (int i = 0; i < cs0.Count; i++) {
+                //    cd0.Add((cs0[i], ds0[i]));
+                //}
+                //for (int i = 0; i < cs1.Count; i++) {
+                //    cd1.Add((cs1[i], ds1[i]));
+                //}
 
-                cd0.Reverse();
-                cd1.Reverse();
+                //cd0.Reverse();
+                //cd1.Reverse();
 
-                cds_coef_table.Add(0, Array.AsReadOnly(cd0.ToArray()));
-                cds_coef_table.Add(1, Array.AsReadOnly(cd1.ToArray()));
+                //cds_coef_table.Add(0, Array.AsReadOnly(cd0.ToArray()));
+                //cds_coef_table.Add(1, Array.AsReadOnly(cd1.ToArray()));
 
-                List<ReadOnlyCollection<ddouble>> es = new();
+                //List<ReadOnlyCollection<ddouble>> es = new();
 
-                for (int i = 0; i < 32; i++) {
-                    es.Add(tables[$"ES{i}Table"]);
-                }
+                //for (int i = 0; i < 32; i++) {
+                //    es.Add(tables[$"ES{i}Table"]);
+                //}
 
-                ess_coef_table = Array.AsReadOnly(es.ToArray());
+                //ess_coef_table = Array.AsReadOnly(es.ToArray());
             }
 
             public static Complex BesselK(ddouble nu, Complex x, bool scale = false) {
