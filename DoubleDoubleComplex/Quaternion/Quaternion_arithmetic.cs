@@ -64,6 +64,11 @@ namespace DoubleDoubleComplex {
         }
 
         public static Quaternion operator /(Quaternion a, Quaternion b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (Ldexp(a, -exp), Ldexp(b, -exp));
+            }
+
             ddouble s = 1d / b.Norm;
 
             return new(
@@ -75,6 +80,11 @@ namespace DoubleDoubleComplex {
         }
 
         public static Quaternion operator /(ddouble a, Quaternion b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (ddouble.Ldexp(a, -exp), Ldexp(b, -exp));
+            }
+            
             ddouble s = a / b.Norm;
 
             return new(b.R * s, -b.I * s, -b.J * s, -b.K * s);

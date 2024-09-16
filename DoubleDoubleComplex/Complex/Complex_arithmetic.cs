@@ -59,12 +59,22 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex operator /(Complex a, Complex b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (Ldexp(a, -exp), Ldexp(b, -exp));
+            }
+
             ddouble s = 1d / b.Norm;
 
             return new((a.R * b.R + a.I * b.I) * s, (a.I * b.R - a.R * b.I) * s);
         }
 
         public static Complex operator /(ddouble a, Complex b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (ddouble.Ldexp(a, -exp), Ldexp(b, -exp));
+            }
+            
             ddouble s = a / b.Norm;
 
             return new(b.R * s, -b.I * s);
