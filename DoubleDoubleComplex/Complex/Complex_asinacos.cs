@@ -20,16 +20,16 @@ namespace DoubleDoubleComplex {
                 return y;
             }
             else {
-                return -ImaginaryOne * Log(ImaginaryOne * z + Sqrt(1d - z * z));
+                return MulMinusI(Log(MulI(z) + Sqrt(1d - z * z)));
             }
         }
 
         public static Complex Acos(Complex z) {
-            return -ImaginaryOne * Log(z + ImaginaryOne * Sqrt(1d - z * z));
+            return MulMinusI(Log(z + MulI(Sqrt(1d - z * z))));
         }
 
         public static Complex Atan(Complex z) {
-            return ImaginaryOne / 2 * (Log1p(-ImaginaryOne * z) - Log1p(ImaginaryOne * z));
+            return ImaginaryOne / 2d * (Log1p(MulMinusI(z)) - Log1p(MulI(z)));
         }
 
         internal static partial class Consts {

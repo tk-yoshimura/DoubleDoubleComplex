@@ -11,7 +11,7 @@ namespace DoubleDoubleComplex {
 
             Complex y = (0.25d, 0.25d) * (
                 Erf(Consts.Fresnel.CPlus * z) -
-                ImaginaryOne * Erf(Consts.Fresnel.CMinus * z)
+                MulI(Erf(Consts.Fresnel.CMinus * z))
             );
 
             return y;
@@ -24,7 +24,7 @@ namespace DoubleDoubleComplex {
 
             Complex y = (0.25d, -0.25d) * (
                 Erf(Consts.Fresnel.CPlus * z) +
-                ImaginaryOne * Erf(Consts.Fresnel.CMinus * z)
+                MulI(Erf(Consts.Fresnel.CMinus * z))
             );
 
             return y;

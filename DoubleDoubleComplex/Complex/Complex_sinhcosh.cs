@@ -19,7 +19,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Tanh(Complex z) {
-            return -ImaginaryOne * Tan(ImaginaryOne * z);
+            return MulMinusI(Tan(MulI(z)));
         }
     }
 }

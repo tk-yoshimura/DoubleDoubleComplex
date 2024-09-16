@@ -79,5 +79,13 @@ namespace DoubleDoubleComplex {
 
             return new(z.R * s, -z.I * s);
         }
+
+        private static Complex MulI(Complex z) { 
+            return new(-z.I, z.R);
+        }
+
+        private static Complex MulMinusI(Complex z) { 
+            return new(z.I, -z.R);
+        }
     }
 }
