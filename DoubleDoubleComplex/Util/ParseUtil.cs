@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace DoubleDoubleComplex.Util {
     internal static class ParseUtil {
         public static int IndexOfElem(string str, int start_index) {
-            if (start_index < 0) {
-                throw new ArgumentOutOfRangeException(nameof(start_index));
-            }
+            Debug.Assert(start_index >= 0);
 
             int index = start_index - 1;
 
