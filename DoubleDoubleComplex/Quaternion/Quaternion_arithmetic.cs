@@ -95,9 +95,15 @@ namespace DoubleDoubleComplex {
         }
 
         public static Quaternion Inverse(Quaternion q) {
+            int exp = 0;
+            if (IsFinite(q) && !IsZero(q)) {
+                exp = ILogB(q);
+                q = Ldexp(q, -exp);
+            }
+
             ddouble s = 1d / q.Norm;
 
-            return new(q.R * s, -q.I * s, -q.J * s, -q.K * s);
+            return Ldexp(new(q.R * s, -q.I * s, -q.J * s, -q.K * s), -exp);
         }
     }
 }

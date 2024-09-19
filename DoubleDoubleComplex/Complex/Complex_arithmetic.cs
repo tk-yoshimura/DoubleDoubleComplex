@@ -85,9 +85,15 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Inverse(Complex z) {
+            int exp = 0;
+            if (IsFinite(z) && !IsZero(z)) {
+                exp = ILogB(z);
+                z = Ldexp(z, -exp);
+            }
+
             ddouble s = 1d / z.Norm;
 
-            return new(z.R * s, -z.I * s);
+            return Ldexp(new(z.R * s, -z.I * s), -exp);
         }
 
         private static Complex MulI(Complex z) { 

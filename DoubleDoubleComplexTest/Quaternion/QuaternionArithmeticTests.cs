@@ -126,6 +126,11 @@ namespace DoubleDoubleComplexTests {
                     QuaternionAssert.AreEqual(nc, c, 1e-6);
                 }
             }
+
+            QuaternionAssert.AreEqual(new Quaternion(1, 2, 3, 4) / new Quaternion(5, 6, 7, 8), new Quaternion(1e200, 2e200, 3e200, 4e200) / new Quaternion(5e200, 6e200, 7e200, 8e200), 1e-7);
+            QuaternionAssert.AreEqual(new Quaternion(1, 2, 3, 4) / new Quaternion(5, 6, 7, 8), new Quaternion(1e-200, 2e-200, 3e-200, 4e-200) / new Quaternion(5e-200, 6e-200, 7e-200, 8e-200), 1e-7);
+            QuaternionAssert.AreEqual(3 / new Quaternion(5, 6, 7, 8), 3e200 / new Quaternion(5e200, 6e200, 7e200, 8e200), 1e-7);
+            QuaternionAssert.AreEqual(3 / new Quaternion(5, 6, 7, 8), 3e-200 / new Quaternion(5e-200, 6e-200, 7e-200, 8e-200), 1e-7);
         }
 
         [TestMethod()]
@@ -154,7 +159,7 @@ namespace DoubleDoubleComplexTests {
 
         [TestMethod()]
         public void InverseTest() {
-            foreach (Quaternion q in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+            foreach (Quaternion q in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1), (1e200, 2e200, 3e200, 4e200), (1e-200, 2e-200, 3e-200, 4e-200) }) {
                 Quaternion s = Quaternion.Inverse(q);
 
                 QuaternionAssert.AreEqual(1, s * q, 1e-24);
