@@ -1036,7 +1036,7 @@ namespace DoubleDoubleComplex {
             }
         }
 
-        private static class BesselMillerBackward {
+        internal static class BesselMillerBackward {
             private static readonly Dictionary<ddouble, BesselJPhiTable> phi_coef_table = new();
             private static readonly Dictionary<ddouble, BesselIPsiTable> psi_coef_table = new();
             private static readonly Dictionary<ddouble, BesselYEtaTable> eta_coef_table = new();
@@ -1119,7 +1119,7 @@ namespace DoubleDoubleComplex {
                 return (int)double.Ceiling(86 + 0.75 * x - 67.25 / double.Sqrt(double.Sqrt(x))) & ~1;
             }
 
-            private static Complex BesselJKernel(int n, Complex x, int m) {
+            internal static Complex BesselJKernel(int n, Complex x, int m) {
                 if (m < 2 || (m & 1) != 0 || n >= m) {
                     throw new ArgumentOutOfRangeException(nameof(m));
                 }
@@ -1134,7 +1134,7 @@ namespace DoubleDoubleComplex {
                     return BesselJ1Kernel(x, m);
                 }
 
-                Complex f0 = 1e-256, f1 = 0d, fn = 0d, lambda = 0d;
+                Complex f0 = 1d, f1 = 0d, fn = 0d, lambda = 0d;
                 Complex v = 1d / x;
 
                 for (int k = m; k >= 1; k--) {
@@ -1147,6 +1147,13 @@ namespace DoubleDoubleComplex {
                     if (k - 1 == n) {
                         fn = f0;
                     }
+
+                    if (ILogB(f0) > 16) {
+                        (f0, f1, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16), Ldexp(lambda, -16));
+                    }
+                    else if (ILogB(f0) < -16) {
+                        (f0, f1, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(lambda, 16));
+                    }
                 }
 
                 lambda = Ldexp(lambda, 1) + f0;
@@ -1156,7 +1163,7 @@ namespace DoubleDoubleComplex {
                 return yn;
             }
 
-            private static Complex BesselJKernel(ddouble nu, Complex x, int m) {
+            internal static Complex BesselJKernel(ddouble nu, Complex x, int m) {
                 int n = (int)ddouble.Floor(nu);
                 ddouble alpha = nu - n;
 
@@ -1175,7 +1182,7 @@ namespace DoubleDoubleComplex {
 
                 BesselJPhiTable phi = phi_table;
 
-                Complex f0 = 1e-256, f1 = 0d, lambda = 0d;
+                Complex f0 = 1d, f1 = 0d, lambda = 0d;
                 Complex v = 1d / x;
 
                 if (n >= 0) {
@@ -1190,6 +1197,13 @@ namespace DoubleDoubleComplex {
 
                         if (k - 1 == n) {
                             fn = f0;
+                        }
+
+                        if (ILogB(f0) > 16) {
+                            (f0, f1, fn, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16), Ldexp(fn, -16), Ldexp(lambda, -16));
+                        }
+                        else if (ILogB(f0) < -16) {
+                            (f0, f1, fn, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(fn, 16), Ldexp(lambda, 16));
                         }
                     }
 
@@ -1207,6 +1221,13 @@ namespace DoubleDoubleComplex {
                         }
 
                         (f0, f1) = (Ldexp(k + alpha, 1) * v * f0 - f1, f0);
+
+                        if (ILogB(f0) > 16) {
+                            (f0, f1, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16),Ldexp(lambda, -16));
+                        }
+                        else if (ILogB(f0) < -16) {
+                            (f0, f1, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(lambda, 16));
+                        }
                     }
 
                     lambda += f0 * phi[0];
@@ -1214,6 +1235,13 @@ namespace DoubleDoubleComplex {
 
                     for (int k = 0; k > n; k--) {
                         (f0, f1) = (Ldexp(k + alpha, 1) * v * f0 - f1, f0);
+
+                        if (ILogB(f0) > 16) {
+                            (f0, f1, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16), Ldexp(lambda, -16));
+                        }
+                        else if (ILogB(f0) < -16) {
+                            (f0, f1, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(lambda, 16));
+                        }
                     }
 
                     Complex yn = f0 / lambda;
@@ -1227,7 +1255,7 @@ namespace DoubleDoubleComplex {
                     throw new ArgumentOutOfRangeException(nameof(m));
                 }
 
-                Complex f0 = 1e-256, f1 = 0d, lambda = 0d;
+                Complex f0 = 1d, f1 = 0d, lambda = 0d;
                 Complex v = 1d / x;
 
                 for (int k = m; k >= 1; k--) {
@@ -1236,6 +1264,13 @@ namespace DoubleDoubleComplex {
                     }
 
                     (f0, f1) = ((2 * k) * v * f0 - f1, f0);
+
+                    if (ILogB(f0) > 16) {
+                        (f0, f1, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16), Ldexp(lambda, -16));
+                    }
+                    else if (ILogB(f0) < -16) {
+                        (f0, f1, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(lambda, 16));
+                    }
                 }
 
                 lambda = Ldexp(lambda, 1) + f0;
@@ -1250,7 +1285,7 @@ namespace DoubleDoubleComplex {
                     throw new ArgumentOutOfRangeException(nameof(m));
                 }
 
-                Complex f0 = 1e-256, f1 = 0d, lambda = 0d;
+                Complex f0 = 1d, f1 = 0d, lambda = 0d;
                 Complex v = 1d / x;
 
                 for (int k = m; k >= 1; k--) {
@@ -1259,6 +1294,13 @@ namespace DoubleDoubleComplex {
                     }
 
                     (f0, f1) = ((2 * k) * v * f0 - f1, f0);
+
+                    if (ILogB(f0) > 16) {
+                        (f0, f1, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16), Ldexp(lambda, -16));
+                    }
+                    else if (ILogB(f0) < -16) {
+                        (f0, f1, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(lambda, 16));
+                    }
                 }
 
                 lambda = Ldexp(lambda, 1) + f0;
@@ -1268,7 +1310,7 @@ namespace DoubleDoubleComplex {
                 return y1;
             }
 
-            private static Complex BesselYKernel(int n, Complex x, int m) {
+            internal static Complex BesselYKernel(int n, Complex x, int m) {
                 if (m < 2 || (m & 1) != 0 || n >= m) {
                     throw new ArgumentOutOfRangeException(nameof(m));
                 }
@@ -1328,7 +1370,7 @@ namespace DoubleDoubleComplex {
                 return yn;
             }
 
-            private static Complex BesselYKernel(ddouble nu, Complex x, int m) {
+            internal static Complex BesselYKernel(ddouble nu, Complex x, int m) {
                 int n = (int)ddouble.Floor(nu);
                 ddouble alpha = nu - n;
 
@@ -1570,7 +1612,7 @@ namespace DoubleDoubleComplex {
                 return y1;
             }
 
-            private static Complex BesselIKernel(int n, Complex x, int m, bool scale = false) {
+            internal static Complex BesselIKernel(int n, Complex x, int m, bool scale = false) {
                 if (m < 2 || (m & 1) != 0 || n >= m) {
                     throw new ArgumentOutOfRangeException(nameof(m));
                 }
@@ -1608,7 +1650,7 @@ namespace DoubleDoubleComplex {
                 return yn;
             }
 
-            private static Complex BesselIKernel(ddouble nu, Complex x, int m, bool scale = false) {
+            internal static Complex BesselIKernel(ddouble nu, Complex x, int m, bool scale = false) {
                 int n = (int)ddouble.Floor(nu);
                 ddouble alpha = nu - n;
 
