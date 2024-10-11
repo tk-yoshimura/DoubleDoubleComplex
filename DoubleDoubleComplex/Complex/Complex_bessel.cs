@@ -5,435 +5,367 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using static DoubleDoubleComplex.ComplexBesselUtil;
 
 namespace DoubleDoubleComplex {
 
     public partial class Complex {
 
-        public static Complex BesselJ(ddouble nu, Complex x) {
-            if (ddouble.IsPositive(x.R) && double.Abs((double)x.I) <= double.Abs((double)x.R) * 5e-31) {
-                return ddouble.BesselJ(nu, x.R);
+        public static Complex BesselJ(ddouble nu, Complex z) {
+            if (ddouble.IsPositive(z.R) && double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+                return ddouble.BesselJ(nu, z.R);
             }
 
-            BesselUtil.CheckNu(nu);
+            CheckNu(nu);
 
-            if (IsNaN(x)) {
+            if (!IsFinite(z)) {
                 return NaN;
             }
 
-            if (x.Magnitude <= 2d) {
-                Complex y = BesselNearZero.BesselJ(nu, x);
-
-                if (IsFinite(y) && !(IsZero(y) && x.Magnitude < BesselUtil.ExtremelyNearZero)) {
-                    return y;
-                }
-
-                if (nu == 0d) {
-                    return 1d;
-                }
-                if (BesselUtil.NearlyInteger(nu, out _) || nu > 0d) {
-                    return 0d;
-                }
-                return ddouble.IsEvenInteger(nu) ? ddouble.NegativeInfinity : ddouble.PositiveInfinity;
-            }
-            if (x.Magnitude <= 40.5d) {
-                return BesselMillerBackward.BesselJ(nu, x);
+            if (ddouble.IsNegative(z.I)) {
+                return BesselJ(nu, z.Conj).Conj;
             }
 
-            return BesselLimit.BesselJ(nu, x);
+            if (ddouble.IsNegative(z.R)) {
+                return (SinCosPICache.CosPI(nu), SinCosPICache.SinPI(nu)) * BesselJ(nu, -z);
+            }
+
+            if (z.Magnitude >= HankelThreshold) {
+                return Limit.BesselJ(nu, z);
+            }
+            else if (z.R <= PowerSeriesThreshold(nu, z.I)) {
+                return PowerSeries.BesselJ(nu, z);
+            }
+            else if (z.I <= MillerBackwardThreshold) {
+                return MillerBackward.BesselJ(nu, z);
+            }
+            else {
+                return (SinCosPICache.CosPI(nu / 2d), SinCosPICache.SinPI(nu / 2d)) * MillerBackward.BesselI(nu, (z.I, z.R)).Conj;
+            }
         }
 
-        public static Complex BesselJ(int n, Complex x) {
-            if (ddouble.IsPositive(x.R) && double.Abs((double)x.I) <= double.Abs((double)x.R) * 5e-31) {
-                return ddouble.BesselJ(n, x.R);
+        public static Complex BesselY(ddouble nu, Complex z) {
+            if (ddouble.IsPositive(z.R) && double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+                return ddouble.BesselY(nu, z.R);
             }
 
-            BesselUtil.CheckN(n);
+            CheckNu(nu);
 
-            if (IsNaN(x)) {
+            if (!IsFinite(z)) {
                 return NaN;
             }
 
-            if (ddouble.IsNegative(x.R)) {
-                return ((n & 1) == 0) ? BesselJ(n, -x) : -BesselJ(n, -x);
+            if (ddouble.IsNegative(z.I)) {
+                return BesselY(nu, z.Conj).Conj;
             }
-            if (x.Magnitude <= 2d) {
-                Complex y = BesselNearZero.BesselJ(n, x);
 
-                if (IsFinite(y) && !(IsZero(y) && x.Magnitude < BesselUtil.ExtremelyNearZero)) {
-                    return y;
+            if (ddouble.IsNegative(z.R)) {
+                return (SinCosPICache.CosPI(nu), -SinCosPICache.SinPI(nu)) * BesselY(nu, -z)
+                        + (0d, 2d * SinCosPICache.CosPI(nu)) * BesselJ(nu, -z);
+            }
+
+            if (z.Magnitude >= HankelThreshold) {
+                return Limit.BesselY(nu, z);
+            }
+            else if (z.R <= PowerSeriesThreshold(nu, z.I) - BesselJYPowerseriesBias) {
+                if (NearlyInteger(nu, out int n) || ddouble.Abs(n - nu) >= BesselYForcedMillerBackwardThreshold) {
+                    return PowerSeries.BesselY(nu, z);
                 }
-
-                return (n == 0) ? 1d : 0d;
-            }
-            if (x.Magnitude <= 40.5d) {
-                return BesselMillerBackward.BesselJ(n, x);
-            }
-
-            return BesselLimit.BesselJ(n, x);
-        }
-
-        public static Complex BesselY(ddouble nu, Complex x) {
-            if (ddouble.IsPositive(x.R) && double.Abs((double)x.I) <= double.Abs((double)x.R) * 5e-31) {
-                return ddouble.BesselY(nu, x.R);
-            }
-
-            BesselUtil.CheckNu(nu);
-
-            if (IsNaN(x)) {
-                return NaN;
-            }
-
-            if (nu < 0d && ddouble.Abs((nu - ddouble.Floor(nu)) - 0.5d) < 0.0625d) {
-                if (x.R <= 4d - nu) {
-                    Complex y = BesselNearZero.BesselY(nu, x);
-
-                    if (IsFinite(y) && !(IsZero(y) && x.Magnitude < BesselUtil.ExtremelyNearZero)) {
-                        return y;
-                    }
-
-                    if (nu - ddouble.Floor(nu) == 0.5d) {
-                        return 0d;
-                    }
-                    int n = (int)(ddouble.Floor(nu + 0.5d));
-                    return ((n & 1) == 0) ? ddouble.NegativeInfinity : ddouble.PositiveInfinity;
+                else if (z.I <= MillerBackwardThreshold / 2d) {
+                    return MillerBackward.BesselY(nu, z);
                 }
-            }
-
-            if (x.Magnitude <= 2d) {
-                Complex y;
-
-                if (BesselUtil.NearlyInteger(nu, out _) || ddouble.Abs(ddouble.Round(nu) - nu) >= BesselUtil.InterpolationThreshold) {
-                    y = BesselNearZero.BesselY(nu, x);
+                else if (ddouble.Abs(n - nu) >= BesselYInterpolationDelta) {
+                    return PowerSeries.BesselY(nu, z);
                 }
                 else {
-                    y = BesselInterpolate.BesselYCubicInterpolate(nu, x);
+                    return Interpolation.BesselY(nu, z);
                 }
-
-                if (IsFinite(y) && !(IsZero(y) && x.Magnitude < BesselUtil.ExtremelyNearZero)) {
-                    return y;
-                }
-
-                if (nu > 0d) {
-                    return ddouble.NegativeInfinity;
-                }
-                if (nu - ddouble.Floor(nu) == 0.5d) {
-                    return 0d;
-                }
-                int n = (int)(ddouble.Floor(nu + 0.5d));
-                return ((n & 1) == 0) ? ddouble.NegativeInfinity : ddouble.PositiveInfinity;
             }
-
-            if (x.Magnitude <= 40.5d) {
-                if (!BesselUtil.NearlyInteger(nu, out _) && (ddouble.Ceiling(nu) - nu) < BesselUtil.InterpolationThreshold) {
-                    return BesselInterpolate.BesselYCubicInterpolate(nu, x);
-                }
-
-                return BesselMillerBackward.BesselY(nu, x);
+            else if (z.I <= MillerBackwardThreshold) {
+                return MillerBackward.BesselY(nu, z);
             }
+            else {
+                Complex c = (SinCosPICache.CosPI(nu / 2d), SinCosPICache.SinPI(nu / 2d));
 
-            return BesselLimit.BesselY(nu, x);
+                Complex bi = (z.R <= PowerSeriesThreshold(nu, z.I))
+                    ? PowerSeries.BesselI(nu, (z.I, z.R))
+                    : MillerBackward.BesselI(nu, (z.I, z.R));
+
+                Complex bk = YoshidaPade.BesselK(nu, (z.I, z.R));
+
+                Complex y = MulI(c * bi.Conj) - 2d * ddouble.RcpPI * (c * bk).Conj;
+
+                return y;
+            }
         }
 
-        public static Complex BesselY(int n, Complex x) {
-            if (ddouble.IsPositive(x.R) && double.Abs((double)x.I) <= double.Abs((double)x.R) * 5e-31) {
-                return ddouble.BesselY(n, x.R);
+        public static Complex BesselI(ddouble nu, Complex z) {
+            if (ddouble.IsPositive(z.R) && double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+                return ddouble.BesselI(nu, z.R);
             }
 
-            BesselUtil.CheckN(n);
+            CheckNu(nu);
 
-            if (IsNaN(x)) {
+            if (!IsFinite(z)) {
                 return NaN;
             }
 
-            if (x.Magnitude <= 2d) {
-                Complex y = BesselNearZero.BesselY(n, x);
-
-                if (IsFinite(y) && !(IsZero(y) && x.Magnitude < BesselUtil.ExtremelyNearZero)) {
-                    return y;
-                }
-
-                if (n > 0) {
-                    return ddouble.NegativeInfinity;
-                }
-                return ((n & 1) == 0) ? ddouble.NegativeInfinity : ddouble.PositiveInfinity;
-            }
-            if (x.Magnitude <= 40.5d) {
-                return BesselMillerBackward.BesselY(n, x);
+            if (ddouble.IsNegative(z.I)) {
+                return BesselI(nu, z.Conj).Conj;
             }
 
-            return BesselLimit.BesselY(n, x);
+            if (ddouble.IsNegative(z.R)) {
+                return (SinCosPICache.CosPI(nu), SinCosPICache.SinPI(nu)) * BesselI(nu, -z);
+            }
+
+            if (z.Magnitude >= HankelThreshold) {
+                return Limit.BesselI(nu, z);
+            }
+            else if (z.I <= PowerSeriesThreshold(nu, z.R)) {
+                return PowerSeries.BesselI(nu, z);
+            }
+            else {
+                return MillerBackward.BesselI(nu, z);
+            }
         }
 
-        public static Complex BesselI(ddouble nu, Complex x, bool scale = false) {
-            if (ddouble.IsPositive(x.R) && double.Abs((double)x.I) <= double.Abs((double)x.R) * 5e-31) {
-                return ddouble.BesselI(nu, x.R);
+        public static Complex BesselK(ddouble nu, Complex z) {
+            if (ddouble.IsPositive(z.R) && double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+                return ddouble.BesselK(nu, z.R);
             }
 
-            BesselUtil.CheckNu(nu);
+            CheckNu(nu);
 
-            if (IsNaN(x)) {
-                return NaN;
-            }
-
-            if (x.Magnitude <= 2d) {
-                Complex y = BesselNearZero.BesselI(nu, x, scale);
-
-                if (IsFinite(y) && !(IsZero(y) && x.Magnitude < BesselUtil.ExtremelyNearZero)) {
-                    return y;
-                }
-
-                if (nu == 0d) {
-                    return 1d;
-                }
-                if (BesselUtil.NearlyInteger(nu, out _) || nu > 0d) {
-                    return 0d;
-                }
-                return ddouble.IsEvenInteger(nu) ? ddouble.NegativeInfinity : ddouble.PositiveInfinity;
-            }
-            if (x.Magnitude <= 40d) {
-                return BesselMillerBackward.BesselI(nu, x, scale);
-            }
-
-            return BesselLimit.BesselI(nu, x, scale);
-        }
-
-        public static Complex BesselI(int n, Complex x, bool scale = false) {
-            if (ddouble.IsPositive(x.R) && double.Abs((double)x.I) <= double.Abs((double)x.R) * 5e-31) {
-                return ddouble.BesselI(n, x.R);
-            }
-
-            BesselUtil.CheckN(n);
-
-            if (IsNaN(x)) {
-                return NaN;
-            }
-
-            if (x.Magnitude <= 2d) {
-                Complex y = BesselNearZero.BesselI(n, x, scale);
-
-                if (IsFinite(y) && !(IsZero(y) && x.Magnitude < BesselUtil.ExtremelyNearZero)) {
-                    return y;
-                }
-
-                return (n == 0) ? 1d : 0d;
-            }
-            if (x.Magnitude <= 40d) {
-                return BesselMillerBackward.BesselI(n, x, scale);
-            }
-
-            return BesselLimit.BesselI(n, x, scale);
-        }
-
-        public static Complex BesselK(ddouble nu, Complex x, bool scale = false) {
-            if (ddouble.IsPositive(x.R) && double.Abs((double)x.I) <= double.Abs((double)x.R) * 5e-31) {
-                return ddouble.BesselK(nu, x.R);
-            }
-
-            BesselUtil.CheckNu(nu);
-
-            if (IsNaN(x)) {
+            if (!IsFinite(z)) {
                 return NaN;
             }
 
             nu = ddouble.Abs(nu);
 
-            if (x.Magnitude <= 2d) {
-                Complex y;
+            if (ddouble.IsNegative(z.I)) {
+                return BesselK(nu, z.Conj).Conj;
+            }
 
-                if (BesselUtil.NearlyInteger(nu, out _) || ddouble.Abs(ddouble.Round(nu) - nu) >= BesselUtil.InterpolationThreshold) {
-                    y = BesselNearZero.BesselK(nu, x, scale);
+            if (ddouble.IsNegative(z.R)) {
+                return (SinCosPICache.CosPI(nu), -SinCosPICache.SinPI(nu)) * BesselK(nu, -z)
+                        - (0d, ddouble.PI) * BesselI(nu, -z);
+            }
+
+            if (z.Magnitude >= HankelThreshold) {
+                return Limit.BesselK(nu, z);
+            }
+            else if (z.Magnitude <= BesselKNearZeroThreshold) {
+                if (NearlyInteger(nu, out int n) || ddouble.Abs(n - nu) >= BesselKInterpolationDelta) {
+                    return PowerSeries.BesselK(nu, z);
                 }
                 else {
-                    y = BesselInterpolate.BesselKCubicInterpolate(nu, x, scale);
+                    return Interpolation.BesselK(nu, z);
                 }
-
-                if (IsFinite(y) && !(IsZero(y) && x.Magnitude < BesselUtil.ExtremelyNearZero)) {
-                    return y;
-                }
-
-                return ddouble.PositiveInfinity;
             }
-
-            if (x.Magnitude <= 35d) {
-                return BesselYoshidaPade.BesselK(nu, x, scale);
+            else if (z.R >= BesselKPadeThreshold) {
+                return YoshidaPade.BesselK(nu, z);
             }
+            else {
+                Complex c = (SinCosPICache.CosPI(nu / 2d), -SinCosPICache.SinPI(nu / 2d));
 
-            return BesselLimit.BesselK(nu, x, scale);
+                Complex bi = (z.I <= PowerSeriesThreshold(nu, z.R))
+                    ? PowerSeries.BesselI(nu, z)
+                    : MillerBackward.BesselI(nu, z);
+
+                Complex by = (
+                    (z.I <= PowerSeriesThreshold(nu, z.R) - BesselJYPowerseriesBias)
+                    ? (
+                        (NearlyInteger(nu, out int n) || ddouble.Abs(n - nu) >= BesselYForcedMillerBackwardThreshold)
+                         ? PowerSeries.BesselY(nu, (z.I, z.R))
+                         : (z.R <= MillerBackwardThreshold / 2d)
+                         ? MillerBackward.BesselY(nu, (z.I, z.R))
+                         : (ddouble.Abs(n - nu) >= BesselYInterpolationDelta)
+                         ? PowerSeries.BesselY(nu, (z.I, z.R))
+                         : Interpolation.BesselY(nu, (z.I, z.R))
+                    )
+                    : MillerBackward.BesselY(nu, (z.I, z.R))
+                );
+
+                Complex y = c * (MulMinusI(c * bi) - by.Conj) * ddouble.PI / 2d;
+
+                return y;
+            }
+        }
+    }
+
+    internal static class ComplexBesselUtil {
+        public const int MaxN = 16;
+        public static readonly double Eps = double.ScaleB(1, -105);
+        public static readonly int NearZeroExponent = -950;
+        public static readonly double BesselYForcedMillerBackwardThreshold = double.ScaleB(1, -8);
+        public static readonly double BesselYInterpolationDelta = double.ScaleB(1, -16);
+        public static readonly double BesselKInterpolationDelta = double.ScaleB(1, -8);
+        public const double HankelThreshold = 38.875, MillerBackwardThreshold = 6;
+        public const double BesselKPadeThreshold = 1, BesselKNearZeroThreshold = 4, BesselJYPowerseriesBias = 2;
+
+        public static ddouble PowerSeriesThreshold(ddouble nu, ddouble x) {
+            ddouble nu_abs = ddouble.Abs(nu);
+
+            return 7.5 + nu_abs * (3.57e-1 + nu_abs * 5.23e-3) + x * (4.67e-1 - nu_abs * 1.51e-2);
         }
 
-        public static Complex BesselK(int n, Complex x, bool scale = false) {
-            if (ddouble.IsPositive(x.R) && double.Abs((double)x.I) <= double.Abs((double)x.R) * 5e-31) {
-                return ddouble.BesselK(n, x.R);
-            }
-
-            BesselUtil.CheckN(n);
-
-            if (IsNaN(x)) {
-                return NaN;
-            }
-
-            n = int.Abs(n);
-
-            if (x.Magnitude <= 2d) {
-                Complex y = BesselNearZero.BesselK(n, x, scale);
-
-                if (IsFinite(y) && !(IsZero(y) && x.Magnitude < BesselUtil.ExtremelyNearZero)) {
-                    return y;
-                }
-
-                return ddouble.PositiveInfinity;
-            }
-            if (x.Magnitude <= 35d) {
-                return BesselYoshidaPade.BesselK(n, x, scale);
-            }
-
-            return BesselLimit.BesselK(n, x, scale);
-        }
-
-        private static class BesselUtil {
-            public static readonly double Eps = double.ScaleB(1, -1000);
-            public static readonly double ExtremelyNearZero = double.ScaleB(1, -28);
-            public static readonly double InterpolationThreshold = double.ScaleB(1, -25);
-            public static readonly double MillerBwdBesselYEps = double.ScaleB(1, -30);
-
-            public const int MaxN = 16;
-
-            public static void CheckNu(ddouble nu) {
-                if (!(ddouble.Abs(nu) <= (double)MaxN)) {
-                    throw new ArgumentOutOfRangeException(
-                        nameof(nu),
-                        $"In the calculation of the Bessel function, nu with an absolute value greater than {MaxN} is not supported."
-                    );
-                }
-            }
-
-            public static void CheckN(int n) {
-                if (n < -MaxN || n > MaxN) {
-                    throw new ArgumentOutOfRangeException(
-                        nameof(n),
-                        $"In the calculation of the Bessel function, n with an absolute value greater than {MaxN} is not supported."
-                    );
-                }
-            }
-
-            public static bool NearlyInteger(ddouble nu, out int n) {
-                n = (int)ddouble.Round(nu);
-
-                return ddouble.Abs(nu - n) < Eps;
+        public static void CheckNu(ddouble nu) {
+            if (!(ddouble.Abs(nu) <= MaxN)) {
+                throw new ArgumentOutOfRangeException(
+                    nameof(nu),
+                    $"In the calculation of the Bessel function, nu with an absolute value greater than {MaxN} is not supported."
+                );
             }
         }
 
-        private static class BesselNearZero {
-            private static readonly Dictionary<ddouble, DoubleFactDenomTable> dfactdenom_coef_table = new();
-            private static readonly Dictionary<ddouble, X2DenomTable> x2denom_coef_table = new();
-            private static readonly Dictionary<ddouble, GammaDenomTable> gammadenom_coef_table = new();
-            private static readonly Dictionary<ddouble, GammaTable> gamma_coef_table = new();
-            private static readonly Dictionary<ddouble, GammaPNTable> gammapn_coef_table = new();
+        public static void CheckN(int n) {
+            if (n < -MaxN || n > MaxN) {
+                throw new ArgumentOutOfRangeException(
+                    nameof(n),
+                    $"In the calculation of the Bessel function, n with an absolute value greater than {MaxN} is not supported."
+                );
+            }
+        }
+
+        public static bool NearlyInteger(ddouble nu, out int n) {
+            n = (int)ddouble.Round(nu);
+
+            return ddouble.Abs(nu - n) < Eps;
+        }
+
+        public static class SinCosPICache {
+            private static readonly Dictionary<ddouble, ddouble> cospi_table = [];
+            private static readonly Dictionary<ddouble, ddouble> sinpi_table = [];
+
+            public static ddouble CosPI(ddouble theta) {
+                if (!cospi_table.TryGetValue(theta, out ddouble cospi)) {
+                    cospi = ddouble.CosPI(theta);
+                    cospi_table[theta] = cospi;
+                }
+
+                return cospi;
+            }
+
+            public static ddouble SinPI(ddouble theta) {
+                if (!sinpi_table.TryGetValue(theta, out ddouble sinpi)) {
+                    sinpi = ddouble.SinPI(theta);
+                    sinpi_table[theta] = sinpi;
+                }
+
+                return sinpi;
+            }
+        }
+
+        public class PowerSeries {
+            private static readonly Dictionary<ddouble, DoubleFactDenomTable> dfactdenom_coef_table = [];
+            private static readonly Dictionary<ddouble, X2DenomTable> x2denom_coef_table = [];
+            private static readonly Dictionary<ddouble, GammaDenomTable> gammadenom_coef_table = [];
+            private static readonly Dictionary<ddouble, GammaTable> gamma_coef_table = [];
+            private static readonly Dictionary<ddouble, GammaPNTable> gammapn_coef_table = [];
             private static readonly YCoefTable y_coef_table = new();
             private static readonly Y0CoefTable y0_coef_table = new();
-            private static readonly Y1CoefTable y1_coef_table = new();
+            private static readonly Dictionary<int, YNCoefTable> yn_coef_table = [];
+            private static readonly Dictionary<int, ReadOnlyCollection<ddouble>> yn_finitecoef_table = [];
             private static readonly KCoefTable k_coef_table = new();
             private static readonly K0CoefTable k0_coef_table = new();
             private static readonly K1CoefTable k1_coef_table = new();
 
-            public static Complex BesselJ(ddouble nu, Complex x) {
-                if (ddouble.IsNegative(nu) && BesselUtil.NearlyInteger(nu, out int n)) {
-                    Complex y = BesselJ(-nu, x);
+            public static Complex BesselJ(ddouble nu, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
 
-                    return ((n & 1) == 0) ? y : -y;
+                if (ddouble.IsNegative(nu) && NearlyInteger(nu, out int n)) {
+                    Complex y = BesselJ(-nu, z);
+
+                    return (n & 1) == 0 ? y : -y;
                 }
                 else {
-                    Complex y = BesselJIKernel(nu, x, sign_switch: true, terms: 9);
+                    Complex y = BesselJKernel(nu, z, terms: 42);
 
                     return y;
                 }
             }
 
-            public static Complex BesselY(ddouble nu, Complex x) {
-                if (BesselUtil.NearlyInteger(nu, out int n)) {
-                    Complex y = BesselYKernel(n, x, terms: 9);
+            public static Complex BesselY(ddouble nu, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
 
-                    return y;
-                }
-                else if (nu < 0d && ddouble.Abs((nu - ddouble.Floor(nu)) - 0.5d) < 0.0625d) {
-                    Complex y = BesselYKernel(nu, x, terms: 32);
+                if (NearlyInteger(nu, out int n)) {
+                    Complex y = BesselYKernel(n, z, terms: 44);
 
                     return y;
                 }
                 else {
-                    Complex y = BesselYKernel(nu, x, terms: 10);
+                    Complex y = BesselYKernel(nu, z, terms: 44);
 
                     return y;
                 }
             }
 
-            public static Complex BesselI(ddouble nu, Complex x, bool scale = false) {
-                if (ddouble.IsNegative(nu) && BesselUtil.NearlyInteger(nu, out _)) {
-                    Complex y = BesselI(-nu, x);
+            public static Complex BesselI(ddouble nu, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
 
-                    if (scale) {
-                        y *= Exp(-x);
-                    }
+                if (ddouble.IsNegative(nu) && NearlyInteger(nu, out _)) {
+                    Complex y = BesselI(-nu, z);
 
                     return y;
                 }
                 else {
-                    Complex y = BesselJIKernel(nu, x, sign_switch: false, terms: 10);
-
-                    if (scale) {
-                        y *= Exp(-x);
-                    }
+                    Complex y = BesselIKernel(nu, z, terms: 42);
 
                     return y;
                 }
             }
 
-            public static Complex BesselK(ddouble nu, Complex x, bool scale = false) {
-                if (BesselUtil.NearlyInteger(nu, out int n)) {
-                    Complex y = BesselKKernel(n, x, terms: 20);
+            public static Complex BesselK(ddouble nu, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
 
-                    if (scale) {
-                        y *= Exp(x);
-                    }
+                if (NearlyInteger(nu, out int n)) {
+                    Complex y = BesselKKernel(n, z, terms: 27);
 
                     return y;
                 }
                 else {
-                    Complex y = BesselKKernel(nu, x, terms: 20);
-
-                    if (scale) {
-                        y *= Exp(x);
-                    }
+                    Complex y = BesselKKernel(nu, z, terms: 30);
 
                     return y;
                 }
             }
 
-            private static Complex BesselJIKernel(ddouble nu, Complex x, bool sign_switch, int terms) {
-                if (!dfactdenom_coef_table.TryGetValue(nu, out DoubleFactDenomTable dfactdenom_table)) {
-                    dfactdenom_table = new DoubleFactDenomTable(nu);
-                    dfactdenom_coef_table.Add(nu, dfactdenom_table);
+            private static Complex BesselJKernel(ddouble nu, Complex z, int terms) {
+                if (!dfactdenom_coef_table.TryGetValue(nu, out DoubleFactDenomTable r)) {
+                    r = new DoubleFactDenomTable(nu);
+                    dfactdenom_coef_table.Add(nu, r);
                 }
-                if (!x2denom_coef_table.TryGetValue(nu, out X2DenomTable x2denom_table)) {
-                    x2denom_table = new X2DenomTable(nu);
-                    x2denom_coef_table.Add(nu, x2denom_table);
+                if (!x2denom_coef_table.TryGetValue(nu, out X2DenomTable d)) {
+                    d = new X2DenomTable(nu);
+                    x2denom_coef_table.Add(nu, d);
                 }
 
-                DoubleFactDenomTable r = dfactdenom_table;
-                X2DenomTable d = x2denom_table;
+                Complex z2 = z * z, z4 = z2 * z2;
 
-                Complex x2 = x * x, x4 = x2 * x2;
+                Complex c = 0d, u = Complex.Pow(Complex.Ldexp(z, -1), nu);
 
-                Complex c = 0d, u = Pow(Ldexp(x, -1), nu);
+                if (!Complex.IsFinite(u) || Complex.IsZero(z2)) {
+                    if (ddouble.IsZero(nu)) {
+                        return 1d;
+                    }
+                    if (NearlyInteger(nu, out _) || ddouble.IsPositive(nu)) {
+                        return 0d;
+                    }
+
+                    return Complex.NaN;
+                }
 
                 for (int k = 0, conv_times = 0; k <= terms && conv_times < 2; k++) {
-                    Complex w = x2 * d[k];
-                    Complex dc = u * r[k] * (sign_switch ? (1d - w) : (1d + w));
+                    Complex w = z2 * d[k];
+                    Complex dc = u * r[k] * (1d - w);
 
                     Complex c_next = c + dc;
 
-                    if (c == c_next || !IsFinite(c_next)) {
+                    if (c == c_next || !Complex.IsFinite(c_next)) {
                         conv_times++;
                     }
                     else {
@@ -441,9 +373,9 @@ namespace DoubleDoubleComplex {
                     }
 
                     c = c_next;
-                    u *= x4;
+                    u *= z4;
 
-                    if (!IsFinite(c)) {
+                    if (!Complex.IsFinite(c)) {
                         break;
                     }
                 }
@@ -451,24 +383,27 @@ namespace DoubleDoubleComplex {
                 return c;
             }
 
-            private static Complex BesselYKernel(ddouble nu, Complex x, int terms) {
-                if (!gamma_coef_table.TryGetValue(nu, out GammaTable gamma_table)) {
-                    gamma_table = new GammaTable(nu);
-                    gamma_coef_table.Add(nu, gamma_table);
+            private static Complex BesselYKernel(ddouble nu, Complex z, int terms) {
+                if (!gamma_coef_table.TryGetValue(nu, out GammaTable g)) {
+                    g = new GammaTable(nu);
+                    gamma_coef_table.Add(nu, g);
                 }
-                if (!gammapn_coef_table.TryGetValue(nu, out GammaPNTable gammapn_table)) {
-                    gammapn_table = new GammaPNTable(nu);
-                    gammapn_coef_table.Add(nu, gammapn_table);
+                if (!gammapn_coef_table.TryGetValue(nu, out GammaPNTable gpn)) {
+                    gpn = new GammaPNTable(nu);
+                    gammapn_coef_table.Add(nu, gpn);
                 }
 
                 YCoefTable r = y_coef_table;
-                GammaTable g = gamma_table;
-                GammaPNTable gpn = gammapn_table;
 
-                ddouble cos = ddouble.CosPI(nu), sin = ddouble.SinPI(nu);
-                Complex p = IsZero(cos) ? 0d : Pow(x, Ldexp(nu, 1)) * cos, s = Ldexp(Pow(Ldexp(x, 1), nu), 2);
+                ddouble cos = SinCosPICache.CosPI(nu), sin = SinCosPICache.SinPI(nu);
+                Complex p = Complex.IsZero(cos) ? 0d : Complex.Pow(z, Complex.Ldexp(nu, 1)) * cos;
+                Complex s = Complex.Ldexp(Complex.Pow(Complex.Ldexp(z, 1), nu), 2);
 
-                Complex x2 = x * x, x4 = x2 * x2;
+                Complex z2 = z * z, z4 = z2 * z2;
+
+                if (!Complex.IsFinite(p) || !Complex.IsFinite(s) || Complex.ILogB(s) < NearZeroExponent || Complex.IsZero(z2)) {
+                    return Complex.NaN;
+                }
 
                 Complex c = 0d, u = 1d / sin;
 
@@ -476,11 +411,11 @@ namespace DoubleDoubleComplex {
                     Complex a = t * s * g[t], q = gpn[t];
                     Complex pa = p / a, qa = q / a;
 
-                    Complex dc = u * r[k] * ((4 * t * nu) * (pa + qa) - (x2 - (4 * t * t)) * (pa - qa));
+                    Complex dc = u * r[k] * (4 * t * nu * (pa + qa) - (z2 - 4 * t * t) * (pa - qa));
 
                     Complex c_next = c + dc;
 
-                    if (c == c_next || !IsFinite(c_next)) {
+                    if (c == c_next || !Complex.IsFinite(c_next)) {
                         conv_times++;
                     }
                     else {
@@ -488,9 +423,9 @@ namespace DoubleDoubleComplex {
                     }
 
                     c = c_next;
-                    u *= x4;
+                    u *= z4;
 
-                    if (!IsFinite(c)) {
+                    if (!Complex.IsFinite(c)) {
                         break;
                     }
                 }
@@ -498,64 +433,50 @@ namespace DoubleDoubleComplex {
                 return c;
             }
 
-            private static Complex BesselYKernel(int n, Complex x, int terms) {
+            private static Complex BesselYKernel(int n, Complex z, int terms) {
                 if (n < 0) {
-                    Complex y = BesselYKernel(-n, x, terms);
+                    Complex y = BesselYKernel(-n, z, terms);
 
-                    return ((n & 1) == 0) ? y : -y;
+                    return (n & 1) == 0 ? y : -y;
+                }
+                else if (n == 0) {
+                    return BesselY0Kernel(z, terms);
+                }
+                else if (n == 1) {
+                    return BesselY1Kernel(z, terms);
                 }
                 else {
-                    if (n == 0) {
-                        return BesselY0Kernel(x, terms);
-                    }
-                    if (n == 1) {
-                        return BesselY1Kernel(x, terms);
-                    }
+                    return BesselYNKernel(n, z, terms);
                 }
-
-                Complex v = 1d / x;
-                Complex y0 = BesselY0Kernel(x, terms);
-                Complex y1 = BesselY1Kernel(x, terms);
-
-                int exp_sum = 0;
-
-                for (int k = 1; k < n; k++) {
-                    int exp = int.Max(ILogB(y0), ILogB(y1));
-                    (y0, y1) = (Ldexp(y0, -exp), Ldexp(y1, -exp));
-                    (y1, y0) = ((2 * k) * v * y1 - y0, y1);
-
-                    exp_sum += exp;
-                }
-
-                y1 = Ldexp(y1, -exp_sum);
-
-                return y1;
             }
 
-            private static Complex BesselY0Kernel(Complex x, int terms) {
-                if (!dfactdenom_coef_table.ContainsKey(0)) {
-                    dfactdenom_coef_table.Add(0, new DoubleFactDenomTable(0));
+            private static Complex BesselY0Kernel(Complex z, int terms) {
+                if (!dfactdenom_coef_table.TryGetValue(0, out DoubleFactDenomTable r)) {
+                    r = new DoubleFactDenomTable(0);
+                    dfactdenom_coef_table.Add(0, r);
                 }
-                if (!x2denom_coef_table.ContainsKey(0)) {
-                    x2denom_coef_table.Add(0, new X2DenomTable(0));
+                if (!x2denom_coef_table.TryGetValue(0, out X2DenomTable d)) {
+                    d = new X2DenomTable(0);
+                    x2denom_coef_table.Add(0, d);
                 }
 
-                DoubleFactDenomTable r = dfactdenom_coef_table[0];
-                X2DenomTable d = x2denom_coef_table[0];
                 Y0CoefTable q = y0_coef_table;
 
-                Complex h = Log(Ldexp(x, -1)) + ddouble.EulerGamma;
+                Complex h = Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma;
+                Complex z2 = z * z, z4 = z2 * z2;
 
-                Complex x2 = x * x, x4 = x2 * x2;
+                if (!Complex.IsFinite(h) || Complex.IsZero(z2)) {
+                    return Complex.NaN;
+                }
 
-                Complex c = 0d, u = Ldexp(ddouble.RcpPI, 1);
+                Complex c = 0d, u = Complex.Ldexp(ddouble.RcpPI, 1);
 
                 for (int k = 0, conv_times = 0; k <= terms && conv_times < 2; k++) {
-                    Complex dc = u * r[k] * ((h - ddouble.HarmonicNumber(2 * k)) * (1d - x2 * d[k]) + x2 * q[k]);
+                    Complex dc = u * r[k] * ((h - ddouble.HarmonicNumber(2 * k)) * (1d - z2 * d[k]) + z2 * q[k]);
 
                     Complex c_next = c + dc;
 
-                    if (c == c_next || !IsFinite(c_next)) {
+                    if (c == c_next || !Complex.IsFinite(c_next)) {
                         conv_times++;
                     }
                     else {
@@ -563,36 +484,41 @@ namespace DoubleDoubleComplex {
                     }
 
                     c = c_next;
-                    u *= x4;
+                    u *= z4;
                 }
 
                 return c;
             }
 
-            private static Complex BesselY1Kernel(Complex x, int terms) {
-                if (!dfactdenom_coef_table.ContainsKey(1)) {
-                    dfactdenom_coef_table.Add(1, new DoubleFactDenomTable(1));
+            private static Complex BesselY1Kernel(Complex z, int terms) {
+                if (!dfactdenom_coef_table.TryGetValue(1, out DoubleFactDenomTable r)) {
+                    r = new DoubleFactDenomTable(1);
+                    dfactdenom_coef_table.Add(1, r);
                 }
-                if (!x2denom_coef_table.ContainsKey(1)) {
-                    x2denom_coef_table.Add(1, new X2DenomTable(1));
+                if (!x2denom_coef_table.TryGetValue(1, out X2DenomTable d)) {
+                    d = new X2DenomTable(1);
+                    x2denom_coef_table.Add(1, d);
+                }
+                if (!yn_coef_table.TryGetValue(1, out YNCoefTable q)) {
+                    q = new YNCoefTable(1);
+                    yn_coef_table.Add(1, q);
                 }
 
-                DoubleFactDenomTable r = dfactdenom_coef_table[1];
-                X2DenomTable d = x2denom_coef_table[1];
-                Y1CoefTable q = y1_coef_table;
+                Complex h = Complex.Ldexp(Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma, 1);
+                Complex z2 = z * z, z4 = z2 * z2;
 
-                Complex h = Ldexp(Log(Ldexp(x, -1)) + ddouble.EulerGamma, 1);
+                if (!Complex.IsFinite(h) || Complex.IsZero(z2)) {
+                    return Complex.NaN;
+                }
 
-                Complex x2 = x * x, x4 = x2 * x2;
-
-                Complex c = -2d / (x * ddouble.PI), u = x / Ldexp(ddouble.PI, 1);
+                Complex c = -2d / (z * ddouble.PI), u = z / Complex.Ldexp(ddouble.PI, 1);
 
                 for (int k = 0, conv_times = 0; k <= terms && conv_times < 2; k++) {
-                    Complex dc = u * r[k] * ((h - ddouble.HarmonicNumber(2 * k) - ddouble.HarmonicNumber(2 * k + 1)) * (1d - x2 * d[k]) + x2 * q[k]);
+                    Complex dc = u * r[k] * ((h - ddouble.HarmonicNumber(2 * k) - ddouble.HarmonicNumber(2 * k + 1)) * (1d - z2 * d[k]) + z2 * q[k]);
 
                     Complex c_next = c + dc;
 
-                    if (c == c_next || !IsFinite(c_next)) {
+                    if (c == c_next || !Complex.IsFinite(c_next)) {
                         conv_times++;
                     }
                     else {
@@ -600,37 +526,148 @@ namespace DoubleDoubleComplex {
                     }
 
                     c = c_next;
-                    u *= x4;
+                    u *= z4;
                 }
 
                 return c;
             }
 
-            private static Complex BesselKKernel(ddouble nu, Complex x, int terms) {
-                if (!gammadenom_coef_table.TryGetValue(nu, out GammaDenomTable gammadenomp_table)) {
-                    gammadenomp_table = new GammaDenomTable(nu);
-                    gammadenom_coef_table.Add(nu, gammadenomp_table);
+            private static Complex BesselYNKernel(int n, Complex z, int terms) {
+                if (!dfactdenom_coef_table.TryGetValue(n, out DoubleFactDenomTable r)) {
+                    r = new DoubleFactDenomTable(n);
+                    dfactdenom_coef_table.Add(n, r);
                 }
-                if (!gammadenom_coef_table.TryGetValue(-nu, out GammaDenomTable gammadenomn_table)) {
-                    gammadenomn_table = new GammaDenomTable(-nu);
-                    gammadenom_coef_table.Add(-nu, gammadenomn_table);
+                if (!x2denom_coef_table.TryGetValue(n, out X2DenomTable d)) {
+                    d = new X2DenomTable(n);
+                    x2denom_coef_table.Add(n, d);
+                }
+                if (!yn_coef_table.TryGetValue(n, out YNCoefTable q)) {
+                    q = new YNCoefTable(n);
+                    yn_coef_table.Add(n, q);
+                }
+                if (!yn_finitecoef_table.TryGetValue(n, out ReadOnlyCollection<ddouble> f)) {
+                    f = YNFiniteCoefTable.Value(n);
+                    yn_finitecoef_table.Add(n, f);
+                }
+
+                Complex h = Complex.Ldexp(Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma, 1);
+
+                if (!Complex.IsFinite(h)) {
+                    return Complex.NaN;
+                }
+
+                Complex c = 0d;
+                Complex z2 = z * z, z4 = z2 * z2;
+                Complex u = 1d, v = 1d, w = Complex.Ldexp(z2, -2);
+
+                for (int k = 0; k < n; k++) {
+                    c += v * f[k];
+                    v *= w;
+                }
+                c /= -v;
+
+                if (!Complex.IsFinite(c) || Complex.IsZero(z2)) {
+                    return Complex.NaN;
+                }
+
+                for (int k = 0, conv_times = 0; k <= terms && conv_times < 2; k++) {
+                    Complex dc = u * r[k] * ((h - ddouble.HarmonicNumber(2 * k) - ddouble.HarmonicNumber(2 * k + n)) * (1d - z2 * d[k]) + z2 * q[k]);
+
+                    Complex c_next = c + dc;
+
+                    if (c == c_next || !Complex.IsFinite(c_next)) {
+                        conv_times++;
+                    }
+                    else {
+                        conv_times = 0;
+                    }
+
+                    c = c_next;
+                    u *= z4;
+                }
+
+                Complex y = c * ddouble.RcpPI * Complex.Pow(Complex.Ldexp(z, -1), n);
+
+                return y;
+            }
+
+            private static Complex BesselIKernel(ddouble nu, Complex z, int terms) {
+                if (!dfactdenom_coef_table.TryGetValue(nu, out DoubleFactDenomTable r)) {
+                    r = new DoubleFactDenomTable(nu);
+                    dfactdenom_coef_table.Add(nu, r);
+                }
+                if (!x2denom_coef_table.TryGetValue(nu, out X2DenomTable d)) {
+                    d = new X2DenomTable(nu);
+                    x2denom_coef_table.Add(nu, d);
+                }
+
+                Complex z2 = z * z, z4 = z2 * z2;
+
+                Complex c = 0d, u = Complex.Pow(Complex.Ldexp(z, -1), nu);
+
+                if (!Complex.IsFinite(u) || Complex.IsZero(z2)) {
+                    if (ddouble.IsZero(nu)) {
+                        return 1d;
+                    }
+                    if (NearlyInteger(nu, out _) || ddouble.IsPositive(nu)) {
+                        return 0d;
+                    }
+
+                    return Complex.NaN;
+                }
+
+                for (int k = 0, conv_times = 0; k <= terms && conv_times < 2; k++) {
+                    Complex w = z2 * d[k];
+                    Complex dc = u * r[k] * (1d + w);
+
+                    Complex c_next = c + dc;
+
+                    if (c == c_next || !Complex.IsFinite(c_next)) {
+                        conv_times++;
+                    }
+                    else {
+                        conv_times = 0;
+                    }
+
+                    c = c_next;
+                    u *= z4;
+
+                    if (!Complex.IsFinite(c)) {
+                        break;
+                    }
+                }
+
+                return c;
+            }
+
+            private static Complex BesselKKernel(ddouble nu, Complex z, int terms) {
+                if (!gammadenom_coef_table.TryGetValue(nu, out GammaDenomTable gp)) {
+                    gp = new GammaDenomTable(nu);
+                    gammadenom_coef_table.Add(nu, gp);
+                }
+                if (!gammadenom_coef_table.TryGetValue(-nu, out GammaDenomTable gn)) {
+                    gn = new GammaDenomTable(-nu);
+                    gammadenom_coef_table.Add(-nu, gn);
                 }
 
                 KCoefTable r = k_coef_table;
-                GammaDenomTable gp = gammadenomp_table, gn = gammadenomn_table;
 
-                Complex tp = Pow(Ldexp(x, -1), nu), tn = 1d / tp;
+                Complex tp = Complex.Pow(Complex.Ldexp(z, -1), nu), tn = 1d / tp;
 
-                Complex x2 = x * x;
+                Complex z2 = z * z;
 
-                Complex c = 0d, u = ddouble.PI / Ldexp(ddouble.SinPI(nu), 1);
+                if (Complex.ILogB(tp) < NearZeroExponent || Complex.IsZero(z2)) {
+                    return Complex.NaN;
+                }
+
+                Complex c = 0d, u = ddouble.PI / Complex.Ldexp(ddouble.SinPI(nu), 1);
 
                 for (int k = 0, conv_times = 0; k <= terms && conv_times < 2; k++) {
                     Complex dc = u * r[k] * (tn * gn[k] - tp * gp[k]);
 
                     Complex c_next = c + dc;
 
-                    if (c == c_next || !IsFinite(c_next)) {
+                    if (c == c_next || !Complex.IsFinite(c_next)) {
                         conv_times++;
                     }
                     else {
@@ -638,9 +675,9 @@ namespace DoubleDoubleComplex {
                     }
 
                     c = c_next;
-                    u *= x2;
+                    u *= z2;
 
-                    if (!IsFinite(c)) {
+                    if (!Complex.IsFinite(c)) {
                         break;
                     }
                 }
@@ -648,30 +685,31 @@ namespace DoubleDoubleComplex {
                 return c;
             }
 
-            private static Complex BesselKKernel(int n, Complex x, int terms) {
+            private static Complex BesselKKernel(int n, Complex z, int terms) {
                 if (n == 0) {
-                    return BesselK0Kernel(x, terms);
+                    return BesselK0Kernel(z, terms);
                 }
-                if (n == 1) {
-                    return BesselK1Kernel(x, terms);
+                else if (n == 1) {
+                    return BesselK1Kernel(z, terms);
                 }
-
-                Complex v = 1d / x;
-                Complex y0 = BesselK0Kernel(x, terms);
-                Complex y1 = BesselK1Kernel(x, terms);
-
-                for (int k = 1; k < n; k++) {
-                    (y1, y0) = ((2 * k) * v * y1 + y0, y1);
+                else {
+                    return BesselKNKernel(n, z, terms);
                 }
-
-                return y1;
             }
 
-            private static Complex BesselK0Kernel(Complex x, int terms) {
+            private static Complex BesselK0Kernel(Complex z, int terms) {
                 K0CoefTable r = k0_coef_table;
-                Complex h = -Log(Ldexp(x, -1)) - ddouble.EulerGamma;
+                Complex h = -Complex.Log(Complex.Ldexp(z, -1)) - ddouble.EulerGamma;
 
-                Complex x2 = x * x;
+                if (!Complex.IsFinite(h)) {
+                    return Complex.NaN;
+                }
+
+                Complex z2 = z * z;
+
+                if (Complex.IsZero(z2)) {
+                    return Complex.NaN;
+                }
 
                 Complex c = 0d, u = 1d;
 
@@ -680,7 +718,7 @@ namespace DoubleDoubleComplex {
 
                     Complex c_next = c + dc;
 
-                    if (c == c_next || !IsFinite(c_next)) {
+                    if (c == c_next || !Complex.IsFinite(c_next)) {
                         conv_times++;
                     }
                     else {
@@ -688,26 +726,34 @@ namespace DoubleDoubleComplex {
                     }
 
                     c = c_next;
-                    u *= x2;
+                    u *= z2;
                 }
 
                 return c;
             }
 
-            private static Complex BesselK1Kernel(Complex x, int terms) {
+            private static Complex BesselK1Kernel(Complex z, int terms) {
                 K1CoefTable r = k1_coef_table;
-                Complex h = Log(Ldexp(x, -1)) + ddouble.EulerGamma;
+                Complex h = Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma;
 
-                Complex x2 = x * x;
+                if (!Complex.IsFinite(h)) {
+                    return Complex.NaN;
+                }
 
-                Complex c = 1d / x, u = Ldexp(x, -1);
+                Complex z2 = z * z;
+
+                if (Complex.IsZero(z2)) {
+                    return Complex.NaN;
+                }
+
+                Complex c = 1d / z, u = Complex.Ldexp(z, -1);
 
                 for (int k = 0, conv_times = 0; k <= terms && conv_times < 2; k++) {
-                    Complex dc = u * r[k] * (h - Ldexp(ddouble.HarmonicNumber(k) + ddouble.HarmonicNumber(k + 1), -1));
+                    Complex dc = u * r[k] * (h - Complex.Ldexp(ddouble.HarmonicNumber(k) + ddouble.HarmonicNumber(k + 1), -1));
 
                     Complex c_next = c + dc;
 
-                    if (c == c_next || !IsFinite(c_next)) {
+                    if (c == c_next || !Complex.IsFinite(c_next)) {
                         conv_times++;
                     }
                     else {
@@ -715,16 +761,28 @@ namespace DoubleDoubleComplex {
                     }
 
                     c = c_next;
-                    u *= x2;
+                    u *= z2;
                 }
 
                 return c;
+            }
+
+            private static Complex BesselKNKernel(int n, Complex z, int terms) {
+                Complex v = 1d / z;
+                Complex y0 = BesselK0Kernel(z, terms);
+                Complex y1 = BesselK1Kernel(z, terms);
+
+                for (int k = 1; k < n; k++) {
+                    (y1, y0) = (2 * k * v * y1 + y0, y1);
+                }
+
+                return y1;
             }
 
             private class DoubleFactDenomTable {
                 private ddouble c;
                 private readonly ddouble nu;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 public DoubleFactDenomTable(ddouble nu) {
                     this.c = ddouble.Gamma(nu + 1d);
@@ -732,28 +790,28 @@ namespace DoubleDoubleComplex {
                     this.table.Add(ddouble.Rcp(c));
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                public ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int k = table.Count; k <= n; k++) {
-                        c *= (nu + (2 * k)) * (nu + (2 * k - 1)) * (32 * k * (2 * k - 1));
+                    for (long i = table.Count; i <= k; i++) {
+                        c *= checked((nu + 2 * i) * (nu + (2 * i - 1)) * (32 * i * (2 * i - 1)));
 
                         table.Add(ddouble.Rcp(c));
                     }
 
-                    return table[n];
+                    return table[k];
                 }
             }
 
             private class X2DenomTable {
                 private readonly ddouble nu;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 public X2DenomTable(ddouble nu) {
                     ddouble a = ddouble.Rcp(4d * (nu + 1d));
@@ -762,29 +820,29 @@ namespace DoubleDoubleComplex {
                     this.table.Add(a);
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                public ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int k = table.Count; k <= n; k++) {
-                        ddouble a = ddouble.Rcp(4d * (2 * k + 1) * (2 * k + 1 + nu));
+                    for (long i = table.Count; i <= k; i++) {
+                        ddouble a = ddouble.Rcp(checked(4d * (2 * i + 1) * (2 * i + 1 + nu)));
 
                         table.Add(a);
                     }
 
-                    return table[n];
+                    return table[k];
                 }
             }
 
             private class GammaDenomTable {
                 private ddouble c;
                 private readonly ddouble nu;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 public GammaDenomTable(ddouble nu) {
                     this.c = ddouble.Gamma(nu + 1d);
@@ -792,29 +850,29 @@ namespace DoubleDoubleComplex {
                     this.table.Add(ddouble.Rcp(c));
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                public ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int k = table.Count; k <= n; k++) {
-                        c *= nu + k;
+                    for (int i = table.Count; i <= k; i++) {
+                        c *= nu + i;
 
                         table.Add(ddouble.Rcp(c));
                     }
 
-                    return table[n];
+                    return table[k];
                 }
             }
 
             private class GammaTable {
                 private ddouble c;
                 private readonly ddouble nu;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 public GammaTable(ddouble nu) {
                     this.c = ddouble.Gamma(nu + 1d);
@@ -822,368 +880,565 @@ namespace DoubleDoubleComplex {
                     this.table.Add(c);
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                public ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int k = table.Count; k <= n; k++) {
-                        c *= nu + k;
+                    for (int i = table.Count; i <= k; i++) {
+                        c *= nu + i;
 
                         table.Add(c);
                     }
 
-                    return table[n];
+                    return table[k];
                 }
             }
 
             private class GammaPNTable {
                 private readonly ddouble r;
                 private readonly GammaTable positive_table, negative_table;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 public GammaPNTable(ddouble nu) {
-                    this.r = ddouble.Pow(4, nu);
+                    this.r = ddouble.Pow(4d, nu);
                     this.positive_table = new(nu);
                     this.negative_table = new(-nu);
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                public ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int k = table.Count; k <= n; k++) {
-                        ddouble c = r * positive_table[k] / negative_table[k];
+                    for (int i = table.Count; i <= k; i++) {
+                        ddouble c = r * positive_table[i] / negative_table[i];
 
                         table.Add(c);
                     }
 
-                    return table[n];
+                    return table[k];
                 }
             }
 
             private class YCoefTable {
                 private ddouble c;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 public YCoefTable() {
                     this.c = 1d;
                     this.table.Add(1d);
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                public ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int k = table.Count; k <= n; k++) {
-                        c *= (32 * k * (2 * k - 1));
+                    for (long i = table.Count; i <= k; i++) {
+                        c *= checked(32 * i * (2 * i - 1));
 
                         table.Add(ddouble.Rcp(c));
                     }
 
-                    return table[n];
+                    return table[k];
                 }
             }
 
             private class Y0CoefTable {
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 public Y0CoefTable() {
                     this.table.Add(ddouble.Rcp(4));
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                public ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int k = table.Count; k <= n; k++) {
-                        ddouble c = ddouble.Rcp((4 * (2 * k + 1) * (2 * k + 1) * (2 * k + 1)));
+                    for (long i = table.Count; i <= k; i++) {
+                        ddouble c = ddouble.Rcp(checked(4 * (2 * i + 1) * (2 * i + 1) * (2 * i + 1)));
 
                         table.Add(c);
                     }
 
-                    return table[n];
+                    return table[k];
                 }
             }
 
-            private class Y1CoefTable {
-                private readonly List<ddouble> table = new();
+            private class YNCoefTable {
+                private readonly int n;
+                private readonly List<ddouble> table = [];
 
-                public Y1CoefTable() {
-                    this.table.Add(ddouble.Ldexp(3, -4));
+                public YNCoefTable(int n) {
+                    this.n = n;
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                public ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int k = table.Count; k <= n; k++) {
-                        ddouble c = (ddouble)(4 * k + 3) / (ddouble)(4 * (2 * k + 1) * (2 * k + 1) * (2 * k + 2) * (2 * k + 2));
+                    for (long i = table.Count; i <= k; i++) {
+                        ddouble c = (ddouble)(n + 4 * i + 2) /
+                            (ddouble)checked(4 * (2 * i + 1) * (2 * i + 1) * (n + 2 * i + 1) * (n + 2 * i + 1));
 
                         table.Add(c);
                     }
 
-                    return table[n];
+                    return table[k];
+                }
+            }
+
+            private static class YNFiniteCoefTable {
+                public static ReadOnlyCollection<ddouble> Value(int n) {
+                    Debug.Assert(n >= 0);
+
+                    List<ddouble> frac = [1], coef = [];
+
+                    for (int i = 1; i < n; i++) {
+                        frac.Add(i * frac[^1]);
+                    }
+
+                    for (int i = 0; i < n; i++) {
+                        coef.Add(frac[^(i + 1)] / frac[i]);
+                    }
+
+                    return new(coef);
                 }
             }
 
             private class KCoefTable {
                 private ddouble c;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 public KCoefTable() {
                     this.c = 1d;
                     this.table.Add(1d);
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                public ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int k = table.Count; k <= n; k++) {
-                        c *= (4 * k);
+                    for (long i = table.Count; i <= k; i++) {
+                        c *= 4 * i;
 
                         table.Add(ddouble.Rcp(c));
                     }
 
-                    return table[n];
+                    return table[k];
                 }
             }
 
             private class K0CoefTable {
                 private ddouble c;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 public K0CoefTable() {
                     this.c = 1d;
                     this.table.Add(1d);
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                public ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int k = table.Count; k <= n; k++) {
-                        c *= (4 * k * k);
+                    for (long i = table.Count; i <= k; i++) {
+                        c *= checked(4 * i * i);
 
                         table.Add(ddouble.Rcp(c));
                     }
 
-                    return table[n];
+                    return table[k];
                 }
             }
 
             private class K1CoefTable {
                 private ddouble c;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 public K1CoefTable() {
                     this.c = 1d;
                     this.table.Add(1d);
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                public ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int k = table.Count; k <= n; k++) {
-                        c *= (4 * k * (k + 1));
+                    for (int i = table.Count; i <= k; i++) {
+                        c *= checked(4 * i * (i + 1));
 
                         table.Add(ddouble.Rcp(c));
                     }
 
-                    return table[n];
+                    return table[k];
                 }
             }
         }
 
-        internal static class BesselMillerBackward {
-            private static readonly Dictionary<ddouble, BesselJPhiTable> phi_coef_table = new();
-            private static readonly Dictionary<ddouble, BesselIPsiTable> psi_coef_table = new();
-            private static readonly Dictionary<ddouble, BesselYEtaTable> eta_coef_table = new();
-            private static readonly Dictionary<ddouble, BesselYXiTable> xi_coef_table = new();
+        public static class Limit {
+            static readonly Dictionary<ddouble, HankelExpansion> table = [];
 
-            public static Complex BesselJ(int n, Complex x) {
-                int m = BesselJYIterM((double)x.Magnitude);
+            public static Complex BesselJ(ddouble nu, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
 
-                Complex y = BesselJKernel(n, x, m);
+                if (!table.TryGetValue(nu, out HankelExpansion hankel)) {
+                    hankel = new HankelExpansion(nu);
+                    table.Add(nu, hankel);
+                }
+
+                if (!Complex.IsFinite(z)) {
+                    return Complex.NaN;
+                }
+
+                (Complex c_even, Complex c_odd) = hankel.BesselJYCoef(z);
+
+                Complex omega = hankel.Omega(z);
+
+                Complex cos = Complex.Cos(omega), sin = Complex.Sin(omega);
+
+                Complex y = Complex.Sqrt(2d / (ddouble.PI * z)) * (cos * c_even - sin * c_odd);
 
                 return y;
             }
 
-            public static Complex BesselJ(ddouble nu, Complex x) {
-                int m = BesselJYIterM((double)x.Magnitude);
+            public static Complex BesselY(ddouble nu, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
 
-                if (BesselUtil.NearlyInteger(nu, out int n)) {
-                    Complex y = BesselJKernel(n, x, m);
-
-                    return y;
+                if (!table.TryGetValue(nu, out HankelExpansion hankel)) {
+                    hankel = new HankelExpansion(nu);
+                    table.Add(nu, hankel);
                 }
-                else {
-                    Complex y = BesselJKernel(nu, x, m);
 
-                    return y;
+                if (!Complex.IsFinite(z)) {
+                    return Complex.NaN;
                 }
-            }
 
-            public static Complex BesselY(int n, Complex x) {
-                int m = BesselJYIterM((double)x.Magnitude);
+                (Complex c_even, Complex c_odd) = hankel.BesselJYCoef(z);
 
-                Complex y = BesselYKernel(n, x, m);
+                Complex omega = hankel.Omega(z);
+
+                Complex cos = Complex.Cos(omega), sin = Complex.Sin(omega);
+
+                Complex y = Complex.Sqrt(2d / (ddouble.PI * z)) * (sin * c_even + cos * c_odd);
 
                 return y;
             }
 
-            public static Complex BesselY(ddouble nu, Complex x) {
-                int m = BesselJYIterM((double)x.Magnitude);
+            public static Complex BesselI(ddouble nu, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
 
-                if (BesselUtil.NearlyInteger(nu, out int n)) {
-                    Complex y = BesselYKernel(n, x, m);
-
-                    return y;
+                if (!table.TryGetValue(nu, out HankelExpansion hankel)) {
+                    hankel = new HankelExpansion(nu);
+                    table.Add(nu, hankel);
                 }
-                else {
-                    Complex y = BesselYKernel(nu, x, m);
 
-                    return y;
+                Complex ci = hankel.BesselICoef(z), ck = hankel.BesselKCoef(z);
+
+                Complex y = Complex.Sqrt(1d / (2d * ddouble.PI * z)) * (
+                    Complex.Exp(z) * ci -
+                    (SinCosPICache.SinPI(nu), -SinCosPICache.CosPI(nu)) * Complex.Exp(-z) * ck
+                );
+
+                if (!Complex.IsFinite(z) || Complex.IsZero(y)) {
+                    return Complex.NaN;
                 }
-            }
-
-            private static int BesselJYIterM(double x) {
-                return (int)double.Ceiling(74 + 1.36 * x - 54.25 / double.Sqrt(double.Sqrt(x))) & ~1;
-            }
-
-            public static Complex BesselI(int n, Complex x, bool scale = false) {
-                int m = BesselIIterM((double)x.Magnitude);
-
-                Complex y = BesselIKernel(n, x, m, scale);
 
                 return y;
             }
 
-            public static Complex BesselI(ddouble nu, Complex x, bool scale = false) {
-                int m = BesselIIterM((double)x.Magnitude);
+            public static Complex BesselK(ddouble nu, Complex z) {
+                Debug.Assert(ddouble.IsPositive(nu));
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
 
-                if (BesselUtil.NearlyInteger(nu, out int n)) {
-                    Complex y = BesselIKernel(n, x, m, scale);
+                if (!table.TryGetValue(nu, out HankelExpansion hankel)) {
+                    hankel = new HankelExpansion(nu);
+                    table.Add(nu, hankel);
+                }
+
+                Complex c = hankel.BesselKCoef(z);
+
+                Complex y = Complex.Sqrt(ddouble.PI / (2d * z)) * Complex.Exp(-z) * c;
+
+                if (!Complex.IsFinite(z) || Complex.IsZero(y)) {
+                    return Complex.NaN;
+                }
+
+                return y;
+            }
+
+            private class HankelExpansion {
+                public ddouble Nu { get; }
+
+                private readonly List<ddouble> a_coef;
+
+                public HankelExpansion(ddouble nu) {
+                    Nu = nu;
+                    a_coef = [1];
+                }
+
+                private ddouble ACoef(int n) {
+                    for (int k = a_coef.Count; k <= n; k++) {
+                        ddouble a = a_coef.Last() * (4d * Nu * Nu - checked((2 * k - 1) * (2 * k - 1))) / (k * 8);
+                        a_coef.Add(a);
+                    }
+
+                    return a_coef[n];
+                }
+
+                public Complex Omega(Complex z) {
+                    Complex omega = z - ddouble.Ldexp(2 * Nu + 1, -2) * ddouble.PI;
+
+                    return omega;
+                }
+
+                public (Complex c_even, Complex c_odd) BesselJYCoef(Complex z, int terms = 35) {
+                    Complex v = 1 / (z * z), w = -v;
+
+                    Complex c_even = ACoef(0), c_odd = ACoef(1);
+
+                    for (int k = 1; k <= terms; k++) {
+                        Complex dc_even = w * ACoef(2 * k);
+                        Complex dc_odd = w * ACoef(2 * k + 1);
+
+                        c_even += dc_even;
+                        c_odd += dc_odd;
+
+                        if (((long)Complex.ILogB(c_even) - Complex.ILogB(dc_even) >= 106L || Complex.IsZero(dc_even)) &&
+                            ((long)Complex.ILogB(c_odd) - Complex.ILogB(dc_odd) >= 106L || Complex.IsZero(dc_odd))) {
+
+                            break;
+                        }
+
+                        w *= -v;
+                    }
+
+                    return (c_even, c_odd / z);
+                }
+
+                public Complex BesselICoef(Complex z, int terms = 75) {
+                    Complex v = 1d / z, w = -v;
+
+                    Complex c = ACoef(0);
+
+                    for (int k = 1; k <= terms; k++) {
+                        Complex dc = w * ACoef(k);
+
+                        c += dc;
+
+                        if ((long)Complex.ILogB(c) - Complex.ILogB(dc) >= 106L || Complex.IsZero(dc)) {
+                            break;
+                        }
+
+                        w *= -v;
+                    }
+
+                    return c;
+                }
+
+                public Complex BesselKCoef(Complex z, int terms = 58) {
+                    Complex v = 1d / z, w = v;
+
+                    Complex c = ACoef(0);
+
+                    for (int k = 1; k <= terms; k++) {
+                        Complex dc = w * ACoef(k);
+
+                        c += dc;
+
+                        if ((long)Complex.ILogB(c) - Complex.ILogB(dc) >= 106L || Complex.IsZero(dc)) {
+                            break;
+                        }
+
+                        w *= v;
+                    }
+
+                    return c;
+                }
+            }
+        }
+
+        public class MillerBackward {
+            public static readonly int BesselYEpsExponent = -12;
+
+            private static readonly Dictionary<ddouble, BesselJPhiTable> phi_coef_table = [];
+            private static readonly Dictionary<ddouble, BesselIPsiTable> psi_coef_table = [];
+            private static readonly Dictionary<ddouble, BesselYEtaTable> eta_coef_table = [];
+            private static readonly Dictionary<ddouble, BesselYXiTable> xi_coef_table = [];
+            private static readonly ReadOnlyCollection<ddouble> eta0_coef = new(Consts.BesselYMillerBackwardCoef.Eta0.Reverse().ToArray());
+            private static readonly ReadOnlyCollection<ddouble> xi1_coef = new(Consts.BesselYMillerBackwardCoef.Xi1.Reverse().ToArray());
+
+            public static Complex BesselJ(int n, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
+
+                int m = BesselJYIterM((double)z.R);
+
+                Complex y = BesselJKernel(n, z, m);
+
+                return y;
+            }
+
+            public static Complex BesselJ(ddouble nu, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
+
+                int m = BesselJYIterM((double)z.R);
+
+                if (NearlyInteger(nu, out int n)) {
+                    Complex y = BesselJKernel(n, z, m);
 
                     return y;
                 }
                 else {
-                    Complex y = BesselIKernel(nu, x, m, scale);
+                    Complex y = BesselJKernel(nu, z, m);
 
                     return y;
                 }
             }
 
-            private static int BesselIIterM(double x) {
-                return (int)double.Ceiling(86 + 0.75 * x - 67.25 / double.Sqrt(double.Sqrt(x))) & ~1;
+            public static Complex BesselY(int n, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
+
+                int m = BesselJYIterM((double)z.R);
+
+                Complex y = BesselYKernel(n, z, m);
+
+                return y;
             }
 
-            internal static Complex BesselJKernel(int n, Complex x, int m) {
-                if (m < 2 || (m & 1) != 0 || n >= m) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
+            public static Complex BesselY(ddouble nu, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
+
+                int m = BesselJYIterM((double)z.R);
+
+                if (NearlyInteger(nu, out int n)) {
+                    Complex y = BesselYKernel(n, z, m);
+
+                    return y;
                 }
+                else {
+                    Complex y = BesselYKernel(nu, z, m);
+
+                    return y;
+                }
+            }
+
+            private static int BesselJYIterM(double r) {
+                int m = (int)double.Ceiling(3.8029e1 + r * 1.6342e0);
+
+                return (m + 1) / 2 * 2;
+            }
+
+            public static Complex BesselI(int n, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
+
+                int m = BesselIIterM((double)z.R, (double)z.I);
+
+                Complex y = BesselIKernel(n, z, m);
+
+                return y;
+            }
+
+            public static Complex BesselI(ddouble nu, Complex z) {
+                Debug.Assert(ddouble.IsPositive(z.R));
+                Debug.Assert(ddouble.IsPositive(z.I));
+
+                int m = BesselIIterM((double)z.R, (double)z.I);
+
+                if (NearlyInteger(nu, out int n)) {
+                    Complex y = BesselIKernel(n, z, m);
+
+                    return y;
+                }
+                else {
+                    Complex y = BesselIKernel(nu, z, m);
+
+                    return y;
+                }
+            }
+
+            private static int BesselIIterM(double r, double i) {
+                int m = (int)double.Ceiling(3.3612e1 + r * 1.3557e0 + i * 1.8485e0 - r * i * 4.3649e-2);
+
+                return (m + 1) / 2 * 2;
+            }
+
+            private static Complex BesselJKernel(int n, Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0 && n < m);
 
                 if (n < 0) {
-                    return ((n & 1) == 0) ? BesselJKernel(-n, x, m) : -BesselJKernel(-n, x, m);
+                    return (n & 1) == 0 ? BesselJKernel(-n, z, m) : -BesselJKernel(-n, z, m);
                 }
-                if (n == 0) {
-                    return BesselJ0Kernel(x, m);
+                else if (n == 0) {
+                    return BesselJ0Kernel(z, m);
                 }
-                if (n == 1) {
-                    return BesselJ1Kernel(x, m);
+                else if (n == 1) {
+                    return BesselJ1Kernel(z, m);
                 }
-
-                Complex f0 = 1d, f1 = 0d, fn = 0d, lambda = 0d;
-                Complex v = 1d / x;
-
-                for (int k = m; k >= 1; k--) {
-                    if ((k & 1) == 0) {
-                        lambda += f0;
-                    }
-
-                    (f0, f1) = ((2 * k) * v * f0 - f1, f0);
-
-                    if (k - 1 == n) {
-                        fn = f0;
-                    }
-
-                    if (ILogB(f0) > 16) {
-                        (f0, f1, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16), Ldexp(lambda, -16));
-                    }
-                    else if (ILogB(f0) < -16) {
-                        (f0, f1, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(lambda, 16));
-                    }
+                else {
+                    return BesselJNKernel(n, z, m);
                 }
-
-                lambda = Ldexp(lambda, 1) + f0;
-
-                Complex yn = fn / lambda;
-
-                return yn;
             }
 
-            internal static Complex BesselJKernel(ddouble nu, Complex x, int m) {
+            private static Complex BesselJKernel(ddouble nu, Complex z, int m) {
                 int n = (int)ddouble.Floor(nu);
                 ddouble alpha = nu - n;
 
-                if (alpha == 0d) {
-                    return BesselJKernel(n, x, m);
+                Debug.Assert(m >= 2 && (m & 1) == 0 && n < m);
+
+                if (!phi_coef_table.TryGetValue(alpha, out BesselJPhiTable phi)) {
+                    phi = new BesselJPhiTable(alpha);
+                    phi_coef_table.Add(alpha, phi);
                 }
 
-                if (m < 2 || (m & 1) != 0 || n >= m) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
-                }
-
-                if (!phi_coef_table.TryGetValue(alpha, out BesselJPhiTable phi_table)) {
-                    phi_table = new BesselJPhiTable(alpha);
-                    phi_coef_table.Add(alpha, phi_table);
-                }
-
-                BesselJPhiTable phi = phi_table;
-
-                Complex f0 = 1d, f1 = 0d, lambda = 0d;
-                Complex v = 1d / x;
+                Complex f0 = 1e-256d, f1 = 0d, lambda = 0d;
+                Complex v = 1d / z;
 
                 if (n >= 0) {
                     Complex fn = 0d;
@@ -1193,22 +1448,15 @@ namespace DoubleDoubleComplex {
                             lambda += f0 * phi[k / 2];
                         }
 
-                        (f0, f1) = (Ldexp(k + alpha, 1) * v * f0 - f1, f0);
+                        (f0, f1) = (Complex.Ldexp(k + alpha, 1) * v * f0 - f1, f0);
 
                         if (k - 1 == n) {
                             fn = f0;
                         }
-
-                        if (ILogB(f0) > 16) {
-                            (f0, f1, fn, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16), Ldexp(fn, -16), Ldexp(lambda, -16));
-                        }
-                        else if (ILogB(f0) < -16) {
-                            (f0, f1, fn, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(fn, 16), Ldexp(lambda, 16));
-                        }
                     }
 
                     lambda += f0 * phi[0];
-                    lambda *= Pow(Ldexp(v, 1), alpha);
+                    lambda *= Complex.Pow(Complex.Ldexp(v, 1), alpha);
 
                     Complex yn = fn / lambda;
 
@@ -1220,28 +1468,14 @@ namespace DoubleDoubleComplex {
                             lambda += f0 * phi[k / 2];
                         }
 
-                        (f0, f1) = (Ldexp(k + alpha, 1) * v * f0 - f1, f0);
-
-                        if (ILogB(f0) > 16) {
-                            (f0, f1, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16),Ldexp(lambda, -16));
-                        }
-                        else if (ILogB(f0) < -16) {
-                            (f0, f1, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(lambda, 16));
-                        }
+                        (f0, f1) = (Complex.Ldexp(k + alpha, 1) * v * f0 - f1, f0);
                     }
 
                     lambda += f0 * phi[0];
-                    lambda *= Pow(Ldexp(v, 1), alpha);
+                    lambda *= Complex.Pow(Complex.Ldexp(v, 1), alpha);
 
                     for (int k = 0; k > n; k--) {
-                        (f0, f1) = (Ldexp(k + alpha, 1) * v * f0 - f1, f0);
-
-                        if (ILogB(f0) > 16) {
-                            (f0, f1, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16), Ldexp(lambda, -16));
-                        }
-                        else if (ILogB(f0) < -16) {
-                            (f0, f1, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(lambda, 16));
-                        }
+                        (f0, f1) = (Complex.Ldexp(k + alpha, 1) * v * f0 - f1, f0);
                     }
 
                     Complex yn = f0 / lambda;
@@ -1250,162 +1484,112 @@ namespace DoubleDoubleComplex {
                 }
             }
 
-            private static Complex BesselJ0Kernel(Complex x, int m) {
-                if (m < 2 || (m & 1) != 0) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
-                }
+            private static Complex BesselJ0Kernel(Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0);
 
-                Complex f0 = 1d, f1 = 0d, lambda = 0d;
-                Complex v = 1d / x;
+                Complex f0 = 1e-256d, f1 = 0d, lambda = 0d;
+                Complex v = 1d / z;
 
                 for (int k = m; k >= 1; k--) {
                     if ((k & 1) == 0) {
                         lambda += f0;
                     }
 
-                    (f0, f1) = ((2 * k) * v * f0 - f1, f0);
-
-                    if (ILogB(f0) > 16) {
-                        (f0, f1, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16), Ldexp(lambda, -16));
-                    }
-                    else if (ILogB(f0) < -16) {
-                        (f0, f1, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(lambda, 16));
-                    }
+                    (f0, f1) = (2 * k * v * f0 - f1, f0);
                 }
 
-                lambda = Ldexp(lambda, 1) + f0;
+                lambda = Complex.Ldexp(lambda, 1) + f0;
 
                 Complex y0 = f0 / lambda;
 
                 return y0;
             }
 
-            private static Complex BesselJ1Kernel(Complex x, int m) {
-                if (m < 2 || (m & 1) != 0) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
-                }
+            private static Complex BesselJ1Kernel(Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0);
 
-                Complex f0 = 1d, f1 = 0d, lambda = 0d;
-                Complex v = 1d / x;
+                Complex f0 = 1e-256d, f1 = 0d, lambda = 0d;
+                Complex v = 1d / z;
 
                 for (int k = m; k >= 1; k--) {
                     if ((k & 1) == 0) {
                         lambda += f0;
                     }
 
-                    (f0, f1) = ((2 * k) * v * f0 - f1, f0);
-
-                    if (ILogB(f0) > 16) {
-                        (f0, f1, lambda) = (Ldexp(f0, -16), Ldexp(f1, -16), Ldexp(lambda, -16));
-                    }
-                    else if (ILogB(f0) < -16) {
-                        (f0, f1, lambda) = (Ldexp(f0, 16), Ldexp(f1, 16), Ldexp(lambda, 16));
-                    }
+                    (f0, f1) = (2 * k * v * f0 - f1, f0);
                 }
 
-                lambda = Ldexp(lambda, 1) + f0;
+                lambda = Complex.Ldexp(lambda, 1) + f0;
 
                 Complex y1 = f1 / lambda;
 
                 return y1;
             }
 
-            internal static Complex BesselYKernel(int n, Complex x, int m) {
-                if (m < 2 || (m & 1) != 0 || n >= m) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
-                }
+            private static Complex BesselJNKernel(int n, Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0);
 
-                if (n < 0) {
-                    return ((n & 1) == 0) ? BesselYKernel(-n, x, m) : -BesselYKernel(-n, x, m);
-                }
-                if (n == 0) {
-                    return BesselY0Kernel(x, m);
-                }
-                if (n == 1) {
-                    return BesselY1Kernel(x, m);
-                }
-
-                if (!eta_coef_table.ContainsKey(0)) {
-                    eta_coef_table.Add(0, new BesselYEtaTable(0));
-                }
-
-                BesselYEtaTable eta = eta_coef_table[0];
-
-                if (!xi_coef_table.ContainsKey(0)) {
-                    xi_coef_table.Add(0, new BesselYXiTable(0, eta));
-                }
-
-                BesselYXiTable xi = xi_coef_table[0];
-
-                Complex f0 = 1e-256, f1 = 0d, lambda = 0d;
-                Complex se = 0d, sx = 0d;
-                Complex v = 1d / x;
+                Complex f0 = 1e-256d, f1 = 0d, fn = 0d, lambda = 0d;
+                Complex v = 1d / z;
 
                 for (int k = m; k >= 1; k--) {
                     if ((k & 1) == 0) {
                         lambda += f0;
-
-                        se += f0 * eta[k / 2];
-                    }
-                    else if (k >= 3) {
-                        sx += f0 * xi[k];
                     }
 
-                    (f0, f1) = ((2 * k) * v * f0 - f1, f0);
+                    (f0, f1) = (2 * k * v * f0 - f1, f0);
+
+                    if (k - 1 == n) {
+                        fn = f0;
+                    }
                 }
 
-                lambda = Ldexp(lambda, 1) + f0;
+                lambda = Complex.Ldexp(lambda, 1) + f0;
 
-                Complex c = Log(Ldexp(x, -1)) + ddouble.EulerGamma;
-
-                Complex y0 = se + f0 * c;
-                Complex y1 = sx - v * f0 + (c - 1d) * f1;
-
-                for (int k = 1; k < n; k++) {
-                    (y1, y0) = ((2 * k) * v * y1 - y0, y1);
-                }
-
-                Complex yn = Ldexp(y1 / (lambda * ddouble.PI), 1);
+                Complex yn = fn / lambda;
 
                 return yn;
             }
 
-            internal static Complex BesselYKernel(ddouble nu, Complex x, int m) {
-                int n = (int)ddouble.Floor(nu);
+            private static Complex BesselYKernel(int n, Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0 && n < m);
+
+                if (n < 0) {
+                    return (n & 1) == 0 ? BesselYKernel(-n, z, m) : -BesselYKernel(-n, z, m);
+                }
+                else if (n == 0) {
+                    return BesselY0Kernel(z, m);
+                }
+                else if (n == 1) {
+                    return BesselY1Kernel(z, m);
+                }
+                else {
+                    return BesselYNKernel(n, z, m);
+                }
+            }
+
+            private static Complex BesselYKernel(ddouble nu, Complex z, int m) {
+                int n = (int)ddouble.Round(nu);
                 ddouble alpha = nu - n;
 
-                if (alpha == 0d) {
-                    return BesselYKernel(n, x, m);
+                Debug.Assert(m >= 2 && (m & 1) == 0 && n < m);
+
+                if (!eta_coef_table.TryGetValue(alpha, out BesselYEtaTable eta)) {
+                    eta = new BesselYEtaTable(alpha);
+                    eta_coef_table.Add(alpha, eta);
                 }
-
-                if (m < 2 || (m & 1) != 0 || n >= m) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
+                if (!xi_coef_table.TryGetValue(alpha, out BesselYXiTable xi)) {
+                    xi = new BesselYXiTable(alpha, eta);
+                    xi_coef_table.Add(alpha, xi);
                 }
-
-                if (!eta_coef_table.TryGetValue(alpha, out BesselYEtaTable eta_table)) {
-                    eta_table = new BesselYEtaTable(alpha);
-                    eta_coef_table.Add(alpha, eta_table);
+                if (!phi_coef_table.TryGetValue(alpha, out BesselJPhiTable phi)) {
+                    phi = new BesselJPhiTable(alpha);
+                    phi_coef_table.Add(alpha, phi);
                 }
-
-                BesselYEtaTable eta = eta_table;
-
-                if (!xi_coef_table.TryGetValue(alpha, out BesselYXiTable xi_table)) {
-                    xi_table = new BesselYXiTable(alpha, eta);
-                    xi_coef_table.Add(alpha, xi_table);
-                }
-
-                BesselYXiTable xi = xi_table;
-
-                if (!phi_coef_table.TryGetValue(alpha, out BesselJPhiTable phi_table)) {
-                    phi_table = new BesselJPhiTable(alpha);
-                    phi_coef_table.Add(alpha, phi_table);
-                }
-
-                BesselJPhiTable phi = phi_table;
 
                 Complex f0 = 1e-256, f1 = 0d, lambda = 0d;
                 Complex se = 0d, sxo = 0d, sxe = 0d;
-                Complex v = 1d / x;
+                Complex v = 1d / z;
 
                 for (int k = m; k >= 1; k--) {
                     if ((k & 1) == 0) {
@@ -1418,26 +1602,23 @@ namespace DoubleDoubleComplex {
                         sxo += f0 * xi[k];
                     }
 
-                    (f0, f1) = (Ldexp(k + alpha, 1) * v * f0 - f1, f0);
+                    (f0, f1) = (Complex.Ldexp(k + alpha, 1) * v * f0 - f1, f0);
                 }
 
-                Complex s = Pow(Ldexp(v, 1), alpha), sqs = s * s;
+                Complex s = Complex.Pow(Complex.Ldexp(v, 1), alpha), sqs = s * s;
 
                 lambda += f0 * phi[0];
                 lambda *= s;
 
                 ddouble rcot = 1d / ddouble.TanPI(alpha), rgamma = ddouble.Gamma(1d + alpha), rsqgamma = rgamma * rgamma;
-                Complex r = Ldexp(ddouble.RcpPI * sqs, 1);
+                Complex r = Complex.Ldexp(ddouble.RcpPI * sqs, 1);
                 Complex p = sqs * rsqgamma * ddouble.RcpPI;
 
-                Complex eta0 = (ddouble.Abs(alpha) > BesselUtil.MillerBwdBesselYEps)
-                    ? (rcot - p / alpha)
-                    : BesselYEta0Eps(alpha, x);
+                Complex xi0 = -Complex.Ldexp(v, 1) * p;
 
-                Complex xi0 = -Ldexp(v, 1) * p;
-                Complex xi1 = (ddouble.Abs(alpha) > BesselUtil.MillerBwdBesselYEps)
-                    ? rcot + p * (alpha * (alpha + 1d) + 1d) / (alpha * (alpha - 1d))
-                    : BesselYXi1Eps(alpha, x);
+                (Complex eta0, Complex xi1) = ddouble.ILogB(alpha) >= BesselYEpsExponent
+                    ? (rcot - p / alpha, rcot + p * (alpha * (alpha + 1d) + 1d) / (alpha * (alpha - 1d)))
+                    : BesselYEta0Xi1Eps(alpha, z);
 
                 Complex y0 = r * se + eta0 * f0;
                 Complex y1 = r * (3d * alpha * v * sxe + sxo) + xi0 * f0 + xi1 * f1;
@@ -1454,7 +1635,7 @@ namespace DoubleDoubleComplex {
                 }
                 if (n >= 0) {
                     for (int k = 1; k < n; k++) {
-                        (y1, y0) = (Ldexp(k + alpha, 1) * v * y1 - y0, y1);
+                        (y1, y0) = (Complex.Ldexp(k + alpha, 1) * v * y1 - y0, y1);
                     }
 
                     Complex yn = y1 / lambda;
@@ -1463,7 +1644,7 @@ namespace DoubleDoubleComplex {
                 }
                 else {
                     for (int k = 0; k > n; k--) {
-                        (y0, y1) = (Ldexp(k + alpha, 1) * v * y0 - y1, y0);
+                        (y0, y1) = (Complex.Ldexp(k + alpha, 1) * v * y0 - y1, y0);
                     }
 
                     Complex yn = y0 / lambda;
@@ -1472,91 +1653,39 @@ namespace DoubleDoubleComplex {
                 }
             }
 
-            private static Complex BesselYEta0Eps(ddouble alpha, Complex x) {
-                Complex lnx = Log(x), lnhalfx = Log(Ldexp(x, -1));
-                ddouble pi = ddouble.PI, sqpi = pi * pi;
-                ddouble ln2 = ddouble.Ln2, sqln2 = ln2 * ln2, cbln2 = sqln2 * ln2, qdln2 = sqln2 * sqln2;
-                ddouble g = ddouble.EulerGamma;
+            private static (Complex eta0, Complex xi1) BesselYEta0Xi1Eps(ddouble alpha, Complex z) {
+                const int N = 7;
 
-                Complex r0 = lnhalfx + g;
-                Complex r1 =
-                    (-sqln2 + lnx * (ln2 * 2d - lnx)) * 4d
-                    - sqpi
-                    - g * (lnhalfx * 2d + g) * 4d;
-                Complex r2 =
-                    (-cbln2 + lnx * (sqln2 * 3d + lnx * (ln2 * -3d + lnx))) * 4d
-                    + ddouble.Zeta3 * 2d
-                    + sqpi * (lnhalfx + g)
-                    + g * ((sqln2 + lnx * (ln2 * -2d + lnx)) * 3d + g * (lnhalfx * 3d + g)) * 4d;
-                Complex r3 =
-                    (-qdln2 + lnx * (cbln2 * 4d + lnx * (sqln2 * -6d + lnx * (ln2 * 4d - lnx)))) * 16d
-                    - ddouble.Zeta3 * (lnhalfx + g) * 32d
-                    - sqpi * (((sqln2 + lnx * (-ln2 * 2d + lnx) + g * (lnhalfx * 2d + g)) * 8d) + sqpi)
-                    + g * ((cbln2 + lnx * (sqln2 * -3d + lnx * (ln2 * 3d - lnx))) * 4d
-                    + g * ((sqln2 + lnx * (ln2 * -2d + lnx)) * -6d
-                    + g * (lnhalfx * -4d
-                    - g))) * 16d;
+                Complex lnz = Complex.Log(z);
 
-                Complex eta0 = (r0 * 48d + alpha * (r1 * 12d + alpha * (r2 * 8d + alpha * r3))) / (24d * ddouble.PI);
+                Complex eta0 = 0d, xi1 = 0d;
+                for (int i = N, k = 0; i >= 0; i--) {
+                    Complex s = eta0_coef[k], t = xi1_coef[k];
+                    k++;
 
-                return eta0;
-            }
+                    for (int j = i; j >= 0; j--, k++) {
+                        s = eta0_coef[k] + lnz * s;
+                        t = xi1_coef[k] + lnz * t;
+                    }
 
-            static Complex BesselYXi1Eps(ddouble alpha, Complex x) {
-                Complex lnx = Log(x), lnhalfx = Log(Ldexp(x, -1)), lnxm1 = lnx - 1, lnhalfxm1 = lnhalfx - 1;
-                ddouble pi = ddouble.PI, sqpi = pi * pi;
-                ddouble ln2 = ddouble.Ln2, sqln2 = ln2 * ln2, cbln2 = sqln2 * ln2, qdln2 = sqln2 * sqln2;
-                ddouble g = ddouble.EulerGamma;
-
-                Complex r0 = lnhalfxm1 + g;
-                Complex r1 =
-                    (-sqln2 + ln2 * lnxm1 * 2d + lnx * (2 - lnx)) * 4d
-                    - sqpi
-                    - g * (lnhalfxm1 * 2d + g) * 4d
-                    - 6d;
-                Complex r2 =
-                    (-cbln2 * 4d + sqln2 * lnxm1 * 12d + lnx * (18d + lnx * (-12d + lnx * 4d)))
-                    + ln2 * (lnx * (2d - lnx) * 12d - 18d)
-                    + ddouble.Zeta3 * 2d
-                    + sqpi * (lnhalfxm1 + g)
-                    + g * ((((sqln2 - ln2 * lnxm1 * 2d) + lnx * (-2d + lnx)) * 12d + 18d)
-                    + g * (lnhalfxm1 * 12d
-                    + g * 4d))
-                    - 9d;
-                Complex r3 =
-                    -qdln2 * 16d
-                    + cbln2 * lnxm1 * 64d
-                    + sqln2 * (lnx * (2d - lnx) * 96d - 144d)
-                    + ln2 * (lnx * (9d + lnx * (-6d + lnx * 2d)) * 32d - 144d)
-                    + lnx * (9d + lnx * (-9d + lnx * (4d - lnx))) * 16d
-                    + ddouble.Zeta3 * (lnhalfxm1 + g) * -32d
-                    + sqpi * (((-sqln2 + ln2 * lnxm1 * 2d + lnx * (2d - lnx) - g * (lnhalfxm1 * 2d + g)) * 8d - 12d) - sqpi)
-                    + g * (((cbln2 - sqln2 * lnxm1 * 3d) * 64d + ln2 * (lnx * (-2d + lnx) * 192d + 288d) + lnx * (-9d + lnx * (6d - lnx * 2d)) * 32d + 144d)
-                    + g * (((-sqln2 + ln2 * lnxm1 * 2d + lnx * (2d - lnx)) * 96d - 144d)
-                    + g * (lnhalfxm1 * -64d
-                    - g * 16d)))
-                    - 72d;
-
-                Complex xi1 = (r0 * 48d + alpha * (r1 * 12d + alpha * (r2 * 8d + alpha * r3))) / (24d * ddouble.PI);
-
-                return xi1;
-            }
-
-            private static Complex BesselY0Kernel(Complex x, int m) {
-                if (m < 2 || (m & 1) != 0) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
+                    eta0 = s + alpha * eta0;
+                    xi1 = t + alpha * xi1;
                 }
 
-                if (!eta_coef_table.TryGetValue(0, out BesselYEtaTable eta_table)) {
-                    eta_table = new BesselYEtaTable(0);
-                    eta_coef_table.Add(0, eta_table);
-                }
+                return (eta0, xi1);
+            }
 
-                BesselYEtaTable eta = eta_table;
+            private static Complex BesselY0Kernel(Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0);
+
+                if (!eta_coef_table.TryGetValue(0, out BesselYEtaTable eta)) {
+                    eta = new BesselYEtaTable(0);
+                    eta_coef_table.Add(0, eta);
+                }
 
                 Complex f0 = 1e-256, f1 = 0d, lambda = 0d;
                 Complex se = 0d;
-                Complex v = 1d / x;
+                Complex v = 1d / z;
 
                 for (int k = m; k >= 1; k--) {
                     if ((k & 1) == 0) {
@@ -1565,34 +1694,32 @@ namespace DoubleDoubleComplex {
                         se += f0 * eta[k / 2];
                     }
 
-                    (f0, f1) = ((2 * k) * v * f0 - f1, f0);
+                    (f0, f1) = (2 * k * v * f0 - f1, f0);
                 }
 
-                lambda = Ldexp(lambda, 1) + f0;
+                lambda = Complex.Ldexp(lambda, 1) + f0;
 
-                Complex y0 = Ldexp((se + f0 * (Log(Ldexp(x, -1)) + ddouble.EulerGamma)) / (ddouble.PI * lambda), 1);
+                Complex y0 = Complex.Ldexp((se + f0 * (Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma)) / (ddouble.PI * lambda), 1);
 
                 return y0;
             }
 
-            private static Complex BesselY1Kernel(Complex x, int m) {
-                if (m < 2 || (m & 1) != 0) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
-                }
+            private static Complex BesselY1Kernel(Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0);
 
-                if (!xi_coef_table.ContainsKey(0)) {
-                    if (!eta_coef_table.ContainsKey(0)) {
-                        eta_coef_table.Add(0, new BesselYEtaTable(0));
+                if (!xi_coef_table.TryGetValue(0, out BesselYXiTable xi)) {
+                    if (!eta_coef_table.TryGetValue(0, out BesselYEtaTable eta)) {
+                        eta = new BesselYEtaTable(0);
+                        eta_coef_table.Add(0, eta);
                     }
 
-                    xi_coef_table.Add(0, new BesselYXiTable(0, eta_coef_table[0]));
+                    xi = new BesselYXiTable(0, eta);
+                    xi_coef_table.Add(0, xi);
                 }
-
-                BesselYXiTable xi = xi_coef_table[0];
 
                 Complex f0 = 1e-256, f1 = 0d, lambda = 0d;
                 Complex sx = 0d;
-                Complex v = 1d / x;
+                Complex v = 1d / z;
 
                 for (int k = m; k >= 1; k--) {
                     if ((k & 1) == 0) {
@@ -1602,75 +1729,90 @@ namespace DoubleDoubleComplex {
                         sx += f0 * xi[k];
                     }
 
-                    (f0, f1) = ((2 * k) * v * f0 - f1, f0);
+                    (f0, f1) = (2 * k * v * f0 - f1, f0);
                 }
 
-                lambda = Ldexp(lambda, 1) + f0;
+                lambda = Complex.Ldexp(lambda, 1) + f0;
 
-                Complex y1 = Ldexp((sx - v * f0 + (Log(Ldexp(x, -1)) + ddouble.EulerGamma - 1d) * f1) / (lambda * ddouble.PI), 1);
+                Complex y1 = Complex.Ldexp((sx - v * f0 + (Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma - 1d) * f1) / (lambda * ddouble.PI), 1);
 
                 return y1;
             }
 
-            internal static Complex BesselIKernel(int n, Complex x, int m, bool scale = false) {
-                if (m < 2 || (m & 1) != 0 || n >= m) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
+            private static Complex BesselYNKernel(int n, Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0);
+
+                if (!eta_coef_table.TryGetValue(0, out BesselYEtaTable eta)) {
+                    eta = new BesselYEtaTable(0);
+                    eta_coef_table.Add(0, eta);
+                }
+                if (!xi_coef_table.TryGetValue(0, out BesselYXiTable xi)) {
+                    xi = new BesselYXiTable(0, eta);
+                    xi_coef_table.Add(0, xi);
                 }
 
-                n = int.Abs(n);
-
-                if (n == 0) {
-                    return BesselI0Kernel(x, m, scale);
-                }
-                if (n == 1) {
-                    return BesselI1Kernel(x, m, scale);
-                }
-
-                Complex f0 = 1e-256, f1 = 0d, lambda = 0d, fn = 0d;
-                Complex v = 1d / x;
+                Complex f0 = 1e-256, f1 = 0d, lambda = 0d;
+                Complex se = 0d, sx = 0d;
+                Complex v = 1d / z;
 
                 for (int k = m; k >= 1; k--) {
-                    lambda += f0;
+                    if ((k & 1) == 0) {
+                        lambda += f0;
 
-                    (f0, f1) = ((2 * k) * v * f0 + f1, f0);
-
-                    if (k - 1 == n) {
-                        fn = f0;
+                        se += f0 * eta[k / 2];
                     }
+                    else if (k >= 3) {
+                        sx += f0 * xi[k];
+                    }
+
+                    (f0, f1) = (2 * k * v * f0 - f1, f0);
                 }
 
-                lambda = Ldexp(lambda, 1) + f0;
+                lambda = Complex.Ldexp(lambda, 1) + f0;
 
-                Complex yn = fn / lambda;
+                Complex c = Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma;
 
-                if (!scale) {
-                    yn *= Exp(x);
+                Complex y0 = se + f0 * c;
+                Complex y1 = sx - v * f0 + (c - 1d) * f1;
+
+                for (int k = 1; k < n; k++) {
+                    (y1, y0) = (2 * k * v * y1 - y0, y1);
                 }
+
+                Complex yn = Complex.Ldexp(y1 / (lambda * ddouble.PI), 1);
 
                 return yn;
             }
 
-            internal static Complex BesselIKernel(ddouble nu, Complex x, int m, bool scale = false) {
+            private static Complex BesselIKernel(int n, Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0 && n < m);
+
+                n = int.Abs(n);
+
+                if (n == 0) {
+                    return BesselI0Kernel(z, m);
+                }
+                else if (n == 1) {
+                    return BesselI1Kernel(z, m);
+                }
+                else {
+                    return BesselINKernel(n, z, m);
+                }
+            }
+
+            private static Complex BesselIKernel(ddouble nu, Complex z, int m) {
                 int n = (int)ddouble.Floor(nu);
                 ddouble alpha = nu - n;
 
-                if (alpha == 0d) {
-                    return BesselIKernel(n, x, m, scale);
-                }
+                Debug.Assert(m >= 2 && (m & 1) == 0 && n < m);
 
-                if (m < 2 || (m & 1) != 0 || n >= m) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
+                if (!psi_coef_table.TryGetValue(alpha, out BesselIPsiTable psi)) {
+                    psi = new BesselIPsiTable(alpha);
+                    psi_coef_table.Add(alpha, psi);
                 }
-
-                if (!psi_coef_table.TryGetValue(alpha, out BesselIPsiTable psi_table)) {
-                    psi_table = new BesselIPsiTable(alpha);
-                    psi_coef_table.Add(alpha, psi_table);
-                }
-
-                BesselIPsiTable psi = psi_table;
 
                 Complex g0 = 1e-256, g1 = 0d, lambda = 0d;
-                Complex v = 1d / x;
+                Complex v = 1d / z;
 
                 if (n >= 0) {
                     Complex gn = 0d;
@@ -1678,7 +1820,7 @@ namespace DoubleDoubleComplex {
                     for (int k = m; k >= 1; k--) {
                         lambda += g0 * psi[k];
 
-                        (g0, g1) = (Ldexp(k + alpha, 1) * v * g0 + g1, g0);
+                        (g0, g1) = (Complex.Ldexp(k + alpha, 1) * v * g0 + g1, g0);
 
                         if (k - 1 == n) {
                             gn = g0;
@@ -1686,13 +1828,11 @@ namespace DoubleDoubleComplex {
                     }
 
                     lambda += g0 * psi[0];
-                    lambda *= Pow(Ldexp(v, 1), alpha);
+                    lambda *= Complex.Pow(Complex.Ldexp(v, 1), alpha);
 
                     Complex yn = gn / lambda;
 
-                    if (!scale) {
-                        yn *= Exp(x);
-                    }
+                    yn *= Complex.Exp(z);
 
                     return yn;
                 }
@@ -1700,88 +1840,103 @@ namespace DoubleDoubleComplex {
                     for (int k = m; k >= 1; k--) {
                         lambda += g0 * psi[k];
 
-                        (g0, g1) = (Ldexp(k + alpha, 1) * v * g0 + g1, g0);
+                        (g0, g1) = (Complex.Ldexp(k + alpha, 1) * v * g0 + g1, g0);
                     }
 
                     lambda += g0 * psi[0];
-                    lambda *= Pow(Ldexp(v, 1), alpha);
+                    lambda *= Complex.Pow(Complex.Ldexp(v, 1), alpha);
 
                     for (int k = 0; k > n; k--) {
-                        (g0, g1) = (Ldexp(k + alpha, 1) * v * g0 + g1, g0);
+                        (g0, g1) = (Complex.Ldexp(k + alpha, 1) * v * g0 + g1, g0);
                     }
 
                     Complex yn = g0 / lambda;
 
-                    if (!scale) {
-                        yn *= Exp(x);
-                    }
+                    yn *= Complex.Exp(z);
 
                     return yn;
                 }
             }
 
-            private static Complex BesselI0Kernel(Complex x, int m, bool scale = false) {
-                if (m < 2 || (m & 1) != 0) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
-                }
+            private static Complex BesselI0Kernel(Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0);
 
                 Complex g0 = 1e-256, g1 = 0d, lambda = 0d;
-                Complex v = 1d / x;
+                Complex v = 1d / z;
 
                 for (int k = m; k >= 1; k--) {
                     lambda += g0;
 
-                    (g0, g1) = ((2 * k) * v * g0 + g1, g0);
+                    (g0, g1) = (2 * k * v * g0 + g1, g0);
                 }
 
-                lambda = Ldexp(lambda, 1) + g0;
+                lambda = Complex.Ldexp(lambda, 1) + g0;
 
                 Complex y0 = g0 / lambda;
 
-                if (!scale) {
-                    y0 *= Exp(x);
-                }
+                y0 *= Complex.Exp(z);
 
                 return y0;
             }
 
-            private static Complex BesselI1Kernel(Complex x, int m, bool scale = false) {
-                if (m < 2 || (m & 1) != 0) {
-                    throw new ArgumentOutOfRangeException(nameof(m));
-                }
+            private static Complex BesselI1Kernel(Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0);
 
                 Complex g0 = 1e-256, g1 = 0d, lambda = 0d;
-                Complex v = 1d / x;
+                Complex v = 1d / z;
 
                 for (int k = m; k >= 1; k--) {
                     lambda += g0;
 
-                    (g0, g1) = ((2 * k) * v * g0 + g1, g0);
+                    (g0, g1) = (2 * k * v * g0 + g1, g0);
                 }
 
-                lambda = Ldexp(lambda, 1) + g0;
+                lambda = Complex.Ldexp(lambda, 1) + g0;
 
                 Complex y1 = g1 / lambda;
 
-                if (!scale) {
-                    y1 *= Exp(x);
-                }
+                y1 *= Complex.Exp(z);
 
                 return y1;
             }
 
+            private static Complex BesselINKernel(int n, Complex z, int m) {
+                Debug.Assert(m >= 2 && (m & 1) == 0);
+
+                Complex f0 = 1e-256, f1 = 0d, lambda = 0d, fn = 0d;
+                Complex v = 1d / z;
+
+                for (int k = m; k >= 1; k--) {
+                    lambda += f0;
+
+                    (f0, f1) = (2 * k * v * f0 + f1, f0);
+
+                    if (k - 1 == n) {
+                        fn = f0;
+                    }
+                }
+
+                lambda = Complex.Ldexp(lambda, 1) + f0;
+
+                Complex yn = fn / lambda;
+
+                yn *= Complex.Exp(z);
+
+                return yn;
+            }
+
             private class BesselJPhiTable {
                 private readonly ddouble alpha;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 private ddouble g;
 
                 public BesselJPhiTable(ddouble alpha) {
-                    Debug.Assert((alpha > 0d && alpha < 1d), nameof(alpha));
+                    Debug.Assert(alpha > -1d && alpha < 1d, nameof(alpha));
 
                     this.alpha = alpha;
 
-                    ddouble phi0 = ddouble.Gamma(1 + alpha);
+                    ddouble phi0 = ddouble.Gamma(1d + alpha);
                     ddouble phi1 = phi0 * (alpha + 2d);
 
                     this.g = phi0;
@@ -1790,35 +1945,35 @@ namespace DoubleDoubleComplex {
                     this.table.Add(phi1);
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                private ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                private ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int m = table.Count; m <= n; m++) {
-                        g = g * (alpha + m - 1d) / m;
+                    for (int i = table.Count; i <= k; i++) {
+                        g = g * (alpha + i - 1d) / i;
 
-                        ddouble phi = g * (alpha + 2 * m);
+                        ddouble phi = g * (alpha + 2 * i);
 
                         table.Add(phi);
                     }
 
-                    return table[n];
+                    return table[k];
                 }
-            };
+            }
 
             private class BesselIPsiTable {
                 private readonly ddouble alpha;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 private ddouble g;
 
                 public BesselIPsiTable(ddouble alpha) {
-                    Debug.Assert((alpha > 0d && alpha < 1d), nameof(alpha));
+                    Debug.Assert(alpha > -1d && alpha < 1d, nameof(alpha));
 
                     this.alpha = alpha;
 
@@ -1831,40 +1986,40 @@ namespace DoubleDoubleComplex {
                     this.table.Add(psi1);
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                private ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                private ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int m = table.Count; m <= n; m++) {
-                        g = g * (ddouble.Ldexp(alpha, 1) + m - 1d) / m;
+                    for (int i = table.Count; i <= k; i++) {
+                        g = g * (ddouble.Ldexp(alpha, 1) + i - 1d) / i;
 
-                        ddouble phi = g * (alpha + m);
+                        ddouble phi = g * (alpha + i);
 
                         table.Add(phi);
                     }
 
-                    return table[n];
+                    return table[k];
                 }
-            };
+            }
 
             private class BesselYEtaTable {
                 private readonly ddouble alpha;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
 
                 private ddouble g;
 
                 public BesselYEtaTable(ddouble alpha) {
-                    Debug.Assert((alpha >= 0d && alpha < 1d), nameof(alpha));
+                    Debug.Assert(alpha > -1d && alpha < 1d, nameof(alpha));
 
                     this.alpha = alpha;
                     this.table.Add(ddouble.NaN);
 
-                    if (alpha > 0d) {
+                    if (alpha != 0d) {
                         ddouble c = ddouble.Gamma(1d + alpha);
                         c *= c;
                         this.g = 1d / (1d - alpha) * c;
@@ -1875,41 +2030,41 @@ namespace DoubleDoubleComplex {
                     }
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                private ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                private ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int m = table.Count; m <= n; m++) {
-                        if (alpha > 0d) {
-                            g = -g * (alpha + m - 1) * (ddouble.Ldexp(alpha, 1) + m - 1d) / (m * (m - alpha));
+                    for (int i = table.Count; i <= k; i++) {
+                        if (alpha != 0d) {
+                            g = -g * (alpha + i - 1) * (ddouble.Ldexp(alpha, 1) + i - 1d) / (i * (i - alpha));
 
-                            ddouble eta = g * (alpha + 2 * m);
+                            ddouble eta = g * (alpha + 2 * i);
 
                             table.Add(eta);
                         }
                         else {
-                            ddouble eta = (ddouble)2d / m;
+                            ddouble eta = (ddouble)2d / i;
 
-                            table.Add(((m & 1) == 1) ? eta : -eta);
+                            table.Add((i & 1) == 1 ? eta : -eta);
                         }
                     }
 
-                    return table[n];
+                    return table[k];
                 }
-            };
+            }
 
             private class BesselYXiTable {
                 private readonly ddouble alpha;
-                private readonly List<ddouble> table = new();
+                private readonly List<ddouble> table = [];
                 private readonly BesselYEtaTable eta;
 
                 public BesselYXiTable(ddouble alpha, BesselYEtaTable eta) {
-                    Debug.Assert((alpha >= 0d && alpha < 1d), nameof(alpha));
+                    Debug.Assert(alpha >= -1d && alpha < 1d, nameof(alpha));
 
                     this.alpha = alpha;
                     this.table.Add(ddouble.NaN);
@@ -1918,28 +2073,28 @@ namespace DoubleDoubleComplex {
                     this.eta = eta;
                 }
 
-                public ddouble this[int n] => Value(n);
+                public ddouble this[int k] => Value(k);
 
-                private ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
+                private ddouble Value(int k) {
+                    Debug.Assert(k >= 0);
 
-                    if (n < table.Count) {
-                        return table[n];
+                    if (k < table.Count) {
+                        return table[k];
                     }
 
-                    for (int m = table.Count; m <= n; m++) {
-                        if (alpha > 0d) {
-                            if ((m & 1) == 0) {
-                                table.Add(eta[m / 2]);
+                    for (int i = table.Count; i <= k; i++) {
+                        if (alpha != 0d) {
+                            if ((i & 1) == 0) {
+                                table.Add(eta[i / 2]);
                             }
                             else {
-                                table.Add((eta[m / 2] - eta[m / 2 + 1]) / 2);
+                                table.Add((eta[i / 2] - eta[i / 2 + 1]) / 2);
                             }
                         }
                         else {
-                            if ((m & 1) == 1) {
-                                ddouble xi = (ddouble)(2 * (m / 2) + 1) / ((m / 2) * ((m / 2) + 1));
-                                table.Add(((m & 2) > 0) ? xi : -xi);
+                            if ((i & 1) == 1) {
+                                ddouble xi = (ddouble)(2 * (i / 2) + 1) / (i / 2 * (i / 2 + 1));
+                                table.Add((i & 2) > 0 ? xi : -xi);
                             }
                             else {
                                 table.Add(ddouble.NaN);
@@ -1947,51 +2102,29 @@ namespace DoubleDoubleComplex {
                         }
                     }
 
-                    return table[n];
+                    return table[k];
                 }
-            };
+            }
         }
 
-        private static class BesselYoshidaPade {
+        public static class YoshidaPade {
             private static readonly ReadOnlyCollection<ReadOnlyCollection<ddouble>> ess_coef_table;
-            private static readonly Dictionary<ddouble, ReadOnlyCollection<(ddouble c, ddouble s)>> cds_coef_table = new();
+            private static readonly Dictionary<ddouble, ReadOnlyCollection<(ddouble c, ddouble s)>> cds_coef_table = [];
 
-            static BesselYoshidaPade() {
-                //Dictionary<string, ReadOnlyCollection<ddouble>> tables =
-                //    ResourceUnpack.NumTable(Resource.BesselKTable);
+            static YoshidaPade() {
+                cds_coef_table.Add(0, Array.AsReadOnly(Consts.BesselKYoshidaPadeCoefM36.Nu0.Reverse().ToArray()));
+                cds_coef_table.Add(1, Array.AsReadOnly(Consts.BesselKYoshidaPadeCoefM36.Nu1.Reverse().ToArray()));
 
-                //ReadOnlyCollection<ddouble> cs0 = tables["CS0Table"], cs1 = tables["CS1Table"];
-                //ReadOnlyCollection<ddouble> ds0 = tables["DS0Table"], ds1 = tables["DS1Table"];
+                List<ReadOnlyCollection<ddouble>> es = [];
 
-                //if (cs0.Count != ds0.Count || cs1.Count != ds1.Count) {
-                //    throw new IOException("The format of resource file is invalid.");
-                //}
+                for (int i = 0; i < Consts.BesselKYoshidaPadeCoefM36.Ess.Length; i++) {
+                    es.Add(Array.AsReadOnly(Consts.BesselKYoshidaPadeCoefM36.Ess[i].ToArray()));
+                }
 
-                //List<(ddouble c, ddouble s)> cd0 = new(), cd1 = new();
-
-                //for (int i = 0; i < cs0.Count; i++) {
-                //    cd0.Add((cs0[i], ds0[i]));
-                //}
-                //for (int i = 0; i < cs1.Count; i++) {
-                //    cd1.Add((cs1[i], ds1[i]));
-                //}
-
-                //cd0.Reverse();
-                //cd1.Reverse();
-
-                //cds_coef_table.Add(0, Array.AsReadOnly(cd0.ToArray()));
-                //cds_coef_table.Add(1, Array.AsReadOnly(cd1.ToArray()));
-
-                //List<ReadOnlyCollection<ddouble>> es = new();
-
-                //for (int i = 0; i < 32; i++) {
-                //    es.Add(tables[$"ES{i}Table"]);
-                //}
-
-                //ess_coef_table = Array.AsReadOnly(es.ToArray());
+                ess_coef_table = Array.AsReadOnly(es.ToArray());
             }
 
-            public static Complex BesselK(ddouble nu, Complex x, bool scale = false) {
+            public static Complex BesselK(ddouble nu, Complex z) {
                 if (nu < 2d) {
                     if (!cds_coef_table.TryGetValue(nu, out ReadOnlyCollection<(ddouble c, ddouble s)> cds_table)) {
                         cds_table = Table(nu);
@@ -2000,7 +2133,7 @@ namespace DoubleDoubleComplex {
 
                     ReadOnlyCollection<(ddouble, ddouble)> cds = cds_table;
 
-                    Complex y = Value(x, cds, scale);
+                    Complex y = Value(z, cds);
 
                     return y;
                 }
@@ -2008,21 +2141,21 @@ namespace DoubleDoubleComplex {
                     int n = (int)ddouble.Floor(nu);
                     ddouble alpha = nu - n;
 
-                    Complex y0 = BesselK(alpha, x, scale);
-                    Complex y1 = BesselK(alpha + 1d, x, scale);
+                    Complex y0 = BesselK(alpha, z);
+                    Complex y1 = BesselK(alpha + 1d, z);
 
-                    Complex v = 1d / x;
+                    Complex v = 1d / z;
 
                     for (int k = 1; k < n; k++) {
-                        (y1, y0) = (Ldexp(k + alpha, 1) * v * y1 + y0, y1);
+                        (y1, y0) = (Complex.Ldexp(k + alpha, 1) * v * y1 + y0, y1);
                     }
 
                     return y1;
                 }
             }
 
-            private static Complex Value(Complex x, ReadOnlyCollection<(ddouble c, ddouble d)> cds, bool scale = false) {
-                Complex t = 1d / x;
+            private static Complex Value(Complex z, ReadOnlyCollection<(ddouble c, ddouble d)> cds) {
+                Complex t = 1d / z;
                 (Complex sc, Complex sd) = cds[0];
 
                 for (int i = 1; i < cds.Count; i++) {
@@ -2032,13 +2165,9 @@ namespace DoubleDoubleComplex {
                     sd = sd * t + d;
                 }
 
-                Debug.Assert(sd.Magnitude > 0.0625d, $"[BesselK x={x}] Too small pade denom!!");
+                Complex y = Complex.Sqrt(Complex.Ldexp(t * ddouble.PI, -1)) * sc / sd;
 
-                Complex y = Sqrt(Ldexp(t * ddouble.PI, -1)) * sc / sd;
-
-                if (!scale) {
-                    y *= Exp(-x);
-                }
+                y *= Complex.Exp(-z);
 
                 return y;
             }
@@ -2047,7 +2176,7 @@ namespace DoubleDoubleComplex {
                 int m = ess_coef_table.Count - 1;
 
                 ddouble squa_nu = nu * nu;
-                List<(ddouble c, ddouble d)> cds = new();
+                List<(ddouble c, ddouble d)> cds = [];
                 ddouble[] us = new ddouble[m + 1], vs = new ddouble[m];
 
                 ddouble u = 1d;
@@ -2080,283 +2209,107 @@ namespace DoubleDoubleComplex {
             }
         }
 
-        private static class BesselLimit {
-            private static readonly Dictionary<ddouble, ACoefTable> a_coef_table = new();
-            private static readonly Dictionary<ddouble, JYCoefTable> jy_coef_table = new();
-            private static readonly Dictionary<ddouble, IKCoefTable> ik_coef_table = new();
-
-            public static Complex BesselJ(ddouble nu, Complex x) {
-                if (ddouble.IsInfinity(x.R)) {
-                    return Zero;
-                }
-
-                (Complex c, Complex s) = BesselJYKernel(nu, x, terms: 32);
-
-                Complex omega = x - Ldexp((Ldexp(nu, 1) + 1d) * ddouble.PI, -2);
-                Complex m = c * Cos(omega) - s * Sin(omega);
-                Complex t = m * Sqrt(2d / (ddouble.PI * x));
-
-                return t;
-            }
-
-            public static Complex BesselY(ddouble nu, Complex x) {
-                if (ddouble.IsInfinity(x.R)) {
-                    return Zero;
-                }
-
-                (Complex s, Complex c) = BesselJYKernel(nu, x, terms: 32);
-
-                Complex omega = x - Ldexp((Ldexp(nu, 1) + 1d) * ddouble.PI, -2);
-                Complex m = s * Sin(omega) + c * Cos(omega);
-                Complex t = m * Sqrt(2d / (ddouble.PI * x));
-
-                return t;
-            }
-
-            public static Complex BesselI(ddouble nu, Complex x, bool scale = false) {
-                if (ddouble.IsInfinity(x.R)) {
-                    return scale ? ddouble.PlusZero : ddouble.PositiveInfinity;
-                }
-
-                Complex c = BesselIKKernel(nu, x, sign_switch: true, terms: 36);
-
-                Complex t = c / Sqrt(Ldexp(ddouble.PI, 1) * x);
-
-                if (!scale) {
-                    t *= Exp(x);
-
-                    if (IsNaN(t)) {
-                        return ddouble.PositiveInfinity;
-                    }
-                }
-
-                return t;
-            }
-
-            public static Complex BesselK(ddouble nu, Complex x, bool scale = false) {
-                if (ddouble.IsInfinity(x.R)) {
-                    return Zero;
-                }
-
-                Complex c = BesselIKKernel(nu, x, sign_switch: false, terms: 34);
-
-                Complex t = c * Sqrt(ddouble.PI / Ldexp(x, 1));
-
-                if (!scale) {
-                    t *= Exp(-x);
-                }
-
-                return t;
-            }
-
-            private static (Complex s, Complex t) BesselJYKernel(ddouble nu, Complex x, int terms = 64) {
-                if (!a_coef_table.TryGetValue(nu, out ACoefTable a_table)) {
-                    a_table = new ACoefTable(nu);
-                    a_coef_table.Add(nu, a_table);
-                }
-                if (!jy_coef_table.TryGetValue(nu, out JYCoefTable jy_table)) {
-                    jy_table = new JYCoefTable(nu);
-                    jy_coef_table.Add(nu, jy_table);
-                }
-
-                ACoefTable a = a_table;
-                JYCoefTable c = jy_table;
-
-                Complex v = 1d / x, v2 = v * v, v4 = v2 * v2;
-                Complex s = 0d, t = 0d, p = 1d, q = v;
-
-                for (int k = 0, conv_times = 0; k <= terms && conv_times < 2; k++) {
-                    Complex ds = p * a[k * 4] * (1d - v2 * c[k].p0);
-                    Complex dt = q * a[k * 4 + 1] * (1d - v2 * c[k].p1);
-
-                    Complex s_next = s + ds;
-                    Complex t_next = t + dt;
-
-                    if (s == s_next && t == t_next) {
-                        conv_times++;
-                    }
-                    else {
-                        conv_times = 0;
-                    }
-
-                    p *= v4;
-                    q *= v4;
-                    s = s_next;
-                    t = t_next;
-                }
-
-                return (s, t);
-            }
-
-            private static Complex BesselIKKernel(ddouble nu, Complex x, bool sign_switch, int terms) {
-                if (!a_coef_table.TryGetValue(nu, out ACoefTable a_table)) {
-                    a_table = new ACoefTable(nu);
-                    a_coef_table.Add(nu, a_table);
-                }
-                if (!ik_coef_table.TryGetValue(nu, out IKCoefTable ik_table)) {
-                    ik_table = new IKCoefTable(nu);
-                    ik_coef_table.Add(nu, ik_table);
-                }
-
-                ACoefTable a = a_table;
-                IKCoefTable c = ik_table;
-
-                Complex v = 1d / x, v2 = v * v;
-                Complex r = 0d, u = 1d;
-
-                for (int k = 0, conv_times = 0; k <= terms && conv_times < 2; k++) {
-                    Complex w = v * c[k];
-                    Complex dr = u * a[k * 2] * (sign_switch ? (1d - w) : (1d + w));
-
-                    Complex r_next = r + dr;
-
-                    if (r == r_next) {
-                        conv_times++;
-                    }
-                    else {
-                        conv_times = 0;
-                    }
-
-                    r = r_next;
-                    u *= v2;
-                }
-
-                return r;
-            }
-
-            private class ACoefTable {
-                private readonly ddouble squa_nu4;
-                private readonly List<ddouble> table = new();
-
-                public ACoefTable(ddouble nu) {
-                    this.squa_nu4 = ddouble.Ldexp(nu * nu, 2);
-
-                    ddouble a1 = ddouble.Ldexp(squa_nu4 - 1d, -3);
-
-                    this.table.Add(1d);
-                    this.table.Add(a1);
-                }
-
-                public ddouble this[int n] => Value(n);
-
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
-
-                    if (n < table.Count) {
-                        return table[n];
-                    }
-
-                    for (int k = table.Count; k <= n; k++) {
-                        ddouble a = table.Last() * (squa_nu4 - ((2 * k - 1) * (2 * k - 1))) / (k * 8);
-
-                        table.Add(a);
-                    }
-
-                    return table[n];
-                }
-            }
-
-            private class JYCoefTable {
-                private readonly ddouble squa_nu4;
-                private readonly List<(ddouble p0, ddouble p1)> table = new();
-
-                public JYCoefTable(ddouble nu) {
-                    this.squa_nu4 = ddouble.Ldexp(nu * nu, 2);
-                }
-
-                public (ddouble p0, ddouble p1) this[int n] => Value(n);
-
-                public (ddouble p0, ddouble p1) Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
-
-                    if (n < table.Count) {
-                        return table[n];
-                    }
-
-                    static int square(int n) => (n * n);
-
-                    for (int k = table.Count; k <= n; k++) {
-                        ddouble p0 = (squa_nu4 - square(8 * k + 1)) * (squa_nu4 - square(8 * k + 3)) / (64 * (4 * k + 1) * (4 * k + 2));
-                        ddouble p1 = (squa_nu4 - square(8 * k + 3)) * (squa_nu4 - square(8 * k + 5)) / (64 * (4 * k + 2) * (4 * k + 3));
-
-                        table.Add((p0, p1));
-                    }
-
-                    return table[n];
-                }
-            }
-
-            private class IKCoefTable {
-                private readonly ddouble squa_nu4;
-                private readonly List<ddouble> table = new();
-
-                public IKCoefTable(ddouble nu) {
-                    this.squa_nu4 = ddouble.Ldexp(nu * nu, 2);
-                }
-
-                public ddouble this[int n] => Value(n);
-
-                public ddouble Value(int n) {
-                    ArgumentOutOfRangeException.ThrowIfNegative(n, nameof(n));
-
-                    if (n < table.Count) {
-                        return table[n];
-                    }
-
-                    static int square(int n) => (n * n);
-
-                    for (int k = table.Count; k <= n; k++) {
-                        ddouble p = (squa_nu4 - square(4 * k + 1)) / (8 * (2 * k + 1));
-
-                        table.Add(p);
-                    }
-
-                    return table[n];
-                }
-            }
-        }
-
-        private static class BesselInterpolate {
-            public static Complex BesselYCubicInterpolate(ddouble nu, Complex x) {
+        public static class Interpolation {
+            public static Complex BesselY(ddouble nu, Complex z) {
                 int n = (int)ddouble.Round(nu);
                 ddouble alpha = nu - n;
 
-                Complex y0 = BesselY(n, x);
-                Complex y1 = BesselY(n + ddouble.Sign(alpha) * BesselUtil.InterpolationThreshold, x);
-                Complex y2 = BesselY(n + ddouble.Sign(alpha) * BesselUtil.InterpolationThreshold * 1.5, x);
-                Complex y3 = BesselY(n + ddouble.Sign(alpha) * BesselUtil.InterpolationThreshold * 2, x);
+                Debug.Assert(ddouble.Abs(alpha) <= BesselYInterpolationDelta);
 
-                ddouble t = ddouble.Abs(alpha) / BesselUtil.InterpolationThreshold;
-                Complex y = CubicInterpolate(t, y0, y1, y2, y3);
+                Complex y0 = PowerSeries.BesselY(n, z);
+
+                if (!Complex.IsFinite(y0)) {
+                    return y0;
+                }
+
+                ddouble dnu = ddouble.Sign(alpha) * BesselYInterpolationDelta;
+
+                Complex y1 = PowerSeries.BesselY(n + dnu, z);
+                Complex y2 = PowerSeries.BesselY(n + dnu * 1.25d, z);
+                Complex y3 = PowerSeries.BesselY(n + dnu * 1.5d, z);
+                Complex y4 = PowerSeries.BesselY(n + dnu * 1.75d, z);
+                Complex y5 = PowerSeries.BesselY(n + dnu * 2d, z);
+
+                if (!Complex.IsFinite(y1) || !Complex.IsFinite(y2) || !Complex.IsFinite(y3) || !Complex.IsFinite(y4) || !Complex.IsFinite(y5)) {
+                    return y1;
+                }
+
+                ddouble t = ddouble.Abs(alpha) / BesselYInterpolationDelta;
+                Complex y = Interpolate(t, y0, y1, y2, y3, y4, y5);
 
                 return y;
             }
 
-            public static Complex BesselKCubicInterpolate(ddouble nu, Complex x, bool scale) {
+            public static Complex BesselK(ddouble nu, Complex z) {
                 int n = (int)ddouble.Round(nu);
                 ddouble alpha = nu - n;
 
-                Complex y0 = BesselK(n, x, scale: true);
-                Complex y1 = BesselK(n + ddouble.Sign(alpha) * BesselUtil.InterpolationThreshold, x, scale: true);
-                Complex y2 = BesselK(n + ddouble.Sign(alpha) * BesselUtil.InterpolationThreshold * 1.5, x, scale: true);
-                Complex y3 = BesselK(n + ddouble.Sign(alpha) * BesselUtil.InterpolationThreshold * 2, x, scale: true);
+                Debug.Assert(n >= 0);
+                Debug.Assert(ddouble.Abs(alpha) <= BesselKInterpolationDelta);
 
-                ddouble t = ddouble.Abs(alpha) / BesselUtil.InterpolationThreshold;
-                Complex y = CubicInterpolate(t, y0, y1, y2, y3);
+                Complex y0 = PowerSeries.BesselK(0, z);
 
-                if (!scale) {
-                    y *= Exp(-x);
+                if (!Complex.IsFinite(y0)) {
+                    return y0;
                 }
+                ddouble dnu = BesselKInterpolationDelta;
+
+                Complex y1 = PowerSeries.BesselK(dnu, z);
+                Complex y2 = PowerSeries.BesselK(dnu * 1.25d, z);
+                Complex y3 = PowerSeries.BesselK(dnu * 1.5d, z);
+                Complex y4 = PowerSeries.BesselK(dnu * 1.75d, z);
+                Complex y5 = PowerSeries.BesselK(dnu * 2d, z);
+
+                if (!Complex.IsFinite(y1) || !Complex.IsFinite(y2) || !Complex.IsFinite(y3) || !Complex.IsFinite(y4) || !Complex.IsFinite(y5)) {
+                    return y1;
+                }
+
+                ddouble t = ddouble.Abs(alpha) / BesselKInterpolationDelta;
+                Complex k0 = InterpolateEvenConvex(t, y0, y1, y2, y3, y4, y5);
+
+                if (n == 0) {
+                    return k0;
+                }
+
+                Complex i0 = PowerSeries.BesselI(alpha, z), i1 = PowerSeries.BesselI(alpha + 1d, z);
+
+                Complex k1 = (1d - i1 * k0 * z) / (i0 * z);
+
+                if (n == 1) {
+                    return k1;
+                }
+
+                Complex v = 1d / z;
+
+                for (int k = 1; k < n; k++) {
+                    (k1, k0) = (ddouble.Ldexp(k + alpha, 1) * v * k1 + k0, k1);
+                }
+
+                return k1;
+            }
+
+            private static Complex Interpolate(ddouble t, Complex y0, Complex y1, Complex y2, Complex y3, Complex y4, Complex y5) {
+                Complex y = y0
+                    + t * (-743d * y0 + 14700d * y1 - 37632d * y2 + 39200d * y3 - 19200d * y4 + 3675d * y5
+                    + t * (1035d * y0 - 37310d * y1 + 103040d * y2 - 112560d * y3 + 56960d * y4 - 11165d * y5
+                    + t * (-710d * y0 + 35140d * y1 - 103040d * y2 + 118160d * y3 - 62080d * y4 + 12530d * y5
+                    + t * (240d * y0 - 14560d * y1 + 44800d * y2 - 53760d * y3 + 29440d * y4 - 6160d * y5
+                    + t * (-32d * y0 + 2240d * y1 - 7168d * y2 + 8960d * y3 - 5120d * y4 + 1120d * y5))))) / 210d;
 
                 return y;
             }
 
-            private static Complex CubicInterpolate(ddouble t, Complex y0, Complex y1, Complex y2, Complex y3) {
-                return y0 + (
-                    -(13d + t * (-9d + t * 2d)) / 6d * y0
-                    + (6d + t * (-7d + t * 2d)) * y1
-                    - (16d + t * (-24d + t * 8d)) / 3d * y2
-                    + (3d + t * (-5d + t * 2d)) / 2d * y3) * t;
+            private static Complex InterpolateEvenConvex(ddouble t, Complex y0, Complex y1, Complex y2, Complex y3, Complex y4, Complex y5) {
+                ddouble t2 = t * t;
+
+                Complex y = y0
+                    + t2 * (-151028163d * y0 + 561834000d * y1 - 708083712d * y2 + 395136000d * y3 - 110592000d * y4 + 12733875d * y5
+                    + t2 * (150533955d * y0 - 933192260d * y1 + 1431019520d * y2 - 875831040d * y3 + 258170880d * y4 - 30701055d * y5
+                    + t2 * (-70594524d * y0 + 556941840d * y1 - 962174976d * y2 + 658748160d * y3 - 209018880d * y4 + 26098380d * y5
+                    + t2 * (15649920d * y0 - 141872640d * y1 + 264929280d * y2 - 198696960d * y3 + 69304320d * y4 - 9313920d * y5
+                    + t2 * (-1317888d * y0 + 13045760d * y1 - 25690112d * y2 + 20643840d * y3 - 7864320d * y4 + 1182720d * y5))))) / 56756700d;
+
+                return y;
             }
         }
     }

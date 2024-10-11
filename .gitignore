@@ -53,7 +53,6 @@ nuget.exe
 nugetpack.bat
 /**/*.nuspec
 /**/*.nupkg
-/mpmath_expected/*
 /results_disused/*
 
 # Safelist
