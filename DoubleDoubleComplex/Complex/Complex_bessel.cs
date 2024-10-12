@@ -1235,7 +1235,7 @@ namespace DoubleDoubleComplex {
                 }
 
                 public (Complex c_even, Complex c_odd) BesselJYCoef(Complex z, int terms = 35) {
-                    Complex v = 1 / (z * z), w = -v;
+                    Complex v = 1d / (z * z), w = -v;
 
                     Complex c_even = ACoef(0), c_odd = ACoef(1);
 
