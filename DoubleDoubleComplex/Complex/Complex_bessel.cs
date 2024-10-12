@@ -1229,7 +1229,7 @@ namespace DoubleDoubleComplex {
                 }
 
                 public Complex Omega(Complex z) {
-                    Complex omega = z - ddouble.Ldexp(2 * Nu + 1, -2) * ddouble.PI;
+                    Complex omega = z - ddouble.Ldexp(2d * Nu + 1d, -2) * ddouble.PI;
 
                     return omega;
                 }
