@@ -193,17 +193,14 @@ namespace DoubleDoubleComplex {
             public static Complex ErfNearZero(Complex w) {
                 Complex c = One, u = -w;
 
-                for (int k = 1, convergence_time = 0; k <= 196 && convergence_time < 4; k++) {
-                    Complex dc = u / (2 * k + 1);
-                    c += dc;
+                for (int k = 1; k <= 196; k++) {
+                    c = SeriesUtil.Add(c, u, ddouble.Rcp(2 * k + 1), out bool convergence);
+
+                    if (convergence) {
+                        break;
+                    }
 
                     u *= w / -(k + 1);
-
-                    if ((double.Abs((double)dc.R) <= double.Abs((double)c.R) * 1e-30) &&
-                        (double.Abs((double)dc.I) <= double.Abs((double)c.I) * 1e-30)) {
-
-                        convergence_time++;
-                    }
                 }
 
                 return c;
