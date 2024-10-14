@@ -1,6 +1,4 @@
-﻿using DoubleDouble;
-using DoubleDoubleComplex;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace DoubleDoubleComplex {
     internal static class SeriesUtil {

@@ -84,7 +84,7 @@ namespace DoubleDoubleComplex {
                 int exp = ILogB(b);
                 (a, b) = (ddouble.Ldexp(a, -exp), Ldexp(b, -exp));
             }
-            
+
             ddouble s = a / b.Norm;
 
             return new(b.R * s, -b.I * s, -b.J * s, -b.K * s);

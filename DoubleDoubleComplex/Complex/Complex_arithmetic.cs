@@ -74,7 +74,7 @@ namespace DoubleDoubleComplex {
                 int exp = ILogB(b);
                 (a, b) = (ddouble.Ldexp(a, -exp), Ldexp(b, -exp));
             }
-            
+
             ddouble s = a / b.Norm;
 
             return new(b.R * s, -b.I * s);
@@ -96,11 +96,11 @@ namespace DoubleDoubleComplex {
             return Ldexp(new(z.R * s, -z.I * s), -exp);
         }
 
-        private static Complex MulI(Complex z) { 
+        private static Complex MulI(Complex z) {
             return new(-z.I, z.R);
         }
 
-        private static Complex MulMinusI(Complex z) { 
+        private static Complex MulMinusI(Complex z) {
             return new(z.I, -z.R);
         }
     }

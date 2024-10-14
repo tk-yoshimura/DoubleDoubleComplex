@@ -1,5 +1,4 @@
 ﻿using DoubleDouble;
-using DoubleDouble.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
