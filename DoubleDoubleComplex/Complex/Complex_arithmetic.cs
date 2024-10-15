@@ -96,11 +96,11 @@ namespace DoubleDoubleComplex {
             return Ldexp(new(z.R * s, -z.I * s), -exp);
         }
 
-        private static Complex MulI(Complex z) {
+        internal static Complex MulI(Complex z) {
             return new(-z.I, z.R);
         }
 
-        private static Complex MulMinusI(Complex z) {
+        internal static Complex MulMinusI(Complex z) {
             return new(z.I, -z.R);
         }
     }
