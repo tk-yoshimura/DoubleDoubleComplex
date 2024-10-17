@@ -55,7 +55,7 @@ namespace DoubleDoubleComplex {
                 return AiryBi(z.Conj).Conj;
             }
 
-            if (Zero.Magnitude < NearZero) {
+            if (z.Magnitude < NearZero) {
                 Complex z2 = z * z;
                 Complex s = z * NearZeroCoefs[0] + NearZeroCoefs[1];
 
