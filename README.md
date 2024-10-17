@@ -54,6 +54,8 @@
 | Complex.BesselK(nu, z) | abs(nu) &leq; 256 |
 | Complex.HankelH1(nu, z) | Accuracy deteriorates near root.<br/>abs(nu) &leq; 256 |
 | Complex.HankelH2(nu, z) | Accuracy deteriorates near root.<br/>abs(nu) &leq; 256 |
+| Complex.AiryAi(z) | Accuracy deteriorates near root. |
+| Complex.AiryBi(z) | Accuracy deteriorates near root. |
 
 
 ## Usage
