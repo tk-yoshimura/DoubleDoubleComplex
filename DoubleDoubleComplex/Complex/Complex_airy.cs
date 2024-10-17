@@ -7,6 +7,10 @@ using static DoubleDoubleComplex.Complex.ComplexAiryUtil;
 namespace DoubleDoubleComplex {
     public partial class Complex {
         public static Complex AiryAi(Complex z) {
+            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+                return ddouble.AiryAi(z.R);
+            }
+
             if (IsNaN(z)) {
                 return NaN;
             }
@@ -47,6 +51,10 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex AiryBi(Complex z) {
+            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+                return ddouble.AiryBi(z.R);
+            }
+
             if (IsNaN(z)) {
                 return NaN;
             }
