@@ -18,7 +18,8 @@
 | Complex.Cbrt(z) | |
 | Complex.RootN(z, n) | |
 | Complex.Log2(z) | |
-| Complex.Log(z), ddouble.Log(z, b) | |
+| Complex.Log(z) | |
+| Complex.Log(z, b) | |
 | Complex.Log10(z) | |
 | Complex.Log1p(z) | log(1+z) |
 | Complex.Pow2(z) | |
