@@ -100,8 +100,6 @@ namespace DoubleDoubleComplex {
             public static ddouble Cbrt3 { get; } = ddouble.Cbrt(3);
             public static ddouble NearZero { get; } = double.ScaleB(1, -4);
 
-            public static double AiryAiUnderflow = 108d, AiryBiOverflow = 105d;
-
             public static ddouble AiNearZeroC = Cbrt3 * Cbrt3 * ddouble.PI, BiNearZeroC = ddouble.Sqrt(Cbrt3) * ddouble.PI;
 
             public static ddouble Gamma1d3 = (+1, 1, 0xAB73BA9CA4178B3BuL, 0xB234FA4B356011B6uL);
