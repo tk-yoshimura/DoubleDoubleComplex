@@ -992,7 +992,7 @@ namespace DoubleDoubleComplexTests {
                     Console.WriteLine(expected);
                     Console.WriteLine(actual);
 
-                    Assert.IsTrue(err < 1e-28, $"\n{expected}\n{actual}");
+                    Assert.IsTrue(err < 8e-29, $"\n{expected}\n{actual}");
 
                     index++;
                 }
@@ -1984,7 +1984,7 @@ namespace DoubleDoubleComplexTests {
                     Console.WriteLine(expected);
                     Console.WriteLine(actual);
 
-                    Assert.IsTrue(err < 1e-28, $"\n{expected}\n{actual}");
+                    Assert.IsTrue(err < 8e-29, $"\n{expected}\n{actual}");
 
                     index++;
                 }
