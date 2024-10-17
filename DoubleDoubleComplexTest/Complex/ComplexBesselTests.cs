@@ -1688,5 +1688,129 @@ namespace DoubleDoubleComplexTests {
                 }
             }
         }
+
+        [TestMethod()]
+        public void HankelH1Test() {
+            for (double nu = -16; nu <= 16; nu += 0.25) {
+                Console.WriteLine(nu);
+
+                double[] xs = [
+                    0, 1 / 8, 1 / 4, 1 / 2, 1, 2, 4, 8, 16, 32, 64,
+                    -1 / 8, -1 / 4, -1 / 2, -1, -2, -4, -8, -16, -32, -64
+                ];
+
+                foreach (double r in xs) {
+                    foreach (double i in xs) {
+                        if (r == 0 && i <= 0) {
+                            continue;
+                        }
+
+                        Complex expected = BesselN4.HankelH1(nu, (r, i)).ToString();
+                        Complex actual = Complex.HankelH1(nu, (r, i));
+
+                        ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+
+                        Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
+                        Console.WriteLine(expected);
+                        Console.WriteLine(actual);
+
+                        if (double.Abs(nu) != 1.5 || (r, i) != (0, -1)) {
+                            Assert.IsTrue(err < 2e-27, $"\n{nu}, {(r, i)}\n{expected}\n{actual}\n{err}");
+                        }
+                        else {
+                            Assert.IsTrue(actual.Magnitude < 1e-30, $"\n{nu}, {(r, i)}\n{expected}\n{actual}\n{err}");
+                        }
+                    }
+                }
+
+                Console.WriteLine(string.Empty);
+            }
+        }
+
+        [TestMethod()]
+        public void HankelH2Test() {
+            for (double nu = -16; nu <= 16; nu += 0.25) {
+                Console.WriteLine(nu);
+
+                double[] xs = [
+                    0, 1 / 8, 1 / 4, 1 / 2, 1, 2, 4, 8, 16, 32, 64,
+                    -1 / 8, -1 / 4, -1 / 2, -1, -2, -4, -8, -16, -32, -64
+                ];
+
+                foreach (double r in xs) {
+                    foreach (double i in xs) {
+                        if (r == 0 && i <= 0) {
+                            continue;
+                        }
+
+                        Complex expected = BesselN4.HankelH2(nu, (r, i)).ToString();
+                        Complex actual = Complex.HankelH2(nu, (r, i));
+
+                        ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+
+                        Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
+                        Console.WriteLine(expected);
+                        Console.WriteLine(actual);
+
+                        if (double.Abs(nu) != 1.5 || (r, i) != (0, 1)) {
+                            Assert.IsTrue(err < 2e-27, $"\n{nu}, {(r, i)}\n{expected}\n{actual}\n{err}");
+                        }
+                        else {
+                            Assert.IsTrue(actual.Magnitude < 1e-30, $"\n{nu}, {(r, i)}\n{expected}\n{actual}\n{err}");
+                        }
+                    }
+                }
+
+                Console.WriteLine(string.Empty);
+            }
+        }
+
+        [TestMethod()]
+        public void HankelH1Nu1p25Test() {
+            Complex[] expecteds = [
+                "18.4291878726180359187566373640030564795-295.2319473632391424158850286595650387789i",
+                "-2.06951583489253769330923282083229978534e-6-0.00003330852145922360428682097176358411639962i",
+                "-221.7919127932079921760532896678434610892-195.7290611816043696068447244240899410570i",
+                "0.00002208931271448919494119773512109508748611+0.00002501605007574010067108694777106542618294i",
+                "9.11589580995419086748940818746628621207e-30+1.326373067206692081977319837757965245760e-29i",
+                "-2.93296215824187966083232188070945134646e-30-1.582478564585916657645835643219594172333e-29i",
+                "-5.445121799660767246044545722178884756910e26+2.819730904419201029348292537052276322562e26i",
+                "5.844133392562919745278893761769145496573e26-1.856431705290732276978266742781590818347e26i"
+            ];
+
+            foreach ((Complex z, Complex expected) in zs_mini.Zip(expecteds)) {
+                Complex actual = Complex.HankelH1(1.25, z);
+
+                Console.WriteLine(z);
+                Console.WriteLine(expected);
+                Console.WriteLine(actual);
+
+                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+            }
+        }
+
+        [TestMethod()]
+        public void HankelH2Nu1p25Test() {
+            Complex[] expecteds = [
+                "-2.06951583489253769330923282083229978534e-6+0.00003330852145922360428682097176358411639962i",
+                "18.4291878726180359187566373640030564795+295.2319473632391424158850286595650387789i",
+                "0.00002208931271448919494119773512109508748611-0.00002501605007574010067108694777106542618294i",
+                "-221.7919127932079921760532896678434610892+195.7290611816043696068447244240899410570i",
+                "-5.445121799660767246044545722178884756910e26-2.819730904419201029348292537052276322562e26i",
+                "5.844133392562919745278893761769145496573e26+1.856431705290732276978266742781590818347e26i",
+                "9.11589580995419086748940818746628621207e-30-1.326373067206692081977319837757965245760e-29i",
+                "-2.93296215824187966083232188070945134646e-30+1.582478564585916657645835643219594172333e-29i"
+            ];
+
+            foreach ((Complex z, Complex expected) in zs_mini.Zip(expecteds)) {
+                Complex actual = Complex.HankelH2(1.25, z);
+
+                Console.WriteLine(z);
+                Console.WriteLine(expected);
+                Console.WriteLine(actual);
+
+                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+            }
+        }
     }
 }
