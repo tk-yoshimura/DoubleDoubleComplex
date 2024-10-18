@@ -11,7 +11,7 @@ namespace DoubleDoubleComplex {
     public partial class Complex {
 
         public static Complex BesselJ(ddouble nu, Complex z) {
-            if (ddouble.IsPositive(z.R) && double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (ddouble.IsPositive(z.R) && AlmostReal(z)) {
                 return ddouble.BesselJ(nu, z.R);
             }
 
@@ -48,7 +48,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex BesselY(ddouble nu, Complex z) {
-            if (ddouble.IsPositive(z.R) && double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (ddouble.IsPositive(z.R) && AlmostReal(z)) {
                 return ddouble.BesselY(nu, z.R);
             }
 
@@ -107,7 +107,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex BesselI(ddouble nu, Complex z) {
-            if (ddouble.IsPositive(z.R) && double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (ddouble.IsPositive(z.R) && AlmostReal(z)) {
                 return ddouble.BesselI(nu, z.R);
             }
 
@@ -141,7 +141,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex BesselK(ddouble nu, Complex z) {
-            if (ddouble.IsPositive(z.R) && double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (ddouble.IsPositive(z.R) && AlmostReal(z)) {
                 return ddouble.BesselK(nu, z.R);
             }
 

@@ -7,7 +7,7 @@ using static DoubleDoubleComplex.Complex.ComplexAiryUtil;
 namespace DoubleDoubleComplex {
     public partial class Complex {
         public static Complex AiryAi(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.AiryAi(z.R);
             }
 
@@ -51,7 +51,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex AiryBi(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.AiryBi(z.R);
             }
 

@@ -5,7 +5,7 @@ namespace DoubleDoubleComplex {
     public partial class Complex {
 
         public static Complex FresnelS(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.FresnelS(z.R);
             }
 
@@ -18,7 +18,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex FresnelC(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.FresnelC(z.R);
             }
 
