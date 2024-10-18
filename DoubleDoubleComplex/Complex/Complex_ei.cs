@@ -35,7 +35,7 @@ namespace DoubleDoubleComplex {
                 return ddouble.Ei(z.R);
             }
 
-            return -E1(-z) + (0, ddouble.Sign(z.I) * ddouble.PI);
+            return -E1(-z) + (0d, ddouble.Sign(z.I) * ddouble.PI);
         }
 
         public static Complex Ein(Complex z) {
@@ -63,7 +63,7 @@ namespace DoubleDoubleComplex {
                 return ddouble.Si(z.R);
             }
             if (!ddouble.IsFinite(z.I) || AlmostImag(z)) {
-                return (0, ddouble.Shi(z.I));
+                return (0d, ddouble.Shi(z.I));
             }
 
             if (z.Magnitude <= NearZeroThreshold) {
@@ -89,6 +89,42 @@ namespace DoubleDoubleComplex {
             }
             else {
                 Complex y = (Ein(MulI(z)) + Ein(MulMinusI(z))) / -2d + ddouble.EulerGamma + Log(z);
+
+                return y;
+            }
+        }
+
+        public static Complex Shi(Complex z) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
+                return ddouble.Shi(z.R);
+            }
+            if (!ddouble.IsFinite(z.I) || AlmostImag(z)) {
+                return (0d, ddouble.Si(z.I));
+            }
+
+            if (z.Magnitude <= NearZeroThreshold) {
+                return MulMinusI(SiPowerSeries(MulI(z)));
+            }
+            else {
+                Complex y = (Ein(-z) - Ein(z)) / -2d;
+
+                return y;
+            }
+        }
+
+        public static Complex Chi(Complex z) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
+                return ddouble.IsPositive(z.R) ? ddouble.Chi(z.R) : (ddouble.Chi(-z.R), ddouble.PI);
+            }
+            if (!ddouble.IsFinite(z.I) || AlmostImag(z)) {
+                return ddouble.IsPositive(z.I) ? (ddouble.Ci(z.I), ddouble.PI / 2d) : (ddouble.Ci(-z.I), ddouble.PI / -2d);
+            }
+
+            if (z.Magnitude <= NearZeroThreshold) {
+                return CiPowerSeries(MulI(z)) + Log(z);
+            }
+            else {
+                Complex y = (Ein(-z) + Ein(z)) / -2d + ddouble.EulerGamma + Log(z);
 
                 return y;
             }
