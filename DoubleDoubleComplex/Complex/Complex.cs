@@ -83,6 +83,14 @@ namespace DoubleDoubleComplex {
             return (ddouble.Ldexp(c.R, n), ddouble.Ldexp(c.I, n));
         }
 
+        public static bool AlmostReal(Complex c) {
+            return double.Abs((double)c.I) <= double.Abs((double)c.R) * 5e-31;
+        }
+
+        public static bool AlmostImag(Complex c) {
+            return double.Abs((double)c.R) <= double.Abs((double)c.I) * 5e-31;
+        }
+
         public void Deconstruct(out ddouble r, out ddouble i) => (r, i) = (R, I);
 
         public override string ToString() {

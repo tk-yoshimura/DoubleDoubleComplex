@@ -5,7 +5,7 @@ namespace DoubleDoubleComplex {
 
     public partial class Complex {
         public static Complex Digamma(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.Digamma(z.R);
             }
 

@@ -5,7 +5,7 @@ namespace DoubleDoubleComplex {
 
     public partial class Complex {
         public static Complex Gamma(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.Gamma(z.R);
             }
 
@@ -65,7 +65,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex LogGamma(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.IsPositive(z.R) ? ddouble.LogGamma(z.R) : Log(ddouble.Gamma(z.R));
             }
 

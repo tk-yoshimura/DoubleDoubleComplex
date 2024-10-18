@@ -6,7 +6,7 @@ namespace DoubleDoubleComplex {
 
     public partial class Complex {
         public static Complex E1(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 if (ddouble.IsPositive(z.R)) {
                     return -ddouble.Ei(-z.R);
                 }
@@ -31,7 +31,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Ei(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.Ei(z.R);
             }
 
@@ -39,7 +39,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Ein(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.Ein(z.R);
             }
 
@@ -59,10 +59,10 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Si(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.Si(z.R);
             }
-            if (!ddouble.IsFinite(z.I) || double.Abs((double)z.R) <= double.Abs((double)z.I) * 5e-31) {
+            if (!ddouble.IsFinite(z.I) || AlmostImag(z)) {
                 return (0, ddouble.Shi(z.I));
             }
 
@@ -81,10 +81,10 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Ci(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.IsPositive(z.R) ? ddouble.Ci(z.R) : (ddouble.Ci(-z.R), ddouble.PI);
             }
-            if (!ddouble.IsFinite(z.I) || double.Abs((double)z.R) <= double.Abs((double)z.I) * 5e-31) {
+            if (!ddouble.IsFinite(z.I) || AlmostImag(z)) {
                 return (ddouble.Chi(ddouble.Abs(z.I)), ddouble.Sign(z.I) * ddouble.PI / 2d);
             }
 

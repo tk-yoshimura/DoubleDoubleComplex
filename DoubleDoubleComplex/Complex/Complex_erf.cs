@@ -5,10 +5,10 @@ namespace DoubleDoubleComplex {
 
     public partial class Complex {
         public static Complex Erf(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.Erf(z.R);
             }
-            if (double.Abs((double)z.R) <= double.Abs((double)z.I) * 5e-31) {
+            if (AlmostImag(z)) {
                 return (0, ddouble.Erfi(z.I));
             }
             if (!ddouble.IsFinite(z.I)) {
@@ -43,10 +43,10 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Erfc(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.Erfc(z.R);
             }
-            if (double.Abs((double)z.R) <= double.Abs((double)z.I) * 5e-31) {
+            if (AlmostImag(z)) {
                 return (1, -ddouble.Erfi(z.I));
             }
             if (!ddouble.IsFinite(z.I)) {
@@ -73,7 +73,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Erfcx(Complex z) {
-            if (!ddouble.IsFinite(z.R) || double.Abs((double)z.I) <= double.Abs((double)z.R) * 5e-31) {
+            if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
                 return ddouble.Erfcx(z.R);
             }
             if (!ddouble.IsFinite(z.I)) {
