@@ -19,7 +19,7 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            if (z.R <= 4d && z.R >= -LimitThreshold && ddouble.Abs(z.I) <= PowerSeriesImagThreshold) {
+            if (z.R <= NearZeroThreshold && z.R >= -LimitThreshold && ddouble.Abs(z.I) <= PowerSeriesImagThreshold) {
                 return E1PowerSeries(z) - Log(z);
             }
             else if (z.Magnitude <= LimitThreshold) {
