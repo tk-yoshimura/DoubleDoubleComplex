@@ -4461,7 +4461,9 @@ namespace DoubleDoubleComplexTests {
                         Assert.IsTrue(actual.Magnitude <= 0d);
                     }
                     else {
-                        //Assert.IsTrue(err < 8e-29, $"\n{expected}\n{actual}");
+                        Console.WriteLine(expected - actual);
+
+                        Assert.IsTrue(err < 8e-29, $"\n{expected}\n{actual}");
                     }
 
                     index++;

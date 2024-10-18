@@ -20,7 +20,7 @@ namespace DoubleDoubleComplex {
             }
 
             if (z.R <= 4d && z.R >= -90d && ddouble.Abs(z.I) < 4d) {
-                return E1PowerSeries(z);
+                return E1PowerSeries(z) - Log(z);
             }
             else if (z.Magnitude <= 90d) {
                 return E1ContinuedFraction(z);
@@ -47,13 +47,14 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            if (z.Magnitude <= 4d) {
+            if (z.R <= 4d && z.R >= -90d && ddouble.Abs(z.I) < 4d) {
                 return EinPowerSeries(z);
             }
+            else if (z.Magnitude <= 90d) {
+                return E1ContinuedFraction(z) + ddouble.EulerGamma + Log(z);
+            }
             else {
-                Complex y = E1(z) + ddouble.EulerGamma + Log(z);
-
-                return y;
+                return E1Asymptotic(z) + ddouble.EulerGamma + Log(z);
             }
         }
 
@@ -73,7 +74,7 @@ namespace DoubleDoubleComplex {
                 return SiPowerSeries(z);
             }
             else {
-                Complex y = (MulMinusI(E1(MulI(z)) - E1(MulMinusI(z))) + ddouble.Sign(z.R) * ddouble.PI) / 2d;
+                Complex y = MulMinusI(Ein(MulI(z)) - Ein(MulMinusI(z))) / 2d;
 
                 return y;
             }
@@ -88,23 +89,17 @@ namespace DoubleDoubleComplex {
             }
 
             if (z.Magnitude <= 4d) {
-                return CiPowerSeries(z);
+                return CiPowerSeries(z) + Log(z);
             }
             else {
-                if (ddouble.IsPositive(z.R)) {
-                    Complex y = (E1(MulI(z)) + E1(MulMinusI(z))) / -2d;
+                Complex y = (Ein(MulI(z)) + Ein(MulMinusI(z))) / -2d + ddouble.EulerGamma + Log(z);
 
-                    return y;
-                }
-                else {
-                    Complex y = (E1(MulI(-z)) + E1(MulMinusI(-z))) / -2d;
-
-                    return y;
-                }
+                return y;
             }
         }
 
         internal static class ComplexEiUtil {
+
             public static Complex E1Asymptotic(Complex z, int max_terms = 1024) {
                 Complex c = One, v = 1d / z, v2 = v * v, u = v;
 
@@ -160,7 +155,7 @@ namespace DoubleDoubleComplex {
             }
 
             public static Complex E1PowerSeries(Complex z, int max_terms = 1024) {
-                Complex c = -ddouble.EulerGamma - Log(z), u = z;
+                Complex c = -ddouble.EulerGamma, u = z;
 
                 for (int k = 1; k <= max_terms; k++) {
                     Complex dc = u / k;
@@ -211,7 +206,7 @@ namespace DoubleDoubleComplex {
             }
 
             public static Complex CiPowerSeries(Complex z, int max_terms = 1024) {
-                Complex z2 = z * z, c = ddouble.EulerGamma + Log(z), u = -z2 / 2d;
+                Complex z2 = z * z, c = ddouble.EulerGamma, u = -z2 / 2d;
 
                 for (int k = 1; k <= max_terms; k++) {
                     Complex dc = u / (2 * k);
