@@ -66,10 +66,6 @@ namespace DoubleDoubleComplex {
                 return (0, ddouble.Shi(z.I));
             }
 
-            if (!IsFinite(z)) {
-                return NaN;
-            }
-
             if (z.Magnitude <= NearZeroThreshold) {
                 return SiPowerSeries(z);
             }
