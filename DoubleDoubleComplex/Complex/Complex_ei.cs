@@ -159,8 +159,7 @@ namespace DoubleDoubleComplex {
             }
 
             public static Complex E1ContinuedFraction(Complex z, int max_iter = 1024) {
-                (Complex a0, Complex b0, Complex a1, Complex b1) = (1d, 0d, 0d, 1d);
-                (a0, b0, a1, b1) = (a1, b1, z * a1 + a0, z * b1 + b0);
+                (Complex a0, Complex b0, Complex a1, Complex b1) = (0d, 1d, 1d, z);
 
                 Complex s = 1d;
 
