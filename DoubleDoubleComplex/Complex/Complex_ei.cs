@@ -19,10 +19,10 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            if (z.R <= 4d && z.R >= -90d && ddouble.Abs(z.I) < 4d) {
+            if (z.R <= 4d && z.R >= -LimitThreshold && ddouble.Abs(z.I) <= PowerSeriesImagThreshold) {
                 return E1PowerSeries(z) - Log(z);
             }
-            else if (z.Magnitude <= 90d) {
+            else if (z.Magnitude <= LimitThreshold) {
                 return E1ContinuedFraction(z);
             }
             else {
@@ -47,10 +47,10 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            if (z.R <= 4d && z.R >= -90d && ddouble.Abs(z.I) < 4d) {
+            if (z.R <= NearZeroThreshold && z.R >= -LimitThreshold && ddouble.Abs(z.I) <= PowerSeriesImagThreshold) {
                 return EinPowerSeries(z);
             }
-            else if (z.Magnitude <= 90d) {
+            else if (z.Magnitude <= LimitThreshold) {
                 return E1ContinuedFraction(z) + ddouble.EulerGamma + Log(z);
             }
             else {
@@ -70,7 +70,7 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            if (z.Magnitude <= 4d) {
+            if (z.Magnitude <= NearZeroThreshold) {
                 return SiPowerSeries(z);
             }
             else {
@@ -88,7 +88,7 @@ namespace DoubleDoubleComplex {
                 return (ddouble.Chi(ddouble.Abs(z.I)), ddouble.Sign(z.I) * ddouble.PI / 2d);
             }
 
-            if (z.Magnitude <= 4d) {
+            if (z.Magnitude <= NearZeroThreshold) {
                 return CiPowerSeries(z) + Log(z);
             }
             else {
@@ -99,6 +99,9 @@ namespace DoubleDoubleComplex {
         }
 
         internal static class ComplexEiUtil {
+            public const double LimitThreshold = 90d;
+            public const double NearZeroThreshold = 4d;
+            public const double PowerSeriesImagThreshold = 4d;
 
             public static Complex E1Asymptotic(Complex z, int max_terms = 1024) {
                 Complex c = One, v = 1d / z, v2 = v * v, u = v;
