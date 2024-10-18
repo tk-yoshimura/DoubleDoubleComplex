@@ -393,9 +393,9 @@ namespace DoubleDoubleComplex {
 
                     Complex z2 = z * z, z4 = z2 * z2;
 
-                    Complex c = 0d, u = Complex.Pow(Complex.Ldexp(z, -1), nu);
+                    Complex c = 0d, u = Pow(Ldexp(z, -1), nu);
 
-                    if (!Complex.IsFinite(u) || Complex.IsZero(z2)) {
+                    if (!IsFinite(u) || IsZero(z2)) {
                         if (ddouble.IsZero(nu)) {
                             return 1d;
                         }
@@ -403,7 +403,7 @@ namespace DoubleDoubleComplex {
                             return 0d;
                         }
 
-                        return Complex.NaN;
+                        return NaN;
                     }
 
                     for (int k = 0; k <= terms; k++) {
@@ -415,7 +415,7 @@ namespace DoubleDoubleComplex {
 
                         u *= z4;
 
-                        if (!Complex.IsFinite(c)) {
+                        if (!IsFinite(c)) {
                             break;
                         }
                     }
@@ -436,13 +436,13 @@ namespace DoubleDoubleComplex {
                     YCoefTable r = y_coef_table;
 
                     ddouble cos = SinCosPICache.CosPI(nu), sin = SinCosPICache.SinPI(nu);
-                    Complex p = Complex.IsZero(cos) ? 0d : Complex.Pow(z, Complex.Ldexp(nu, 1)) * cos;
-                    Complex s = Complex.Ldexp(Complex.Pow(Complex.Ldexp(z, 1), nu), 2);
+                    Complex p = IsZero(cos) ? 0d : Pow(z, Ldexp(nu, 1)) * cos;
+                    Complex s = Ldexp(Pow(Ldexp(z, 1), nu), 2);
 
                     Complex z2 = z * z, z4 = z2 * z2;
 
-                    if (!Complex.IsFinite(p) || !Complex.IsFinite(s) || Complex.ILogB(s) < NearZeroExponent || Complex.IsZero(z2)) {
-                        return Complex.NaN;
+                    if (!IsFinite(p) || !IsFinite(s) || ILogB(s) < NearZeroExponent || IsZero(z2)) {
+                        return NaN;
                     }
 
                     Complex c = 0d, u = 1d / sin;
@@ -454,13 +454,13 @@ namespace DoubleDoubleComplex {
                         Complex v = 4 * t * t - z2;
                         c = SeriesUtil.Add(c, u * r[k], 4 * t * nu * (pa + qa), v * (pa - qa), out bool convergence);
 
-                        if (convergence && Complex.ILogB(v) >= -4) {
+                        if (convergence && ILogB(v) >= -4) {
                             break;
                         }
 
                         u *= z4;
 
-                        if (!Complex.IsFinite(c)) {
+                        if (!IsFinite(c)) {
                             break;
                         }
                     }
@@ -497,21 +497,21 @@ namespace DoubleDoubleComplex {
 
                     Y0CoefTable q = y0_coef_table;
 
-                    Complex h = Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma;
+                    Complex h = Log(Ldexp(z, -1)) + ddouble.EulerGamma;
                     Complex z2 = z * z, z4 = z2 * z2;
 
-                    if (!Complex.IsFinite(h) || Complex.IsZero(z2)) {
-                        return Complex.NaN;
+                    if (!IsFinite(h) || IsZero(z2)) {
+                        return NaN;
                     }
 
-                    Complex c = 0d, u = Complex.Ldexp(ddouble.RcpPI, 1);
+                    Complex c = 0d, u = Ldexp(ddouble.RcpPI, 1);
 
                     for (int k = 0; k <= terms; k++) {
                         Complex s = u * r[k], t = h - ddouble.HarmonicNumber(2 * k);
                         c = SeriesUtil.Add(c, s * t, 1d, -z2 * d[k], out bool convergence1);
                         c = SeriesUtil.Add(c, s, z2 * q[k], out bool convergence2);
 
-                        if (convergence1 && convergence2 && Complex.ILogB(t) >= -4) {
+                        if (convergence1 && convergence2 && ILogB(t) >= -4) {
                             break;
                         }
 
@@ -535,21 +535,21 @@ namespace DoubleDoubleComplex {
                         yn_coef_table.Add(1, q);
                     }
 
-                    Complex h = Complex.Ldexp(Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma, 1);
+                    Complex h = Ldexp(Log(Ldexp(z, -1)) + ddouble.EulerGamma, 1);
                     Complex z2 = z * z, z4 = z2 * z2;
 
-                    if (!Complex.IsFinite(h) || Complex.IsZero(z2)) {
-                        return Complex.NaN;
+                    if (!IsFinite(h) || IsZero(z2)) {
+                        return NaN;
                     }
 
-                    Complex c = -2d / (z * ddouble.PI), u = z / Complex.Ldexp(ddouble.PI, 1);
+                    Complex c = -2d / (z * ddouble.PI), u = z / Ldexp(ddouble.PI, 1);
 
                     for (int k = 0; k <= terms; k++) {
                         Complex s = u * r[k], t = h - ddouble.HarmonicNumber(2 * k) - ddouble.HarmonicNumber(2 * k + 1);
                         c = SeriesUtil.Add(c, s * t, 1d, -z2 * d[k], out bool convergence1);
                         c = SeriesUtil.Add(c, s, z2 * q[k], out bool convergence2);
 
-                        if (convergence1 && convergence2 && Complex.ILogB(t) >= -4) {
+                        if (convergence1 && convergence2 && ILogB(t) >= -4) {
                             break;
                         }
 
@@ -577,15 +577,15 @@ namespace DoubleDoubleComplex {
                         yn_finitecoef_table.Add(n, f);
                     }
 
-                    Complex h = Complex.Ldexp(Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma, 1);
+                    Complex h = Ldexp(Log(Ldexp(z, -1)) + ddouble.EulerGamma, 1);
 
-                    if (!Complex.IsFinite(h)) {
-                        return Complex.NaN;
+                    if (!IsFinite(h)) {
+                        return NaN;
                     }
 
                     Complex c = 0d;
                     Complex z2 = z * z, z4 = z2 * z2;
-                    Complex u = 1d, v = 1d, w = Complex.Ldexp(z2, -2);
+                    Complex u = 1d, v = 1d, w = Ldexp(z2, -2);
 
                     for (int k = 0; k < n; k++) {
                         c += v * f[k];
@@ -593,8 +593,8 @@ namespace DoubleDoubleComplex {
                     }
                     c /= -v;
 
-                    if (!Complex.IsFinite(c) || Complex.IsZero(z2)) {
-                        return Complex.NaN;
+                    if (!IsFinite(c) || IsZero(z2)) {
+                        return NaN;
                     }
 
                     for (int k = 0; k <= terms; k++) {
@@ -602,14 +602,14 @@ namespace DoubleDoubleComplex {
                         c = SeriesUtil.Add(c, s * t, 1d, -z2 * d[k], out bool convergence1);
                         c = SeriesUtil.Add(c, s, z2 * q[k], out bool convergence2);
 
-                        if (convergence1 && convergence2 && Complex.ILogB(t) >= -4) {
+                        if (convergence1 && convergence2 && ILogB(t) >= -4) {
                             break;
                         }
 
                         u *= z4;
                     }
 
-                    Complex y = c * ddouble.RcpPI * Complex.Pow(Complex.Ldexp(z, -1), n);
+                    Complex y = c * ddouble.RcpPI * Pow(Ldexp(z, -1), n);
 
                     return y;
                 }
@@ -626,9 +626,9 @@ namespace DoubleDoubleComplex {
 
                     Complex z2 = z * z, z4 = z2 * z2;
 
-                    Complex c = 0d, u = Complex.Pow(Complex.Ldexp(z, -1), nu);
+                    Complex c = 0d, u = Pow(Ldexp(z, -1), nu);
 
-                    if (!Complex.IsFinite(u) || Complex.IsZero(z2)) {
+                    if (!IsFinite(u) || IsZero(z2)) {
                         if (ddouble.IsZero(nu)) {
                             return 1d;
                         }
@@ -636,7 +636,7 @@ namespace DoubleDoubleComplex {
                             return 0d;
                         }
 
-                        return Complex.NaN;
+                        return NaN;
                     }
 
                     for (int k = 0; k <= terms; k++) {
@@ -648,7 +648,7 @@ namespace DoubleDoubleComplex {
 
                         u *= z4;
 
-                        if (!Complex.IsFinite(c)) {
+                        if (!IsFinite(c)) {
                             break;
                         }
                     }
@@ -668,15 +668,15 @@ namespace DoubleDoubleComplex {
 
                     KCoefTable r = k_coef_table;
 
-                    Complex tp = Complex.Pow(Complex.Ldexp(z, -1), nu), tn = 1d / tp;
+                    Complex tp = Pow(Ldexp(z, -1), nu), tn = 1d / tp;
 
                     Complex z2 = z * z;
 
-                    if (Complex.ILogB(tp) < NearZeroExponent || Complex.IsZero(z2)) {
-                        return Complex.NaN;
+                    if (ILogB(tp) < NearZeroExponent || IsZero(z2)) {
+                        return NaN;
                     }
 
-                    Complex c = 0d, u = ddouble.PI / Complex.Ldexp(ddouble.SinPI(nu), 1);
+                    Complex c = 0d, u = ddouble.PI / Ldexp(ddouble.SinPI(nu), 1);
 
                     for (int k = 0; k <= terms; k++) {
                         c = SeriesUtil.Add(c, u * r[k], tn * gn[k], -tp * gp[k], out bool convergence);
@@ -687,7 +687,7 @@ namespace DoubleDoubleComplex {
 
                         u *= z2;
 
-                        if (!Complex.IsFinite(c)) {
+                        if (!IsFinite(c)) {
                             break;
                         }
                     }
@@ -709,16 +709,16 @@ namespace DoubleDoubleComplex {
 
                 private static Complex BesselK0Kernel(Complex z, int terms) {
                     K0CoefTable r = k0_coef_table;
-                    Complex h = -Complex.Log(Complex.Ldexp(z, -1)) - ddouble.EulerGamma;
+                    Complex h = -Log(Ldexp(z, -1)) - ddouble.EulerGamma;
 
-                    if (!Complex.IsFinite(h)) {
-                        return Complex.NaN;
+                    if (!IsFinite(h)) {
+                        return NaN;
                     }
 
                     Complex z2 = z * z;
 
-                    if (Complex.IsZero(z2)) {
-                        return Complex.NaN;
+                    if (IsZero(z2)) {
+                        return NaN;
                     }
 
                     Complex c = 0d, u = 1d;
@@ -738,19 +738,19 @@ namespace DoubleDoubleComplex {
 
                 private static Complex BesselK1Kernel(Complex z, int terms) {
                     K1CoefTable r = k1_coef_table;
-                    Complex h = Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma;
+                    Complex h = Log(Ldexp(z, -1)) + ddouble.EulerGamma;
 
-                    if (!Complex.IsFinite(h)) {
-                        return Complex.NaN;
+                    if (!IsFinite(h)) {
+                        return NaN;
                     }
 
                     Complex z2 = z * z;
 
-                    if (Complex.IsZero(z2)) {
-                        return Complex.NaN;
+                    if (IsZero(z2)) {
+                        return NaN;
                     }
 
-                    Complex c = 1d / z, u = Complex.Ldexp(z, -1);
+                    Complex c = 1d / z, u = Ldexp(z, -1);
 
                     for (int k = 0; k <= terms; k++) {
                         c = SeriesUtil.Add(c, u * r[k], h, -ddouble.Ldexp(ddouble.HarmonicNumber(k) + ddouble.HarmonicNumber(k + 1), -1), out bool convergence);
@@ -1124,17 +1124,17 @@ namespace DoubleDoubleComplex {
                         table.Add(nu, hankel);
                     }
 
-                    if (!Complex.IsFinite(z)) {
-                        return Complex.NaN;
+                    if (!IsFinite(z)) {
+                        return NaN;
                     }
 
                     (Complex c_even, Complex c_odd) = hankel.BesselJYCoef(z);
 
                     Complex omega = hankel.Omega(z);
 
-                    Complex cos = Complex.Cos(omega), sin = Complex.Sin(omega);
+                    Complex cos = Cos(omega), sin = Sin(omega);
 
-                    Complex y = Complex.Sqrt(2d / (ddouble.PI * z)) * (cos * c_even - sin * c_odd);
+                    Complex y = Sqrt(2d / (ddouble.PI * z)) * (cos * c_even - sin * c_odd);
 
                     return y;
                 }
@@ -1148,17 +1148,17 @@ namespace DoubleDoubleComplex {
                         table.Add(nu, hankel);
                     }
 
-                    if (!Complex.IsFinite(z)) {
-                        return Complex.NaN;
+                    if (!IsFinite(z)) {
+                        return NaN;
                     }
 
                     (Complex c_even, Complex c_odd) = hankel.BesselJYCoef(z);
 
                     Complex omega = hankel.Omega(z);
 
-                    Complex cos = Complex.Cos(omega), sin = Complex.Sin(omega);
+                    Complex cos = Cos(omega), sin = Sin(omega);
 
-                    Complex y = Complex.Sqrt(2d / (ddouble.PI * z)) * (sin * c_even + cos * c_odd);
+                    Complex y = Sqrt(2d / (ddouble.PI * z)) * (sin * c_even + cos * c_odd);
 
                     return y;
                 }
@@ -1174,13 +1174,13 @@ namespace DoubleDoubleComplex {
 
                     Complex ci = hankel.BesselICoef(z), ck = hankel.BesselKCoef(z);
 
-                    Complex y = Complex.Sqrt(1d / (2d * ddouble.PI * z)) * (
-                        Complex.Exp(z) * ci -
-                        (SinCosPICache.SinPI(nu), -SinCosPICache.CosPI(nu)) * Complex.Exp(-z) * ck
+                    Complex y = Sqrt(1d / (2d * ddouble.PI * z)) * (
+                        Exp(z) * ci -
+                        (SinCosPICache.SinPI(nu), -SinCosPICache.CosPI(nu)) * Exp(-z) * ck
                     );
 
-                    if (!Complex.IsFinite(z) || Complex.IsZero(y)) {
-                        return Complex.NaN;
+                    if (!IsFinite(z) || IsZero(y)) {
+                        return NaN;
                     }
 
                     return y;
@@ -1198,10 +1198,10 @@ namespace DoubleDoubleComplex {
 
                     Complex c = hankel.BesselKCoef(z);
 
-                    Complex y = Complex.Sqrt(ddouble.PI / (2d * z)) * Complex.Exp(-z) * c;
+                    Complex y = Sqrt(ddouble.PI / (2d * z)) * Exp(-z) * c;
 
-                    if (!Complex.IsFinite(z) || Complex.IsZero(y)) {
-                        return Complex.NaN;
+                    if (!IsFinite(z) || IsZero(y)) {
+                        return NaN;
                     }
 
                     return y;
@@ -1244,8 +1244,8 @@ namespace DoubleDoubleComplex {
                             c_even += dc_even;
                             c_odd += dc_odd;
 
-                            if (((long)Complex.ILogB(c_even) - Complex.ILogB(dc_even) >= 106L || Complex.IsZero(dc_even)) &&
-                                ((long)Complex.ILogB(c_odd) - Complex.ILogB(dc_odd) >= 106L || Complex.IsZero(dc_odd))) {
+                            if (((long)ILogB(c_even) - ILogB(dc_even) >= 106L || IsZero(dc_even)) &&
+                                ((long)ILogB(c_odd) - ILogB(dc_odd) >= 106L || IsZero(dc_odd))) {
 
                                 break;
                             }
@@ -1266,7 +1266,7 @@ namespace DoubleDoubleComplex {
 
                             c += dc;
 
-                            if ((long)Complex.ILogB(c) - Complex.ILogB(dc) >= 106L || Complex.IsZero(dc)) {
+                            if ((long)ILogB(c) - ILogB(dc) >= 106L || IsZero(dc)) {
                                 break;
                             }
 
@@ -1286,7 +1286,7 @@ namespace DoubleDoubleComplex {
 
                             c += dc;
 
-                            if ((long)Complex.ILogB(c) - Complex.ILogB(dc) >= 106L || Complex.IsZero(dc)) {
+                            if ((long)ILogB(c) - ILogB(dc) >= 106L || IsZero(dc)) {
                                 break;
                             }
 
@@ -1446,7 +1446,7 @@ namespace DoubleDoubleComplex {
                                 lambda += f0 * phi[k / 2];
                             }
 
-                            (f0, f1) = (Complex.Ldexp(k + alpha, 1) * v * f0 - f1, f0);
+                            (f0, f1) = (Ldexp(k + alpha, 1) * v * f0 - f1, f0);
 
                             if (k - 1 == n) {
                                 fn = f0;
@@ -1454,7 +1454,7 @@ namespace DoubleDoubleComplex {
                         }
 
                         lambda += f0 * phi[0];
-                        lambda *= Complex.Pow(Complex.Ldexp(v, 1), alpha);
+                        lambda *= Pow(Ldexp(v, 1), alpha);
 
                         Complex yn = fn / lambda;
 
@@ -1466,14 +1466,14 @@ namespace DoubleDoubleComplex {
                                 lambda += f0 * phi[k / 2];
                             }
 
-                            (f0, f1) = (Complex.Ldexp(k + alpha, 1) * v * f0 - f1, f0);
+                            (f0, f1) = (Ldexp(k + alpha, 1) * v * f0 - f1, f0);
                         }
 
                         lambda += f0 * phi[0];
-                        lambda *= Complex.Pow(Complex.Ldexp(v, 1), alpha);
+                        lambda *= Pow(Ldexp(v, 1), alpha);
 
                         for (int k = 0; k > n; k--) {
-                            (f0, f1) = (Complex.Ldexp(k + alpha, 1) * v * f0 - f1, f0);
+                            (f0, f1) = (Ldexp(k + alpha, 1) * v * f0 - f1, f0);
                         }
 
                         Complex yn = f0 / lambda;
@@ -1496,7 +1496,7 @@ namespace DoubleDoubleComplex {
                         (f0, f1) = (2 * k * v * f0 - f1, f0);
                     }
 
-                    lambda = Complex.Ldexp(lambda, 1) + f0;
+                    lambda = Ldexp(lambda, 1) + f0;
 
                     Complex y0 = f0 / lambda;
 
@@ -1517,7 +1517,7 @@ namespace DoubleDoubleComplex {
                         (f0, f1) = (2 * k * v * f0 - f1, f0);
                     }
 
-                    lambda = Complex.Ldexp(lambda, 1) + f0;
+                    lambda = Ldexp(lambda, 1) + f0;
 
                     Complex y1 = f1 / lambda;
 
@@ -1542,7 +1542,7 @@ namespace DoubleDoubleComplex {
                         }
                     }
 
-                    lambda = Complex.Ldexp(lambda, 1) + f0;
+                    lambda = Ldexp(lambda, 1) + f0;
 
                     Complex yn = fn / lambda;
 
@@ -1600,19 +1600,19 @@ namespace DoubleDoubleComplex {
                             sxo += f0 * xi[k];
                         }
 
-                        (f0, f1) = (Complex.Ldexp(k + alpha, 1) * v * f0 - f1, f0);
+                        (f0, f1) = (Ldexp(k + alpha, 1) * v * f0 - f1, f0);
                     }
 
-                    Complex s = Complex.Pow(Complex.Ldexp(v, 1), alpha), sqs = s * s;
+                    Complex s = Pow(Ldexp(v, 1), alpha), sqs = s * s;
 
                     lambda += f0 * phi[0];
                     lambda *= s;
 
                     ddouble rcot = 1d / ddouble.TanPI(alpha), rgamma = ddouble.Gamma(1d + alpha), rsqgamma = rgamma * rgamma;
-                    Complex r = Complex.Ldexp(ddouble.RcpPI * sqs, 1);
+                    Complex r = Ldexp(ddouble.RcpPI * sqs, 1);
                     Complex p = sqs * rsqgamma * ddouble.RcpPI;
 
-                    Complex xi0 = -Complex.Ldexp(v, 1) * p;
+                    Complex xi0 = -Ldexp(v, 1) * p;
 
                     (Complex eta0, Complex xi1) = ddouble.ILogB(alpha) >= BesselYEpsExponent
                         ? (rcot - p / alpha, rcot + p * (alpha * (alpha + 1d) + 1d) / (alpha * (alpha - 1d)))
@@ -1633,7 +1633,7 @@ namespace DoubleDoubleComplex {
                     }
                     if (n >= 0) {
                         for (int k = 1; k < n; k++) {
-                            (y1, y0) = (Complex.Ldexp(k + alpha, 1) * v * y1 - y0, y1);
+                            (y1, y0) = (Ldexp(k + alpha, 1) * v * y1 - y0, y1);
                         }
 
                         Complex yn = y1 / lambda;
@@ -1642,7 +1642,7 @@ namespace DoubleDoubleComplex {
                     }
                     else {
                         for (int k = 0; k > n; k--) {
-                            (y0, y1) = (Complex.Ldexp(k + alpha, 1) * v * y0 - y1, y0);
+                            (y0, y1) = (Ldexp(k + alpha, 1) * v * y0 - y1, y0);
                         }
 
                         Complex yn = y0 / lambda;
@@ -1654,7 +1654,7 @@ namespace DoubleDoubleComplex {
                 private static (Complex eta0, Complex xi1) BesselYEta0Xi1Eps(ddouble alpha, Complex z) {
                     const int N = 7;
 
-                    Complex lnz = Complex.Log(z);
+                    Complex lnz = Log(z);
 
                     Complex eta0 = 0d, xi1 = 0d;
                     for (int i = N, k = 0; i >= 0; i--) {
@@ -1695,9 +1695,9 @@ namespace DoubleDoubleComplex {
                         (f0, f1) = (2 * k * v * f0 - f1, f0);
                     }
 
-                    lambda = Complex.Ldexp(lambda, 1) + f0;
+                    lambda = Ldexp(lambda, 1) + f0;
 
-                    Complex y0 = Complex.Ldexp((se + f0 * (Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma)) / (ddouble.PI * lambda), 1);
+                    Complex y0 = Ldexp((se + f0 * (Log(Ldexp(z, -1)) + ddouble.EulerGamma)) / (ddouble.PI * lambda), 1);
 
                     return y0;
                 }
@@ -1730,9 +1730,9 @@ namespace DoubleDoubleComplex {
                         (f0, f1) = (2 * k * v * f0 - f1, f0);
                     }
 
-                    lambda = Complex.Ldexp(lambda, 1) + f0;
+                    lambda = Ldexp(lambda, 1) + f0;
 
-                    Complex y1 = Complex.Ldexp((sx - v * f0 + (Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma - 1d) * f1) / (lambda * ddouble.PI), 1);
+                    Complex y1 = Ldexp((sx - v * f0 + (Log(Ldexp(z, -1)) + ddouble.EulerGamma - 1d) * f1) / (lambda * ddouble.PI), 1);
 
                     return y1;
                 }
@@ -1766,9 +1766,9 @@ namespace DoubleDoubleComplex {
                         (f0, f1) = (2 * k * v * f0 - f1, f0);
                     }
 
-                    lambda = Complex.Ldexp(lambda, 1) + f0;
+                    lambda = Ldexp(lambda, 1) + f0;
 
-                    Complex c = Complex.Log(Complex.Ldexp(z, -1)) + ddouble.EulerGamma;
+                    Complex c = Log(Ldexp(z, -1)) + ddouble.EulerGamma;
 
                     Complex y0 = se + f0 * c;
                     Complex y1 = sx - v * f0 + (c - 1d) * f1;
@@ -1777,7 +1777,7 @@ namespace DoubleDoubleComplex {
                         (y1, y0) = (2 * k * v * y1 - y0, y1);
                     }
 
-                    Complex yn = Complex.Ldexp(y1 / (lambda * ddouble.PI), 1);
+                    Complex yn = Ldexp(y1 / (lambda * ddouble.PI), 1);
 
                     return yn;
                 }
@@ -1818,7 +1818,7 @@ namespace DoubleDoubleComplex {
                         for (int k = m; k >= 1; k--) {
                             lambda += g0 * psi[k];
 
-                            (g0, g1) = (Complex.Ldexp(k + alpha, 1) * v * g0 + g1, g0);
+                            (g0, g1) = (Ldexp(k + alpha, 1) * v * g0 + g1, g0);
 
                             if (k - 1 == n) {
                                 gn = g0;
@@ -1826,11 +1826,11 @@ namespace DoubleDoubleComplex {
                         }
 
                         lambda += g0 * psi[0];
-                        lambda *= Complex.Pow(Complex.Ldexp(v, 1), alpha);
+                        lambda *= Pow(Ldexp(v, 1), alpha);
 
                         Complex yn = gn / lambda;
 
-                        yn *= Complex.Exp(z);
+                        yn *= Exp(z);
 
                         return yn;
                     }
@@ -1838,19 +1838,19 @@ namespace DoubleDoubleComplex {
                         for (int k = m; k >= 1; k--) {
                             lambda += g0 * psi[k];
 
-                            (g0, g1) = (Complex.Ldexp(k + alpha, 1) * v * g0 + g1, g0);
+                            (g0, g1) = (Ldexp(k + alpha, 1) * v * g0 + g1, g0);
                         }
 
                         lambda += g0 * psi[0];
-                        lambda *= Complex.Pow(Complex.Ldexp(v, 1), alpha);
+                        lambda *= Pow(Ldexp(v, 1), alpha);
 
                         for (int k = 0; k > n; k--) {
-                            (g0, g1) = (Complex.Ldexp(k + alpha, 1) * v * g0 + g1, g0);
+                            (g0, g1) = (Ldexp(k + alpha, 1) * v * g0 + g1, g0);
                         }
 
                         Complex yn = g0 / lambda;
 
-                        yn *= Complex.Exp(z);
+                        yn *= Exp(z);
 
                         return yn;
                     }
@@ -1868,11 +1868,11 @@ namespace DoubleDoubleComplex {
                         (g0, g1) = (2 * k * v * g0 + g1, g0);
                     }
 
-                    lambda = Complex.Ldexp(lambda, 1) + g0;
+                    lambda = Ldexp(lambda, 1) + g0;
 
                     Complex y0 = g0 / lambda;
 
-                    y0 *= Complex.Exp(z);
+                    y0 *= Exp(z);
 
                     return y0;
                 }
@@ -1889,11 +1889,11 @@ namespace DoubleDoubleComplex {
                         (g0, g1) = (2 * k * v * g0 + g1, g0);
                     }
 
-                    lambda = Complex.Ldexp(lambda, 1) + g0;
+                    lambda = Ldexp(lambda, 1) + g0;
 
                     Complex y1 = g1 / lambda;
 
-                    y1 *= Complex.Exp(z);
+                    y1 *= Exp(z);
 
                     return y1;
                 }
@@ -1914,11 +1914,11 @@ namespace DoubleDoubleComplex {
                         }
                     }
 
-                    lambda = Complex.Ldexp(lambda, 1) + f0;
+                    lambda = Ldexp(lambda, 1) + f0;
 
                     Complex yn = fn / lambda;
 
-                    yn *= Complex.Exp(z);
+                    yn *= Exp(z);
 
                     return yn;
                 }
@@ -2145,7 +2145,7 @@ namespace DoubleDoubleComplex {
                         Complex v = 1d / z;
 
                         for (int k = 1; k < n; k++) {
-                            (y1, y0) = (Complex.Ldexp(k + alpha, 1) * v * y1 + y0, y1);
+                            (y1, y0) = (Ldexp(k + alpha, 1) * v * y1 + y0, y1);
                         }
 
                         return y1;
@@ -2163,9 +2163,9 @@ namespace DoubleDoubleComplex {
                         sd = sd * t + d;
                     }
 
-                    Complex y = Complex.Sqrt(Complex.Ldexp(t * ddouble.PI, -1)) * sc / sd;
+                    Complex y = Sqrt(Ldexp(t * ddouble.PI, -1)) * sc / sd;
 
-                    y *= Complex.Exp(-z);
+                    y *= Exp(-z);
 
                     return y;
                 }
@@ -2216,7 +2216,7 @@ namespace DoubleDoubleComplex {
 
                     Complex y0 = PowerSeries.BesselY(n, z);
 
-                    if (!Complex.IsFinite(y0)) {
+                    if (!IsFinite(y0)) {
                         return y0;
                     }
 
@@ -2228,7 +2228,7 @@ namespace DoubleDoubleComplex {
                     Complex y4 = PowerSeries.BesselY(n + dnu * 1.75d, z);
                     Complex y5 = PowerSeries.BesselY(n + dnu * 2d, z);
 
-                    if (!Complex.IsFinite(y1) || !Complex.IsFinite(y2) || !Complex.IsFinite(y3) || !Complex.IsFinite(y4) || !Complex.IsFinite(y5)) {
+                    if (!IsFinite(y1) || !IsFinite(y2) || !IsFinite(y3) || !IsFinite(y4) || !IsFinite(y5)) {
                         return y1;
                     }
 
@@ -2247,7 +2247,7 @@ namespace DoubleDoubleComplex {
 
                     Complex y0 = PowerSeries.BesselK(0, z);
 
-                    if (!Complex.IsFinite(y0)) {
+                    if (!IsFinite(y0)) {
                         return y0;
                     }
                     ddouble dnu = BesselKInterpolationDelta;
@@ -2258,7 +2258,7 @@ namespace DoubleDoubleComplex {
                     Complex y4 = PowerSeries.BesselK(dnu * 1.75d, z);
                     Complex y5 = PowerSeries.BesselK(dnu * 2d, z);
 
-                    if (!Complex.IsFinite(y1) || !Complex.IsFinite(y2) || !Complex.IsFinite(y3) || !Complex.IsFinite(y4) || !Complex.IsFinite(y5)) {
+                    if (!IsFinite(y1) || !IsFinite(y2) || !IsFinite(y3) || !IsFinite(y4) || !IsFinite(y5)) {
                         return y1;
                     }
 
@@ -2325,23 +2325,23 @@ namespace DoubleDoubleComplex {
                     if (ddouble.IsPositive(nu)) {
                         (Complex a0, Complex b0, Complex a1, Complex b1) = (1d, 0d, 0d, 1d);
 
-                        Complex r = Complex.Ldexp(nu_abs * v, 1);
+                        Complex r = Ldexp(nu_abs * v, 1);
                         (a0, b0, a1, b1) = (a1, b1, r * a1 + a0, r * b1 + b0);
 
                         Complex s = 1d;
 
                         for (int i = 1; i <= 1024; i++) {
-                            r = Complex.Ldexp((nu_abs + i) * v, 1);
+                            r = Ldexp((nu_abs + i) * v, 1);
 
                             (a0, b0, a1, b1) = (a1, b1, r * a1 - a0, r * b1 - b0);
                             s = a1 / b1;
 
-                            int exp = int.Max(Complex.ILogB(a1), Complex.ILogB(b1));
+                            int exp = int.Max(ILogB(a1), ILogB(b1));
                             if (exp <= int.MinValue) {
-                                return Complex.NaN;
+                                return NaN;
                             }
 
-                            (a0, a1, b0, b1) = (Complex.Ldexp(a0, -exp), Complex.Ldexp(a1, -exp), Complex.Ldexp(b0, -exp), Complex.Ldexp(b1, -exp));
+                            (a0, a1, b0, b1) = (Ldexp(a0, -exp), Ldexp(a1, -exp), Ldexp(b0, -exp), Ldexp(b1, -exp));
 
                             if (i > 0 && (i & 3) == 0) {
                                 Complex r0 = a0 * b1, r1 = a1 * b0;
@@ -2352,20 +2352,20 @@ namespace DoubleDoubleComplex {
                         }
 
                         long exp_sum = 0;
-                        (Complex j0, Complex j1) = (s.Magnitude > 1d) ? (Complex.One, 1d / s) : (s, 1d);
+                        (Complex j0, Complex j1) = (s.Magnitude > 1d) ? (One, 1d / s) : (s, 1d);
 
                         for (int k = n - 1; k >= DirectMaxN - 1; k--) {
                             (j1, j0) = (ddouble.Ldexp(k + alpha, 1) * v * j1 - j0, j1);
 
-                            int j0_exp = Complex.ILogB(j0), j1_exp = Complex.ILogB(j1);
+                            int j0_exp = ILogB(j0), j1_exp = ILogB(j1);
                             if (int.Sign(j0_exp) * int.Sign(j1_exp) > 0) {
                                 int exp = j0_exp > 0 ? int.Max(j0_exp, j1_exp) : int.Min(j0_exp, j1_exp);
                                 exp_sum += exp;
-                                (j0, j1) = (Complex.Ldexp(j0, -exp), Complex.Ldexp(j1, -exp));
+                                (j0, j1) = (Ldexp(j0, -exp), Ldexp(j1, -exp));
                             }
                         }
 
-                        Complex y = Complex.Ldexp(
+                        Complex y = Ldexp(
                             j0.Magnitude >= j1.Magnitude
                             ? Complex.BesselJ(alpha + (DirectMaxN - 1), z) / j0
                             : Complex.BesselJ(alpha + (DirectMaxN - 2), z) / j1,
@@ -2397,13 +2397,13 @@ namespace DoubleDoubleComplex {
                     Complex bk = BesselK(nu_abs, (z.I, z.R));
 
                     if (ddouble.IsPositive(nu)) {
-                        Complex y = Complex.MulI(c) * bi.Conj - 2 * ddouble.RcpPI * (c * bk).Conj;
+                        Complex y = MulI(c) * bi.Conj - 2 * ddouble.RcpPI * (c * bk).Conj;
 
                         return y;
                     }
                     else {
-                        Complex y = Complex.MulI((c * bi).Conj)
-                            + 2 * ddouble.RcpPI * (Complex.MulI(c.Conj) * SinCosPICache.SinPI(nu_abs) - c) * bk.Conj;
+                        Complex y = MulI((c * bi).Conj)
+                            + 2 * ddouble.RcpPI * (MulI(c.Conj) * SinCosPICache.SinPI(nu_abs) - c) * bk.Conj;
 
                         return y;
                     }
@@ -2422,17 +2422,17 @@ namespace DoubleDoubleComplex {
                     Complex s = 1d;
 
                     for (int i = 0; i <= 1024; i++) {
-                        Complex r = Complex.Ldexp((nu_abs + i) * v, 1);
+                        Complex r = Ldexp((nu_abs + i) * v, 1);
 
                         (a0, b0, a1, b1) = (a1, b1, r * a1 + a0, r * b1 + b0);
                         s = a1 / b1;
 
-                        int exp = int.Max(Complex.ILogB(a1), Complex.ILogB(b1));
+                        int exp = int.Max(ILogB(a1), ILogB(b1));
                         if (exp <= int.MinValue) {
-                            return Complex.NaN;
+                            return NaN;
                         }
 
-                        (a0, a1, b0, b1) = (Complex.Ldexp(a0, -exp), Complex.Ldexp(a1, -exp), Complex.Ldexp(b0, -exp), Complex.Ldexp(b1, -exp));
+                        (a0, a1, b0, b1) = (Ldexp(a0, -exp), Ldexp(a1, -exp), Ldexp(b0, -exp), Ldexp(b1, -exp));
 
 
                         if (i > 0 && (i & 3) == 0) {
@@ -2443,7 +2443,7 @@ namespace DoubleDoubleComplex {
                         }
                     }
 
-                    if (!Complex.IsFinite(s)) {
+                    if (!IsFinite(s)) {
                         return 0d;
                     }
 
@@ -2453,16 +2453,16 @@ namespace DoubleDoubleComplex {
                     for (int k = n - 1; k >= DirectMaxN; k--) {
                         (i1, i0) = (ddouble.Ldexp(k + alpha, 1) * v * i1 + i0, i1);
 
-                        if (Complex.ILogB(i1) > 0) {
-                            int exp = Complex.ILogB(i1);
+                        if (ILogB(i1) > 0) {
+                            int exp = ILogB(i1);
                             exp_sum += exp;
-                            (i0, i1) = (Complex.Ldexp(i0, -exp), Complex.Ldexp(i1, -exp));
+                            (i0, i1) = (Ldexp(i0, -exp), Ldexp(i1, -exp));
                         }
                     }
 
                     Complex y = Complex.BesselI(alpha + (DirectMaxN - 1), z) / i1;
 
-                    y = Complex.Ldexp(y, (int)long.Max(-exp_sum, int.MinValue));
+                    y = Ldexp(y, (int)long.Max(-exp_sum, int.MinValue));
 
                     if (ddouble.IsNegative(nu) && !ddouble.IsInteger(nu_abs)) {
                         Complex bk = 2d * ddouble.RcpPI * SinCosPICache.SinPI(nu_abs) * Complex.BesselK(nu_abs, z);
@@ -2484,7 +2484,7 @@ namespace DoubleDoubleComplex {
                     Complex k0 = Complex.BesselK(alpha + (DirectMaxN - 2), z);
                     Complex k1 = Complex.BesselK(alpha + (DirectMaxN - 1), z);
 
-                    if (Complex.IsZero(k0) && Complex.IsZero(k1)) {
+                    if (IsZero(k0) && IsZero(k1)) {
                         return 0d;
                     }
 
@@ -2495,14 +2495,14 @@ namespace DoubleDoubleComplex {
                     for (int k = DirectMaxN - 1; k < n; k++) {
                         (k1, k0) = (ddouble.Ldexp(k + alpha, 1) * v * k1 + k0, k1);
 
-                        if (Complex.ILogB(k1) > 0) {
-                            int exp = Complex.ILogB(k1);
+                        if (ILogB(k1) > 0) {
+                            int exp = ILogB(k1);
                             exp_sum += exp;
-                            (k0, k1) = (Complex.Ldexp(k0, -exp), Complex.Ldexp(k1, -exp));
+                            (k0, k1) = (Ldexp(k0, -exp), Ldexp(k1, -exp));
                         }
                     }
 
-                    k1 = Complex.Ldexp(k1, (int)long.Max(exp_sum, int.MinValue));
+                    k1 = Ldexp(k1, (int)long.Max(exp_sum, int.MinValue));
 
                     return k1;
                 }
