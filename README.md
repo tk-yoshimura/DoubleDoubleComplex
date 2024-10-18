@@ -56,6 +56,13 @@
 | Complex.HankelH2(nu, z) | Accuracy deteriorates near root.<br/>abs(nu) &leq; 256 |
 | Complex.AiryAi(z) | Accuracy deteriorates near root. |
 | Complex.AiryBi(z) | Accuracy deteriorates near root. |
+| Complex.E1(z) | exponential integral |
+| Complex.Ei(z) | exponential integral |
+| Complex.Ein(z) | complementary exponential integral |
+| Complex.Si(z) | sine integral |
+| Complex.Ci(z) | cosine integral |
+| Complex.Shi(z) | hyperbolic sine integral |
+| Complex.Chi(z) | hyperbolic cosine integral |
 
 
 ## Usage
