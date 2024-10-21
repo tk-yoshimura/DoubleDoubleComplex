@@ -75,23 +75,17 @@ namespace DoubleDoubleComplex {
                 return Limit.BesselY(nu, z);
             }
             else if (z.R <= PowerSeriesThreshold(nu, z.I) - BesselJYPowerseriesBias) {
-                if (NearlyInteger(nu, out int n) || ddouble.Abs(n - nu) >= BesselYForcedMillerBackwardThreshold) {
+                if (NearlyInteger(nu, out int n) || ddouble.ILogB(n - nu) >= BesselYKNearIntegerExponent) {
                     return PowerSeries.BesselY(nu, z);
                 }
                 else if (z.I <= MillerBackwardThreshold / 2d) {
                     return MillerBackward.BesselY(nu, z);
                 }
-                else if (ddouble.Abs(n - nu) >= BesselYInterpolationDelta) {
-                    return PowerSeries.BesselY(nu, z);
-                }
-                else {
-                    return Interpolation.BesselY(nu, z);
-                }
             }
             else if (z.I <= MillerBackwardThreshold) {
                 return MillerBackward.BesselY(nu, z);
             }
-            else {
+            {
                 Complex c = (SinCosPICache.CosPI(nu / 2d), SinCosPICache.SinPI(nu / 2d));
 
                 Complex bi = (z.R <= PowerSeriesThreshold(nu, z.I))
@@ -170,11 +164,11 @@ namespace DoubleDoubleComplex {
                 return Limit.BesselK(nu, z);
             }
             else if (z.Magnitude <= BesselKNearZeroThreshold) {
-                if (NearlyInteger(nu, out int n) || ddouble.Abs(n - nu) >= BesselKInterpolationDelta) {
+                if (NearlyInteger(nu, out int n) || ddouble.ILogB(n - nu) >= BesselYKNearIntegerExponent) {
                     return PowerSeries.BesselK(nu, z);
                 }
                 else {
-                    return Interpolation.BesselK(nu, z);
+                    return AmosPowerSeries.BesselK(nu, z);
                 }
             }
             else if (z.R >= BesselKPadeThreshold) {
@@ -187,19 +181,11 @@ namespace DoubleDoubleComplex {
                     ? PowerSeries.BesselI(nu, z)
                     : MillerBackward.BesselI(nu, z);
 
-                Complex by = (
-                    (z.I <= PowerSeriesThreshold(nu, z.R) - BesselJYPowerseriesBias)
-                    ? (
-                        (NearlyInteger(nu, out int n) || ddouble.Abs(n - nu) >= BesselYForcedMillerBackwardThreshold)
-                         ? PowerSeries.BesselY(nu, (z.I, z.R))
-                         : (z.R <= MillerBackwardThreshold / 2d)
-                         ? MillerBackward.BesselY(nu, (z.I, z.R))
-                         : (ddouble.Abs(n - nu) >= BesselYInterpolationDelta)
-                         ? PowerSeries.BesselY(nu, (z.I, z.R))
-                         : Interpolation.BesselY(nu, (z.I, z.R))
-                    )
-                    : MillerBackward.BesselY(nu, (z.I, z.R))
-                );
+                Complex by =
+                    ((z.I <= PowerSeriesThreshold(nu, z.R) - BesselJYPowerseriesBias) &&
+                     (NearlyInteger(nu, out int n) || ddouble.ILogB(n - nu) >= BesselYKNearIntegerExponent))
+                    ? PowerSeries.BesselY(nu, (z.I, z.R))
+                    : MillerBackward.BesselY(nu, (z.I, z.R));
 
                 Complex y = c * (MulMinusI(c * bi) - by.Conj) * ddouble.PI / 2d;
 
@@ -238,13 +224,15 @@ namespace DoubleDoubleComplex {
         internal static class ComplexBesselUtil {
             public const int RecurrenceMaxN = 256;
             public const int DirectMaxN = 16;
-            public static readonly double Eps = double.ScaleB(1, -105);
-            public static readonly int NearZeroExponent = -950;
-            public static readonly double BesselYForcedMillerBackwardThreshold = double.ScaleB(1, -8);
-            public static readonly double BesselYInterpolationDelta = double.ScaleB(1, -16);
-            public static readonly double BesselKInterpolationDelta = double.ScaleB(1, -8);
+            public const int EpsExponent = -105;
+            public const int NearZeroExponent = -950;
+            public const int BesselYKNearIntegerExponent = -3;
             public const double HankelThreshold = 38.875, MillerBackwardThreshold = 6;
-            public const double BesselKPadeThreshold = 1, BesselKNearZeroThreshold = 4, BesselJYPowerseriesBias = 2;
+            public const double BesselKPadeThreshold = 2, BesselKNearZeroThreshold = 2, BesselJYPowerseriesBias = 2;
+
+            static ComplexBesselUtil() {
+                Debug.Assert(BesselKPadeThreshold <= MillerBackwardThreshold / 2d);
+            }
 
             public static ddouble PowerSeriesThreshold(ddouble nu, ddouble x) {
                 ddouble nu_abs = ddouble.Abs(nu);
@@ -277,7 +265,7 @@ namespace DoubleDoubleComplex {
             public static bool NearlyInteger(ddouble nu, out int n) {
                 n = (int)ddouble.Round(nu);
 
-                return ddouble.Abs(nu - n) < Eps;
+                return ddouble.ILogB(nu - n) < EpsExponent;
             }
 
             public static class SinCosPICache {
@@ -2110,13 +2098,13 @@ namespace DoubleDoubleComplex {
                 private static readonly Dictionary<ddouble, ReadOnlyCollection<(ddouble c, ddouble s)>> cds_coef_table = [];
 
                 static YoshidaPade() {
-                    cds_coef_table.Add(0, Array.AsReadOnly(Consts.BesselKYoshidaPadeCoefM36.Nu0.Reverse().ToArray()));
-                    cds_coef_table.Add(1, Array.AsReadOnly(Consts.BesselKYoshidaPadeCoefM36.Nu1.Reverse().ToArray()));
+                    cds_coef_table.Add(0, Array.AsReadOnly(Consts.BesselKYoshidaPadeCoefM38.Nu0.Reverse().ToArray()));
+                    cds_coef_table.Add(1, Array.AsReadOnly(Consts.BesselKYoshidaPadeCoefM38.Nu1.Reverse().ToArray()));
 
                     List<ReadOnlyCollection<ddouble>> es = [];
 
-                    for (int i = 0; i < Consts.BesselKYoshidaPadeCoefM36.Ess.Length; i++) {
-                        es.Add(Array.AsReadOnly(Consts.BesselKYoshidaPadeCoefM36.Ess[i].ToArray()));
+                    for (int i = 0; i < Consts.BesselKYoshidaPadeCoefM38.Ess.Length; i++) {
+                        es.Add(Array.AsReadOnly(Consts.BesselKYoshidaPadeCoefM38.Ess[i].ToArray()));
                     }
 
                     ess_coef_table = Array.AsReadOnly(es.ToArray());
@@ -2207,108 +2195,175 @@ namespace DoubleDoubleComplex {
                 }
             }
 
-            public static class Interpolation {
-                public static Complex BesselY(ddouble nu, Complex z) {
-                    int n = (int)ddouble.Round(nu);
-                    ddouble alpha = nu - n;
+            public static class AmosPowerSeries {
+                private static readonly ReadOnlyCollection<ddouble> g1_coef = new(Consts.BesselKAmosG1.G1.Reverse().ToArray());
 
-                    Debug.Assert(ddouble.Abs(alpha) <= BesselYInterpolationDelta);
-
-                    Complex y0 = PowerSeries.BesselY(n, z);
-
-                    if (!IsFinite(y0)) {
-                        return y0;
-                    }
-
-                    ddouble dnu = ddouble.Sign(alpha) * BesselYInterpolationDelta;
-
-                    Complex y1 = PowerSeries.BesselY(n + dnu, z);
-                    Complex y2 = PowerSeries.BesselY(n + dnu * 1.25d, z);
-                    Complex y3 = PowerSeries.BesselY(n + dnu * 1.5d, z);
-                    Complex y4 = PowerSeries.BesselY(n + dnu * 1.75d, z);
-                    Complex y5 = PowerSeries.BesselY(n + dnu * 2d, z);
-
-                    if (!IsFinite(y1) || !IsFinite(y2) || !IsFinite(y3) || !IsFinite(y4) || !IsFinite(y5)) {
-                        return y1;
-                    }
-
-                    ddouble t = ddouble.Abs(alpha) / BesselYInterpolationDelta;
-                    Complex y = Interpolate(t, y0, y1, y2, y3, y4, y5);
-
-                    return y;
-                }
+                private static readonly Dictionary<ddouble, (ddouble, ddouble)> gammapm_table = [];
+                private static readonly Dictionary<ddouble, (ddouble, ddouble)> gamma12_table = [];
 
                 public static Complex BesselK(ddouble nu, Complex z) {
+                    Complex y = BesselKKernel(nu, z);
+
+                    if (IsNaN(y) && !IsNaN(z)) {
+                        y = ddouble.PositiveInfinity;
+                    }
+
+                    return y;
+                }
+
+                private static Complex BesselKKernel(ddouble nu, Complex z) {
+                    Debug.Assert(nu >= 0d);
+
                     int n = (int)ddouble.Round(nu);
                     ddouble alpha = nu - n;
 
-                    Debug.Assert(n >= 0);
-                    Debug.Assert(ddouble.Abs(alpha) <= BesselKInterpolationDelta);
-
-                    Complex y0 = PowerSeries.BesselK(0, z);
-
-                    if (!IsFinite(y0)) {
-                        return y0;
-                    }
-                    ddouble dnu = BesselKInterpolationDelta;
-
-                    Complex y1 = PowerSeries.BesselK(dnu, z);
-                    Complex y2 = PowerSeries.BesselK(dnu * 1.25d, z);
-                    Complex y3 = PowerSeries.BesselK(dnu * 1.5d, z);
-                    Complex y4 = PowerSeries.BesselK(dnu * 1.75d, z);
-                    Complex y5 = PowerSeries.BesselK(dnu * 2d, z);
-
-                    if (!IsFinite(y1) || !IsFinite(y2) || !IsFinite(y3) || !IsFinite(y4) || !IsFinite(y5)) {
-                        return y1;
-                    }
-
-                    ddouble t = ddouble.Abs(alpha) / BesselKInterpolationDelta;
-                    Complex k0 = InterpolateEvenConvex(t, y0, y1, y2, y3, y4, y5);
-
                     if (n == 0) {
+                        Complex k0 = BesselKNearZeroNu(alpha, z, terms: 20);
+
                         return k0;
                     }
+                    else if (n == 1) {
+                        Complex k1 = BesselKNearOneNu(alpha, z, terms: 21);
 
-                    Complex i0 = PowerSeries.BesselI(alpha, z), i1 = PowerSeries.BesselI(alpha + 1d, z);
-
-                    Complex k1 = (1d - i1 * k0 * z) / (i0 * z);
-
-                    if (n == 1) {
                         return k1;
                     }
+                    else {
+                        Complex kn = BesselKNearIntNu(n, alpha, z, terms: 21);
 
-                    Complex v = 1d / z;
+                        return kn;
+                    }
+                }
 
-                    for (int k = 1; k < n; k++) {
-                        (k1, k0) = (ddouble.Ldexp(k + alpha, 1) * v * k1 + k0, k1);
+                private static Complex BesselKNearZeroNu(ddouble alpha, Complex z, int terms) {
+                    ddouble alpha2 = alpha * alpha;
+                    Complex s = 1d / z, t = Log(2d * s), mu = alpha * t;
+                    (ddouble g1, ddouble g2) = Gamma12(alpha);
+                    (ddouble gp, ddouble gm) = GammaPM(alpha);
+
+                    Complex f = (g1 * Cosh(mu) + g2 * t * Sinhc(mu)) / ddouble.Sinc(alpha);
+                    Complex r = Pow(z / 2d, alpha);
+                    Complex p = gp / (r * 2d), q = gm * r * 0.5d;
+
+                    Complex c = f, v = Ldexp(z * z, -2), u = v;
+
+                    for (int k = 1; k <= terms; k++) {
+                        f = (k * f + p + q) / (k * k - alpha2);
+                        c = SeriesUtil.Add(c, u, f, out bool convergence);
+
+                        if (convergence && ILogB(f) >= -4) {
+                            break;
+                        }
+
+                        p /= k - alpha;
+                        q /= k + alpha;
+                        u *= v / (k + 1);
                     }
 
-                    return k1;
+                    return c;
                 }
 
-                private static Complex Interpolate(ddouble t, Complex y0, Complex y1, Complex y2, Complex y3, Complex y4, Complex y5) {
-                    Complex y = y0
-                        + t * (-743d * y0 + 14700d * y1 - 37632d * y2 + 39200d * y3 - 19200d * y4 + 3675d * y5
-                        + t * (1035d * y0 - 37310d * y1 + 103040d * y2 - 112560d * y3 + 56960d * y4 - 11165d * y5
-                        + t * (-710d * y0 + 35140d * y1 - 103040d * y2 + 118160d * y3 - 62080d * y4 + 12530d * y5
-                        + t * (240d * y0 - 14560d * y1 + 44800d * y2 - 53760d * y3 + 29440d * y4 - 6160d * y5
-                        + t * (-32d * y0 + 2240d * y1 - 7168d * y2 + 8960d * y3 - 5120d * y4 + 1120d * y5))))) / 210d;
+                private static Complex BesselKNearOneNu(ddouble alpha, Complex z, int terms) {
+                    ddouble alpha2 = alpha * alpha;
+                    Complex s = 1d / z, t = Log(2d * s), mu = alpha * t;
+                    (ddouble g1, ddouble g2) = Gamma12(alpha);
+                    (ddouble gp, ddouble gm) = GammaPM(alpha);
 
-                    return y;
+                    Complex f = (g1 * Cosh(mu) + g2 * t * Sinhc(mu)) / ddouble.Sinc(alpha);
+                    Complex r = Pow(z / 2d, alpha);
+                    Complex p = gp / (r * 2d), q = gm * r * 0.5d;
+
+                    Complex c = p, v = Ldexp(z * z, -2), u = v;
+
+                    for (int k = 1; k <= terms; k++) {
+                        f = (k * f + p + q) / (k * k - alpha2);
+                        p /= k - alpha;
+                        c = SeriesUtil.Add(c, u, p, -k * f, out bool convergence);
+
+                        if (convergence && ILogB(f) >= -4) {
+                            break;
+                        }
+
+                        q /= k + alpha;
+                        u *= v / (k + 1);
+                    }
+
+                    c *= 2d * s;
+
+                    return c;
                 }
 
-                private static Complex InterpolateEvenConvex(ddouble t, Complex y0, Complex y1, Complex y2, Complex y3, Complex y4, Complex y5) {
-                    ddouble t2 = t * t;
+                private static Complex BesselKNearIntNu(int n, ddouble alpha, Complex z, int terms) {
+                    ddouble alpha2 = alpha * alpha;
+                    Complex s = 1d / z, t = Log(2d * s), mu = alpha * t;
+                    (ddouble g1, ddouble g2) = Gamma12(alpha);
+                    (ddouble gp, ddouble gm) = GammaPM(alpha);
 
-                    Complex y = y0
-                        + t2 * (-151028163d * y0 + 561834000d * y1 - 708083712d * y2 + 395136000d * y3 - 110592000d * y4 + 12733875d * y5
-                        + t2 * (150533955d * y0 - 933192260d * y1 + 1431019520d * y2 - 875831040d * y3 + 258170880d * y4 - 30701055d * y5
-                        + t2 * (-70594524d * y0 + 556941840d * y1 - 962174976d * y2 + 658748160d * y3 - 209018880d * y4 + 26098380d * y5
-                        + t2 * (15649920d * y0 - 141872640d * y1 + 264929280d * y2 - 198696960d * y3 + 69304320d * y4 - 9313920d * y5
-                        + t2 * (-1317888d * y0 + 13045760d * y1 - 25690112d * y2 + 20643840d * y3 - 7864320d * y4 + 1182720d * y5))))) / 56756700d;
+                    Complex f = (g1 * Cosh(mu) + g2 * t * Sinhc(mu)) / ddouble.Sinc(alpha);
+                    Complex r = Pow(z / 2d, alpha);
+                    Complex p = gp / (r * 2d), q = gm * r * 0.5d;
 
-                    return y;
+                    Complex c0 = f, c1 = p, v = Ldexp(z * z, -2), u = v;
+
+                    for (int k = 1; k <= terms; k++) {
+                        f = (k * f + p + q) / (k * k - alpha2);
+                        p /= k - alpha;
+                        c0 = SeriesUtil.Add(c0, u, f, out bool convergence0);
+                        c1 = SeriesUtil.Add(c1, u, p, -k * f, out bool convergence1);
+
+                        if (convergence0 && convergence1 && ILogB(f) >= -4) {
+                            break;
+                        }
+
+                        q /= k + alpha;
+                        u *= v / (k + 1);
+                    }
+
+                    c1 *= 2d * s;
+
+                    for (int k = 1; k < n; k++) {
+                        (c1, c0) = (ddouble.Ldexp(k + alpha, 1) * s * c1 + c0, c1);
+                    }
+
+                    return c1;
                 }
+
+                public static (ddouble g1, ddouble g2) Gamma12(ddouble nu) {
+                    Debug.Assert(ddouble.Abs(nu) <= 0.5);
+
+                    if (!gamma12_table.TryGetValue(nu, out (ddouble g1, ddouble g2) g)) {
+                        (ddouble gp, ddouble gm) = GammaPM(nu);
+
+                        ddouble nu2 = nu * nu;
+
+                        ddouble g1 = g1_coef[0];
+
+                        for (int i = 1; i < g1_coef.Count; i++) {
+                            g1 = g1 * nu2 + g1_coef[i];
+                        }
+
+                        ddouble g2 = (1d / gm + 1d / gp) / 2d;
+
+                        g = (g1, g2);
+
+                        gamma12_table.Add(nu, g);
+                    }
+
+                    return g;
+                }
+
+                public static (ddouble gp, ddouble gm) GammaPM(ddouble nu) {
+                    Debug.Assert(ddouble.Abs(nu) <= 0.5);
+
+                    if (!gammapm_table.TryGetValue(nu, out (ddouble gp, ddouble gm) g)) {
+                        g = (ddouble.Gamma(1d + nu), ddouble.Gamma(1d - nu));
+
+                        gammapm_table.Add(nu, g);
+                    }
+
+                    return g;
+                }
+
+
             }
 
             public static class Recurrence {
