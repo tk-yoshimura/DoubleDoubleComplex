@@ -2,7 +2,6 @@
 using DoubleDouble;
 using DoubleDoubleComplex;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MultiPrecision;
 using System;
 using System.Linq;
 
