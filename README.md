@@ -63,6 +63,8 @@
 | Complex.Ci(z) | cosine integral |
 | Complex.Shi(z) | hyperbolic sine integral |
 | Complex.Chi(z) | hyperbolic cosine integral |
+| Complex.Sinc(z) | sin(z)/z |
+| Complex.Sinhc(z) | sinh(z)/z |
 
 
 ## Usage
