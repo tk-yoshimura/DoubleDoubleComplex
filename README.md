@@ -51,7 +51,7 @@
 | Complex.BesselJ(nu, z) | Accuracy deteriorates near root.<br/>abs(nu) &leq; 256 |
 | Complex.BesselY(nu, z) | Accuracy deteriorates near root.<br/>abs(nu) &leq; 256 |
 | Complex.BesselI(nu, z) | Accuracy deteriorates near root.<br/>abs(nu) &leq; 256 |
-| Complex.BesselK(nu, z) | abs(nu) &leq; 256 |
+| Complex.BesselK(nu, z) | Accuracy deteriorates near root.<br/>abs(nu) &leq; 256 |
 | Complex.HankelH1(nu, z) | Accuracy deteriorates near root.<br/>abs(nu) &leq; 256 |
 | Complex.HankelH2(nu, z) | Accuracy deteriorates near root.<br/>abs(nu) &leq; 256 |
 | Complex.AiryAi(z) | Accuracy deteriorates near root. |
