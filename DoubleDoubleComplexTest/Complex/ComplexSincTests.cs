@@ -15,7 +15,7 @@ namespace DoubleDoubleComplexTests {
             for (int exp = -25; exp >= -80; exp--) {
                 double x = double.ScaleB(1, exp);
 
-                foreach ((double r, double i) z in new (double r, double i)[] { 
+                foreach ((double r, double i) z in new (double r, double i)[] {
                     (0, x), (x, x), (x, 0), (-x, x), (-x, 0), (-x, -x), (0, -x), (x, -x) }) {
 
                     Complex actual = Complex.Sinc(z, normalized: false);
@@ -36,11 +36,11 @@ namespace DoubleDoubleComplexTests {
             for (int exp = -25; exp >= -80; exp--) {
                 double x = double.ScaleB(1, exp);
 
-                foreach ((double r, double i) z in new (double r, double i)[] { 
+                foreach ((double r, double i) z in new (double r, double i)[] {
                     (0, x), (x, x), (x, 0), (-x, x), (-x, 0), (-x, -x), (0, -x), (x, -x) }) {
 
                     Complex actual = Complex.Sinc(z, normalized: true);
-                    Complex expected = (Complex<Pow2.N8>.Sin((Complex<Pow2.N8>)z * MultiPrecision<Pow2.N8>.PI) / 
+                    Complex expected = (Complex<Pow2.N8>.Sin((Complex<Pow2.N8>)z * MultiPrecision<Pow2.N8>.PI) /
                         ((Complex<Pow2.N8>)z * MultiPrecision<Pow2.N8>.PI)).ToString();
 
                     ddouble err = (expected - actual).Magnitude / expected.Magnitude;
@@ -58,7 +58,7 @@ namespace DoubleDoubleComplexTests {
             for (int exp = -25; exp >= -80; exp--) {
                 double x = double.ScaleB(1, exp);
 
-                foreach ((double r, double i) z in new (double r, double i)[] { 
+                foreach ((double r, double i) z in new (double r, double i)[] {
                     (0, x), (x, x), (x, 0), (-x, x), (-x, 0), (-x, -x), (0, -x), (x, -x) }) {
 
                     Complex actual = Complex.Sinhc(z);
