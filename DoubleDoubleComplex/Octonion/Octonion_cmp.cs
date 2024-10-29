@@ -29,6 +29,7 @@ namespace DoubleDoubleComplex {
         public override bool Equals(object obj) {
             return (obj is not null && obj is Octonion q) && q == this;
         }
+
         public bool Equals(Octonion other) {
             return this == other;
         }

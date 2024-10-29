@@ -20,13 +20,18 @@ namespace DoubleDoubleComplex {
                     return ddouble.PositiveInfinity;
                 }
 
-                (int scale_1, (ddouble r, ddouble s, ddouble t, ddouble u)) = ddouble.AdjustScale(0, (R, S, T, U));
-                (int scale_2, (ddouble w, ddouble x, ddouble y, ddouble z)) = ddouble.AdjustScale(0, (W, X, Y, Z));
+                int exp = ILogB(this);
 
-                ddouble m_1 = ddouble.Ldexp(ddouble.Sqrt(r * r + s * s + t * t + u * u), -scale_1);
-                ddouble m_2 = ddouble.Ldexp(ddouble.Sqrt(w * w + x * x + y * y + z * z), -scale_2);
+                if (exp <= int.MinValue) {
+                    return 0d;
+                }
 
-                ddouble m = ddouble.Hypot(m_1, m_2);
+                Octonion o = Ldexp(this, -exp);
+
+                ddouble m = ddouble.Ldexp(ddouble.Sqrt(
+                    o.R * o.R + o.S * o.S + o.T * o.T + o.U * o.U +
+                    o.W * o.W + o.X * o.X + o.Y * o.Y + o.Z * o.Z), exp
+                );
 
                 return m;
             }
@@ -185,7 +190,7 @@ namespace DoubleDoubleComplex {
             if (Y != 0d) {
                 str.Append(Y > 0d ? $"+{Y.ToString(format)}y" : $"{Y.ToString(format)}y");
             }
-            if (X != 0d) {
+            if (Z != 0d) {
                 str.Append(Z > 0d ? $"+{Z.ToString(format)}z" : $"{Z.ToString(format)}z");
             }
 
