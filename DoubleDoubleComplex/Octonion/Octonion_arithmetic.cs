@@ -168,7 +168,7 @@ namespace DoubleDoubleComplex {
 
             return new(r, i, j, k, w, x, y, z);
         }
-               
+
         public static Octonion operator /(Octonion a, Octonion b) {
             if (IsFinite(b) && !IsZero(b)) {
                 int exp = ILogB(b);
@@ -227,8 +227,8 @@ namespace DoubleDoubleComplex {
             ddouble k = (a.J * b.I + a.K * b.R) * n;
             ddouble w = (a.W * b.R - a.X * b.I) * n;
             ddouble x = (a.W * b.I + a.X * b.R) * n;
-            ddouble y = (+ a.Y * b.R + a.Z * b.I) * n;
-            ddouble z = (- a.Y * b.I + a.Z * b.R) * n;
+            ddouble y = (+a.Y * b.R + a.Z * b.I) * n;
+            ddouble z = (-a.Y * b.I + a.Z * b.R) * n;
 
             return new(r, i, j, k, w, x, y, z);
         }
