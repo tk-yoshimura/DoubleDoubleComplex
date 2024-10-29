@@ -58,7 +58,7 @@ namespace DoubleDoubleComplexTests {
             OctonionAssert.AreEqual((157, 290, 20, -830, 44, 494, 68, -78), o1 * o4, 1e-30);
 
             OctonionAssert.AreEqual(o1 * (2, 0, 0, 0, 0, 0, 0, 0), o1 * 2, 1e-30);
-            
+
             OctonionAssert.AreEqual((2, 0, 0, 0, 0, 0, 0, 0) * o1, 2 * o1, 1e-30);
         }
 
@@ -80,7 +80,7 @@ namespace DoubleDoubleComplexTests {
             OctonionAssert.AreEqual(1d, o7 / o7, 1e-30);
 
             OctonionAssert.AreEqual(o1 / (2, 0, 0, 0, 0, 0, 0, 0), o1 / 2, 1e-30);
-            
+
             OctonionAssert.AreEqual((2, 0, 0, 0, 0, 0, 0, 0) / o1, 2 / o1, 1e-30);
         }
 
