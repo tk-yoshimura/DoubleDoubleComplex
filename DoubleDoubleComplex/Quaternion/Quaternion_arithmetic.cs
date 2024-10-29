@@ -55,6 +55,24 @@ namespace DoubleDoubleComplex {
             );
         }
 
+        public static Quaternion operator *(Quaternion a, Complex b) {
+            return new(
+                a.R * b.R - a.I * b.I,
+                a.I * b.R + a.R * b.I,
+                a.J * b.R + a.K * b.I,
+                a.K * b.R - a.J * b.I
+            );
+        }
+
+        public static Quaternion operator *(Complex a, Quaternion b) {
+            return new(
+                a.R * b.R - a.I * b.I,
+                a.I * b.R + a.R * b.I,
+                a.R * b.J - a.I * b.K,
+                a.I * b.J + a.R * b.K
+            );
+        }
+
         public static Quaternion operator *(Quaternion a, ddouble b) {
             return new(a.R * b, a.I * b, a.J * b, a.K * b);
         }
@@ -92,6 +110,38 @@ namespace DoubleDoubleComplex {
 
         public static Quaternion operator /(Quaternion a, ddouble b) {
             return a * (1d / b);
+        }
+
+        public static Quaternion operator /(Quaternion a, Complex b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (Ldexp(a, -exp), Complex.Ldexp(b, -exp));
+            }
+
+            ddouble s = 1d / b.Norm;
+
+            return new(
+                (a.R * b.R + a.I * b.I) * s,
+                (a.I * b.R - a.R * b.I) * s,
+                (a.J * b.R - a.K * b.I) * s,
+                (a.K * b.R + a.J * b.I) * s
+            );
+        }
+
+        public static Quaternion operator /(Complex a, Quaternion b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (Complex.Ldexp(a, -exp), Ldexp(b, -exp));
+            }
+
+            ddouble s = 1d / b.Norm;
+
+            return new(
+                (a.R * b.R + a.I * b.I) * s,
+                (a.I * b.R - a.R * b.I) * s,
+                (-a.R * b.J + a.I * b.K) * s,
+                (-a.I * b.J - a.R * b.K) * s
+            );
         }
 
         public static Quaternion Inverse(Quaternion q) {

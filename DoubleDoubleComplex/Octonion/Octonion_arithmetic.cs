@@ -117,6 +117,58 @@ namespace DoubleDoubleComplex {
             return new(r, i, j, k, w, x, y, z);
         }
 
+        public static Octonion operator *(Octonion a, Complex b) {
+            ddouble r = a.R * b.R - a.I * b.I;
+            ddouble i = a.R * b.I + a.I * b.R;
+            ddouble j = a.J * b.R + a.K * b.I;
+            ddouble k = -a.J * b.I + a.K * b.R;
+            ddouble w = a.W * b.R + a.X * b.I;
+            ddouble x = -a.W * b.I + a.X * b.R;
+            ddouble y = a.Y * b.R - a.Z * b.I;
+            ddouble z = a.Y * b.I + a.Z * b.R;
+
+            return new(r, i, j, k, w, x, y, z);
+        }
+
+        public static Octonion operator *(Complex a, Octonion b) {
+            ddouble r = a.R * b.R - a.I * b.I;
+            ddouble i = a.R * b.I + a.I * b.R;
+            ddouble j = a.R * b.J - a.I * b.K;
+            ddouble k = a.R * b.K + a.I * b.J;
+            ddouble w = a.R * b.W - a.I * b.X;
+            ddouble x = a.R * b.X + a.I * b.W;
+            ddouble y = a.R * b.Y + a.I * b.Z;
+            ddouble z = a.R * b.Z - a.I * b.Y;
+
+            return new(r, i, j, k, w, x, y, z);
+        }
+
+        public static Octonion operator *(Octonion a, Quaternion b) {
+            ddouble r = a.R * b.R - a.I * b.I - a.J * b.J - a.K * b.K;
+            ddouble i = a.R * b.I + a.I * b.R + a.J * b.K - a.K * b.J;
+            ddouble j = a.R * b.J - a.I * b.K + a.J * b.R + a.K * b.I;
+            ddouble k = a.R * b.K + a.I * b.J - a.J * b.I + a.K * b.R;
+            ddouble w = +a.W * b.R + a.X * b.I + a.Y * b.J + a.Z * b.K;
+            ddouble x = -a.W * b.I + a.X * b.R - a.Y * b.K + a.Z * b.J;
+            ddouble y = -a.W * b.J + a.X * b.K + a.Y * b.R - a.Z * b.I;
+            ddouble z = -a.W * b.K - a.X * b.J + a.Y * b.I + a.Z * b.R;
+
+            return new(r, i, j, k, w, x, y, z);
+        }
+
+        public static Octonion operator *(Quaternion a, Octonion b) {
+            ddouble r = a.R * b.R - a.I * b.I - a.J * b.J - a.K * b.K;
+            ddouble i = a.R * b.I + a.I * b.R + a.J * b.K - a.K * b.J;
+            ddouble j = a.R * b.J - a.I * b.K + a.J * b.R + a.K * b.I;
+            ddouble k = a.R * b.K + a.I * b.J - a.J * b.I + a.K * b.R;
+            ddouble w = a.R * b.W - a.I * b.X - a.J * b.Y - a.K * b.Z;
+            ddouble x = a.R * b.X + a.I * b.W - a.J * b.Z + a.K * b.Y;
+            ddouble y = a.R * b.Y + a.I * b.Z + a.J * b.W - a.K * b.X;
+            ddouble z = a.R * b.Z - a.I * b.Y + a.J * b.X + a.K * b.W;
+
+            return new(r, i, j, k, w, x, y, z);
+        }
+               
         public static Octonion operator /(Octonion a, Octonion b) {
             if (IsFinite(b) && !IsZero(b)) {
                 int exp = ILogB(b);
@@ -159,6 +211,86 @@ namespace DoubleDoubleComplex {
 
         public static Octonion operator /(Octonion a, ddouble b) {
             return a * (1d / b);
+        }
+
+        public static Octonion operator /(Octonion a, Complex b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (Ldexp(a, -exp), Complex.Ldexp(b, -exp));
+            }
+
+            ddouble n = 1d / b.Norm;
+
+            ddouble r = (+a.R * b.R + a.I * b.I) * n;
+            ddouble i = (-a.R * b.I + a.I * b.R) * n;
+            ddouble j = (a.J * b.R - a.K * b.I) * n;
+            ddouble k = (a.J * b.I + a.K * b.R) * n;
+            ddouble w = (a.W * b.R - a.X * b.I) * n;
+            ddouble x = (a.W * b.I + a.X * b.R) * n;
+            ddouble y = (+ a.Y * b.R + a.Z * b.I) * n;
+            ddouble z = (- a.Y * b.I + a.Z * b.R) * n;
+
+            return new(r, i, j, k, w, x, y, z);
+        }
+
+        public static Octonion operator /(Complex a, Octonion b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (Complex.Ldexp(a, -exp), Ldexp(b, -exp));
+            }
+
+            ddouble n = 1d / b.Norm;
+
+            ddouble r = (+a.R * b.R + a.I * b.I) * n;
+            ddouble i = (-a.R * b.I + a.I * b.R) * n;
+            ddouble j = (-a.R * b.J + a.I * b.K) * n;
+            ddouble k = (-a.R * b.K - a.I * b.J) * n;
+            ddouble w = (-a.R * b.W + a.I * b.X) * n;
+            ddouble x = (-a.R * b.X - a.I * b.W) * n;
+            ddouble y = (-a.R * b.Y - a.I * b.Z) * n;
+            ddouble z = (-a.R * b.Z + a.I * b.Y) * n;
+
+            return new(r, i, j, k, w, x, y, z);
+        }
+
+        public static Octonion operator /(Octonion a, Quaternion b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (Ldexp(a, -exp), Quaternion.Ldexp(b, -exp));
+            }
+
+            ddouble n = 1d / b.Norm;
+
+            ddouble r = (+a.R * b.R + a.I * b.I + a.J * b.J + a.K * b.K) * n;
+            ddouble i = (-a.R * b.I + a.I * b.R - a.J * b.K + a.K * b.J) * n;
+            ddouble j = (-a.R * b.J + a.I * b.K + a.J * b.R - a.K * b.I) * n;
+            ddouble k = (-a.R * b.K - a.I * b.J + a.J * b.I + a.K * b.R) * n;
+            ddouble w = (a.W * b.R - a.X * b.I - a.Y * b.J - a.Z * b.K) * n;
+            ddouble x = (a.W * b.I + a.X * b.R + a.Y * b.K - a.Z * b.J) * n;
+            ddouble y = (a.W * b.J - a.X * b.K + a.Y * b.R + a.Z * b.I) * n;
+            ddouble z = (a.W * b.K + a.X * b.J - a.Y * b.I + a.Z * b.R) * n;
+
+            return new(r, i, j, k, w, x, y, z);
+        }
+
+        public static Octonion operator /(Quaternion a, Octonion b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (Quaternion.Ldexp(a, -exp), Ldexp(b, -exp));
+            }
+
+            ddouble n = 1d / b.Norm;
+
+            ddouble r = (+a.R * b.R + a.I * b.I + a.J * b.J + a.K * b.K) * n;
+            ddouble i = (-a.R * b.I + a.I * b.R - a.J * b.K + a.K * b.J) * n;
+            ddouble j = (-a.R * b.J + a.I * b.K + a.J * b.R - a.K * b.I) * n;
+            ddouble k = (-a.R * b.K - a.I * b.J + a.J * b.I + a.K * b.R) * n;
+            ddouble w = (-a.R * b.W + a.I * b.X + a.J * b.Y + a.K * b.Z) * n;
+            ddouble x = (-a.R * b.X - a.I * b.W + a.J * b.Z - a.K * b.Y) * n;
+            ddouble y = (-a.R * b.Y - a.I * b.Z - a.J * b.W + a.K * b.X) * n;
+            ddouble z = (-a.R * b.Z + a.I * b.Y - a.J * b.X - a.K * b.W) * n;
+
+            return new(r, i, j, k, w, x, y, z);
         }
 
         public static Octonion Inverse(Octonion o) {

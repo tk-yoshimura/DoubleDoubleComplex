@@ -95,6 +95,16 @@ namespace DoubleDoubleComplexTests {
                     QuaternionAssert.AreEqual(nc, c, 1e-7);
                 }
             }
+
+            Quaternion q = (3, -9, 2, 4);
+
+            QuaternionAssert.AreEqual(q * (2d, 0, 0, 0), q * 2, 1e-30);
+            QuaternionAssert.AreEqual(q * (2d, -3, 0, 0), q * (2d, -3), 1e-30);
+            QuaternionAssert.AreEqual(q * (2d, -3, 5, -7), q * (2d, -3, 5, -7), 1e-30);
+
+            QuaternionAssert.AreEqual((2d, 0, 0, 0) * q, 2 * q, 1e-30);
+            QuaternionAssert.AreEqual((2d, -3, 0, 0) * q, (2d, -3) * q, 1e-30);
+            QuaternionAssert.AreEqual((2d, -3, 5, -7) * q, (2d, -3, 5, -7) * q, 1e-30);
         }
 
         [TestMethod()]
@@ -131,6 +141,16 @@ namespace DoubleDoubleComplexTests {
             QuaternionAssert.AreEqual(new Quaternion(1, 2, 3, 4) / new Quaternion(5, 6, 7, 8), new Quaternion(1e-200, 2e-200, 3e-200, 4e-200) / new Quaternion(5e-200, 6e-200, 7e-200, 8e-200), 1e-7);
             QuaternionAssert.AreEqual(3 / new Quaternion(5, 6, 7, 8), 3e200 / new Quaternion(5e200, 6e200, 7e200, 8e200), 1e-7);
             QuaternionAssert.AreEqual(3 / new Quaternion(5, 6, 7, 8), 3e-200 / new Quaternion(5e-200, 6e-200, 7e-200, 8e-200), 1e-7);
+
+            Quaternion q = (3, -9, 2, 4);
+
+            QuaternionAssert.AreEqual(q / (2d, 0, 0, 0), q / 2, 1e-30);
+            QuaternionAssert.AreEqual(q / (2d, -3, 0, 0), q / (2, -3), 1e-30);
+            QuaternionAssert.AreEqual(q / (2d, -3, 5, -7), q / (2d, -3, 5, -7), 1e-30);
+
+            QuaternionAssert.AreEqual((2d, 0, 0, 0) / q, 2 / q, 1e-30);
+            QuaternionAssert.AreEqual((2d, -3, 0, 0) / q, (2, -3) / q, 1e-30);
+            QuaternionAssert.AreEqual((2d, -3, 5, -7) / q, (2d, -3, 5, -7) / q, 1e-30);
         }
 
         [TestMethod()]
