@@ -113,7 +113,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Quaternion operator /(Quaternion a, Complex b) {
-            if (IsFinite(b) && !IsZero(b)) {
+            if (Complex.IsFinite(b) && !Complex.IsZero(b)) {
                 int exp = ILogB(b);
                 (a, b) = (Ldexp(a, -exp), Complex.Ldexp(b, -exp));
             }
