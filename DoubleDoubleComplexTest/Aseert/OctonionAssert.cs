@@ -11,9 +11,9 @@ namespace DoubleDoubleComplexTests {
 
         public static void AreEqual(Octonion expected, Octonion actual, ddouble delta, string message) {
             Assert.IsTrue(expected.R - delta < actual.R && expected.R + delta > actual.R &&
-                          expected.S - delta < actual.S && expected.S + delta > actual.S &&
-                          expected.T - delta < actual.T && expected.T + delta > actual.T &&
-                          expected.U - delta < actual.U && expected.U + delta > actual.U &&
+                          expected.I - delta < actual.I && expected.I + delta > actual.I &&
+                          expected.J - delta < actual.J && expected.J + delta > actual.J &&
+                          expected.K - delta < actual.K && expected.K + delta > actual.K &&
                           expected.W - delta < actual.W && expected.W + delta > actual.W &&
                           expected.X - delta < actual.X && expected.X + delta > actual.X &&
                           expected.Y - delta < actual.Y && expected.Y + delta > actual.Y &&

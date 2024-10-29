@@ -16,14 +16,14 @@ namespace DoubleDoubleComplexTests {
                 foreach ((ddouble v, string s) r in vs) {
                     string rs = r.s;
 
-                    foreach ((ddouble v, string s) s in vs) {
-                        string ss = string.IsNullOrEmpty(s.s) ? string.Empty : $"+{s.s}s".Replace("+-", "-").Replace("++", "+");
+                    foreach ((ddouble v, string s) i in vs) {
+                        string ims = string.IsNullOrEmpty(i.s) ? string.Empty : $"+{i.s}i".Replace("+-", "-").Replace("++", "+");
 
-                        foreach ((ddouble v, string s) t in vs) {
-                            string ts = string.IsNullOrEmpty(t.s) ? string.Empty : $"+{t.s}t".Replace("+-", "-").Replace("++", "+");
+                        foreach ((ddouble v, string s) j in vs) {
+                            string js = string.IsNullOrEmpty(j.s) ? string.Empty : $"+{j.s}j".Replace("+-", "-").Replace("++", "+");
 
-                            foreach ((ddouble v, string s) u in vs) {
-                                string us = string.IsNullOrEmpty(u.s) ? string.Empty : $"+{u.s}u".Replace("+-", "-").Replace("++", "+");
+                            foreach ((ddouble v, string s) k in vs) {
+                                string ks = string.IsNullOrEmpty(k.s) ? string.Empty : $"+{k.s}k".Replace("+-", "-").Replace("++", "+");
 
                                 foreach ((ddouble v, string s) w in vs) {
                                     string ws = string.IsNullOrEmpty(w.s) ? string.Empty : $"+{w.s}w".Replace("+-", "-").Replace("++", "+");
@@ -37,7 +37,7 @@ namespace DoubleDoubleComplexTests {
                                             foreach ((ddouble v, string s) z in vs) {
                                                 string zs = string.IsNullOrEmpty(z.s) ? string.Empty : $"+{z.s}z".Replace("+-", "-").Replace("++", "+");
 
-                                                string str = $"{rs}{ss}{ts}{us}{ws}{xs}{ys}{zs}";
+                                                string str = $"{rs}{ims}{js}{ks}{ws}{xs}{ys}{zs}";
 
                                                 if (string.IsNullOrEmpty(str)) {
                                                     str = "0";
@@ -48,9 +48,9 @@ namespace DoubleDoubleComplexTests {
                                                 Octonion o = str;
 
                                                 Assert.AreEqual(r.v, o.R);
-                                                Assert.AreEqual(s.v, o.S);
-                                                Assert.AreEqual(t.v, o.T);
-                                                Assert.AreEqual(u.v, o.U);
+                                                Assert.AreEqual(i.v, o.I);
+                                                Assert.AreEqual(j.v, o.J);
+                                                Assert.AreEqual(k.v, o.K);
                                                 Assert.AreEqual(w.v, o.W);
                                                 Assert.AreEqual(x.v, o.X);
                                                 Assert.AreEqual(y.v, o.Y);
@@ -61,9 +61,9 @@ namespace DoubleDoubleComplexTests {
                                                 Console.WriteLine(o2);
 
                                                 Assert.AreEqual(r.v, o2.R);
-                                                Assert.AreEqual(s.v, o2.S);
-                                                Assert.AreEqual(t.v, o2.T);
-                                                Assert.AreEqual(u.v, o2.U);
+                                                Assert.AreEqual(i.v, o2.I);
+                                                Assert.AreEqual(j.v, o2.J);
+                                                Assert.AreEqual(k.v, o2.K);
                                                 Assert.AreEqual(w.v, o2.W);
                                                 Assert.AreEqual(x.v, o2.X);
                                                 Assert.AreEqual(y.v, o2.Y);
@@ -91,28 +91,28 @@ namespace DoubleDoubleComplexTests {
                 "--",
                 "-+",
                 "+1-",
-                "+1+s",
-                "+1++s",
-                "+1+-s",
-                "1+s",
-                "s",
-                "1s+",
-                "1s+1s",
+                "+1+i",
+                "+1++i",
+                "+1+-i",
+                "1+i",
+                "i",
+                "1i+",
+                "1i+1i",
                 "2+2",
-                "2+2s-",
-                "2+2s-2s",
-                "2+2s-2",
+                "2+2i-",
+                "2+2i-2i",
+                "2+2i-2",
                 "2+2p",
                 "2+2e",
                 "2+2e1",
                 "2+e",
                 "e",
-                "2+2tu",
-                "2+2t+2u+2u",
-                "2+2t+2u+2u+1s",
-                "2+2t++2u+2u+1s",
-                "2+2t++2u+2u+es",
-                "+4u+1+3t+2s+",
+                "2+2jk",
+                "2+2j+2k+2k",
+                "2+2j+2k+2k+1i",
+                "2+2j++2k+2k+1i",
+                "2+2j++2k+2k+ei",
+                "+4k+1+3j+2i+",
                 "+1+x",
                 "+1++x",
                 "+1+-x",
@@ -135,7 +135,7 @@ namespace DoubleDoubleComplexTests {
                 "2+2y++2z+2z+1x",
                 "2+2y++2z+2z+ex",
                 "+4z+1+3y+2x+",
-                "2+2i"
+                "2+2q"
             ];
 
             foreach (string test in tests) {

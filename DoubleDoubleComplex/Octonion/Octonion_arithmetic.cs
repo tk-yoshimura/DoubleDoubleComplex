@@ -19,102 +19,102 @@ namespace DoubleDoubleComplex {
         }
 
         public static Octonion operator -(Octonion o) {
-            return new(-o.R, -o.S, -o.T, -o.U, -o.W, -o.X, -o.Y, -o.Z);
+            return new(-o.R, -o.I, -o.J, -o.K, -o.W, -o.X, -o.Y, -o.Z);
         }
 
         public static Octonion operator +(Octonion a, Octonion b) {
-            return new(a.R + b.R, a.S + b.S, a.T + b.T, a.U + b.U, a.W + b.W, a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+            return new(a.R + b.R, a.I + b.I, a.J + b.J, a.K + b.K, a.W + b.W, a.X + b.X, a.Y + b.Y, a.Z + b.Z);
         }
 
         public static Octonion operator +(Octonion a, ddouble b) {
-            return new(a.R + b, a.S, a.T, a.U, a.W, a.X, a.Y, a.Z);
+            return new(a.R + b, a.I, a.J, a.K, a.W, a.X, a.Y, a.Z);
         }
 
         public static Octonion operator +(Octonion a, Complex b) {
-            return new(a.R + b.R, a.S + b.I, a.T, a.U, a.W, a.X, a.Y, a.Z);
+            return new(a.R + b.R, a.I + b.I, a.J, a.K, a.W, a.X, a.Y, a.Z);
         }
 
         public static Octonion operator +(Octonion a, Quaternion b) {
-            return new(a.R + b.R, a.S + b.I, a.T + b.J, a.U + b.K, a.W, a.X, a.Y, a.Z);
+            return new(a.R + b.R, a.I + b.I, a.J + b.J, a.K + b.K, a.W, a.X, a.Y, a.Z);
         }
 
         public static Octonion operator +(ddouble a, Octonion b) {
-            return new(a + b.R, b.S, b.T, b.U, b.W, b.X, b.Y, b.Z);
+            return new(a + b.R, b.I, b.J, b.K, b.W, b.X, b.Y, b.Z);
         }
 
         public static Octonion operator +(Complex a, Octonion b) {
-            return new(a.R + b.R, a.I + b.S, b.T, b.U, b.W, b.X, b.Y, b.Z);
+            return new(a.R + b.R, a.I + b.I, b.J, b.K, b.W, b.X, b.Y, b.Z);
         }
 
         public static Octonion operator +(Quaternion a, Octonion b) {
-            return new(a.R + b.R, a.I + b.S, a.J + b.T, a.K + b.U, b.W, b.X, b.Y, b.Z);
+            return new(a.R + b.R, a.I + b.I, a.J + b.J, a.K + b.K, b.W, b.X, b.Y, b.Z);
         }
 
         public static Octonion operator -(Octonion a, Octonion b) {
-            return new(a.R - b.R, a.S - b.S, a.T - b.T, a.U - b.U, a.W - b.W, a.X - b.X, a.Y - b.Y, a.Z - b.Z);
+            return new(a.R - b.R, a.I - b.I, a.J - b.J, a.K - b.K, a.W - b.W, a.X - b.X, a.Y - b.Y, a.Z - b.Z);
         }
 
         public static Octonion operator -(Octonion a, ddouble b) {
-            return new(a.R - b, a.S, a.T, a.U, a.W, a.X, a.Y, a.Z);
+            return new(a.R - b, a.I, a.J, a.K, a.W, a.X, a.Y, a.Z);
         }
 
         public static Octonion operator -(Octonion a, Complex b) {
-            return new(a.R - b.R, a.S - b.I, a.T, a.U, a.W, a.X, a.Y, a.Z);
+            return new(a.R - b.R, a.I - b.I, a.J, a.K, a.W, a.X, a.Y, a.Z);
         }
 
         public static Octonion operator -(Octonion a, Quaternion b) {
-            return new(a.R - b.R, a.S - b.I, a.T - b.J, a.U - b.K, a.W, a.X, a.Y, a.Z);
+            return new(a.R - b.R, a.I - b.I, a.J - b.J, a.K - b.K, a.W, a.X, a.Y, a.Z);
         }
 
         public static Octonion operator -(ddouble a, Octonion b) {
-            return new(a - b.R, -b.S, -b.T, -b.U, -b.W, -b.X, -b.Y, -b.Z);
+            return new(a - b.R, -b.I, -b.J, -b.K, -b.W, -b.X, -b.Y, -b.Z);
         }
 
         public static Octonion operator -(Complex a, Octonion b) {
-            return new(a.R - b.R, a.I - b.S, -b.T, -b.U, -b.W, -b.X, -b.Y, -b.Z);
+            return new(a.R - b.R, a.I - b.I, -b.J, -b.K, -b.W, -b.X, -b.Y, -b.Z);
         }
 
         public static Octonion operator -(Quaternion a, Octonion b) {
-            return new(a.R - b.R, a.I - b.S, a.J - b.T, a.K - b.U, -b.W, -b.X, -b.Y, -b.Z);
+            return new(a.R - b.R, a.I - b.I, a.J - b.J, a.K - b.K, -b.W, -b.X, -b.Y, -b.Z);
         }
 
         public static Octonion operator *(Octonion a, Octonion b) {
-            ddouble r = a.R * b.R - a.S * b.S - a.T * b.T - a.U * b.U - a.W * b.W - a.X * b.X - a.Y * b.Y - a.Z * b.Z;
-            ddouble s = a.R * b.S + a.S * b.R + a.T * b.U - a.U * b.T + a.W * b.X - a.X * b.W - a.Y * b.Z + a.Z * b.Y;
-            ddouble t = a.R * b.T - a.S * b.U + a.T * b.R + a.U * b.S + a.W * b.Y + a.X * b.Z - a.Y * b.W - a.Z * b.X;
-            ddouble u = a.R * b.U + a.S * b.T - a.T * b.S + a.U * b.R + a.W * b.Z - a.X * b.Y + a.Y * b.X - a.Z * b.W;
-            ddouble w = a.R * b.W - a.S * b.X - a.T * b.Y - a.U * b.Z + a.W * b.R + a.X * b.S + a.Y * b.T + a.Z * b.U;
-            ddouble x = a.R * b.X + a.S * b.W - a.T * b.Z + a.U * b.Y - a.W * b.S + a.X * b.R - a.Y * b.U + a.Z * b.T;
-            ddouble y = a.R * b.Y + a.S * b.Z + a.T * b.W - a.U * b.X - a.W * b.T + a.X * b.U + a.Y * b.R - a.Z * b.S;
-            ddouble z = a.R * b.Z - a.S * b.Y + a.T * b.X + a.U * b.W - a.W * b.U - a.X * b.T + a.Y * b.S + a.Z * b.R;
+            ddouble r = a.R * b.R - a.I * b.I - a.J * b.J - a.K * b.K - a.W * b.W - a.X * b.X - a.Y * b.Y - a.Z * b.Z;
+            ddouble i = a.R * b.I + a.I * b.R + a.J * b.K - a.K * b.J + a.W * b.X - a.X * b.W - a.Y * b.Z + a.Z * b.Y;
+            ddouble j = a.R * b.J - a.I * b.K + a.J * b.R + a.K * b.I + a.W * b.Y + a.X * b.Z - a.Y * b.W - a.Z * b.X;
+            ddouble k = a.R * b.K + a.I * b.J - a.J * b.I + a.K * b.R + a.W * b.Z - a.X * b.Y + a.Y * b.X - a.Z * b.W;
+            ddouble w = a.R * b.W - a.I * b.X - a.J * b.Y - a.K * b.Z + a.W * b.R + a.X * b.I + a.Y * b.J + a.Z * b.K;
+            ddouble x = a.R * b.X + a.I * b.W - a.J * b.Z + a.K * b.Y - a.W * b.I + a.X * b.R - a.Y * b.K + a.Z * b.J;
+            ddouble y = a.R * b.Y + a.I * b.Z + a.J * b.W - a.K * b.X - a.W * b.J + a.X * b.K + a.Y * b.R - a.Z * b.I;
+            ddouble z = a.R * b.Z - a.I * b.Y + a.J * b.X + a.K * b.W - a.W * b.K - a.X * b.J + a.Y * b.I + a.Z * b.R;
 
-            return new(r, s, t, u, w, x, y, z);
+            return new(r, i, j, k, w, x, y, z);
         }
 
         public static Octonion operator *(Octonion a, ddouble b) {
             ddouble r = a.R * b;
-            ddouble s = a.S * b;
-            ddouble t = a.T * b;
-            ddouble u = a.U * b;
+            ddouble i = a.I * b;
+            ddouble j = a.J * b;
+            ddouble k = a.K * b;
             ddouble w = a.W * b;
             ddouble x = a.X * b;
             ddouble y = a.Y * b;
             ddouble z = a.Z * b;
 
-            return new(r, s, t, u, w, x, y, z);
+            return new(r, i, j, k, w, x, y, z);
         }
 
         public static Octonion operator *(ddouble a, Octonion b) {
             ddouble r = a * b.R;
-            ddouble s = a * b.S;
-            ddouble t = a * b.T;
-            ddouble u = a * b.U;
+            ddouble i = a * b.I;
+            ddouble j = a * b.J;
+            ddouble k = a * b.K;
             ddouble w = a * b.W;
             ddouble x = a * b.X;
             ddouble y = a * b.Y;
             ddouble z = a * b.Z;
 
-            return new(r, s, t, u, w, x, y, z);
+            return new(r, i, j, k, w, x, y, z);
         }
 
         public static Octonion operator /(Octonion a, Octonion b) {
@@ -125,16 +125,16 @@ namespace DoubleDoubleComplex {
 
             ddouble n = 1d / b.Norm;
 
-            ddouble r = (+a.R * b.R + a.S * b.S + a.T * b.T + a.U * b.U + a.W * b.W + a.X * b.X + a.Y * b.Y + a.Z * b.Z) * n;
-            ddouble s = (-a.R * b.S + a.S * b.R - a.T * b.U + a.U * b.T - a.W * b.X + a.X * b.W + a.Y * b.Z - a.Z * b.Y) * n;
-            ddouble t = (-a.R * b.T + a.S * b.U + a.T * b.R - a.U * b.S - a.W * b.Y - a.X * b.Z + a.Y * b.W + a.Z * b.X) * n;
-            ddouble u = (-a.R * b.U - a.S * b.T + a.T * b.S + a.U * b.R - a.W * b.Z + a.X * b.Y - a.Y * b.X + a.Z * b.W) * n;
-            ddouble w = (-a.R * b.W + a.S * b.X + a.T * b.Y + a.U * b.Z + a.W * b.R - a.X * b.S - a.Y * b.T - a.Z * b.U) * n;
-            ddouble x = (-a.R * b.X - a.S * b.W + a.T * b.Z - a.U * b.Y + a.W * b.S + a.X * b.R + a.Y * b.U - a.Z * b.T) * n;
-            ddouble y = (-a.R * b.Y - a.S * b.Z - a.T * b.W + a.U * b.X + a.W * b.T - a.X * b.U + a.Y * b.R + a.Z * b.S) * n;
-            ddouble z = (-a.R * b.Z + a.S * b.Y - a.T * b.X - a.U * b.W + a.W * b.U + a.X * b.T - a.Y * b.S + a.Z * b.R) * n;
+            ddouble r = (+a.R * b.R + a.I * b.I + a.J * b.J + a.K * b.K + a.W * b.W + a.X * b.X + a.Y * b.Y + a.Z * b.Z) * n;
+            ddouble i = (-a.R * b.I + a.I * b.R - a.J * b.K + a.K * b.J - a.W * b.X + a.X * b.W + a.Y * b.Z - a.Z * b.Y) * n;
+            ddouble j = (-a.R * b.J + a.I * b.K + a.J * b.R - a.K * b.I - a.W * b.Y - a.X * b.Z + a.Y * b.W + a.Z * b.X) * n;
+            ddouble k = (-a.R * b.K - a.I * b.J + a.J * b.I + a.K * b.R - a.W * b.Z + a.X * b.Y - a.Y * b.X + a.Z * b.W) * n;
+            ddouble w = (-a.R * b.W + a.I * b.X + a.J * b.Y + a.K * b.Z + a.W * b.R - a.X * b.I - a.Y * b.J - a.Z * b.K) * n;
+            ddouble x = (-a.R * b.X - a.I * b.W + a.J * b.Z - a.K * b.Y + a.W * b.I + a.X * b.R + a.Y * b.K - a.Z * b.J) * n;
+            ddouble y = (-a.R * b.Y - a.I * b.Z - a.J * b.W + a.K * b.X + a.W * b.J - a.X * b.K + a.Y * b.R + a.Z * b.I) * n;
+            ddouble z = (-a.R * b.Z + a.I * b.Y - a.J * b.X - a.K * b.W + a.W * b.K + a.X * b.J - a.Y * b.I + a.Z * b.R) * n;
 
-            return new(r, s, t, u, w, x, y, z);
+            return new(r, i, j, k, w, x, y, z);
         }
 
         public static Octonion operator /(ddouble a, Octonion b) {
@@ -146,15 +146,15 @@ namespace DoubleDoubleComplex {
             ddouble n = a / b.Norm;
 
             ddouble r = +b.R * n;
-            ddouble s = -b.S * n;
-            ddouble t = -b.T * n;
-            ddouble u = -b.U * n;
+            ddouble i = -b.I * n;
+            ddouble j = -b.J * n;
+            ddouble k = -b.K * n;
             ddouble w = -b.W * n;
             ddouble x = -b.X * n;
             ddouble y = -b.Y * n;
             ddouble z = -b.Z * n;
 
-            return new(r, s, t, u, w, x, y, z);
+            return new(r, i, j, k, w, x, y, z);
         }
 
         public static Octonion operator /(Octonion a, ddouble b) {
@@ -171,15 +171,15 @@ namespace DoubleDoubleComplex {
             ddouble n = 1d / o.Norm;
 
             ddouble r = +o.R * n;
-            ddouble s = -o.S * n;
-            ddouble t = -o.T * n;
-            ddouble u = -o.U * n;
+            ddouble i = -o.I * n;
+            ddouble j = -o.J * n;
+            ddouble k = -o.K * n;
             ddouble w = -o.W * n;
             ddouble x = -o.X * n;
             ddouble y = -o.Y * n;
             ddouble z = -o.Z * n;
 
-            return Ldexp(new(r, s, t, u, w, x, y, z), -exp);
+            return Ldexp(new(r, i, j, k, w, x, y, z), -exp);
         }
     }
 }

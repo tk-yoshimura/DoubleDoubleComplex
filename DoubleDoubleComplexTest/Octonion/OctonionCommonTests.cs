@@ -13,27 +13,27 @@ namespace DoubleDoubleComplexTests {
             Octonion c4 = c2.Conj;
 
             Assert.AreEqual(2, c1.R);
-            Assert.AreEqual(3, c1.S);
-            Assert.AreEqual(-1, c1.T);
-            Assert.AreEqual(6, c1.U);
+            Assert.AreEqual(3, c1.I);
+            Assert.AreEqual(-1, c1.J);
+            Assert.AreEqual(6, c1.K);
             Assert.AreEqual(4, c1.W);
             Assert.AreEqual(7, c1.X);
             Assert.AreEqual(-2, c1.Y);
             Assert.AreEqual(8, c1.Z);
 
             Assert.AreEqual(4, c2.R);
-            Assert.AreEqual(5, c2.S);
-            Assert.AreEqual(7, c2.T);
-            Assert.AreEqual(-2, c2.U);
+            Assert.AreEqual(5, c2.I);
+            Assert.AreEqual(7, c2.J);
+            Assert.AreEqual(-2, c2.K);
             Assert.AreEqual(3, c2.W);
             Assert.AreEqual(-4, c2.X);
             Assert.AreEqual(1, c2.Y);
             Assert.AreEqual(-3, c2.Z);
 
             Assert.AreEqual(4, c4.R);
-            Assert.AreEqual(-5, c4.S);
-            Assert.AreEqual(-7, c4.T);
-            Assert.AreEqual(2, c4.U);
+            Assert.AreEqual(-5, c4.I);
+            Assert.AreEqual(-7, c4.J);
+            Assert.AreEqual(2, c4.K);
             Assert.AreEqual(-3, c4.W);
             Assert.AreEqual(4, c4.X);
             Assert.AreEqual(-1, c4.Y);
@@ -46,9 +46,9 @@ namespace DoubleDoubleComplexTests {
             Assert.AreEqual(0d, Octonion.Zero.Magnitude);
 
             Assert.AreEqual(6, c3.R);
-            Assert.AreEqual(0, c3.S);
-            Assert.AreEqual(0, c3.T);
-            Assert.AreEqual(0, c3.U);
+            Assert.AreEqual(0, c3.I);
+            Assert.AreEqual(0, c3.J);
+            Assert.AreEqual(0, c3.K);
             Assert.AreEqual(0, c3.W);
             Assert.AreEqual(0, c3.X);
             Assert.AreEqual(0, c3.Y);
@@ -121,36 +121,36 @@ namespace DoubleDoubleComplexTests {
             Octonion c23 = (ddouble.Rcp(3), ddouble.Rcp(6), -1 - ddouble.Rcp(3), 1 + ddouble.Rcp(6), 0, 0, 0, 0);
             Octonion c24 = (ddouble.Rcp(3), ddouble.Rcp(6), 1 + ddouble.Rcp(3), -1 - ddouble.Rcp(6), 0, 0, 0, 0);
 
-            Assert.AreEqual("2+3s+1u", c1.ToString());
-            Assert.AreEqual("2+1t", c2.ToString());
-            Assert.AreEqual("2-3s", c3.ToString());
+            Assert.AreEqual("2+3i+1k", c1.ToString());
+            Assert.AreEqual("2+1j", c2.ToString());
+            Assert.AreEqual("2-3i", c3.ToString());
 
-            Assert.AreEqual("3s+1t+1u", c4.ToString());
+            Assert.AreEqual("3i+1j+1k", c4.ToString());
             Assert.AreEqual("0", c5.ToString());
-            Assert.AreEqual("-3s+1u", c6.ToString());
+            Assert.AreEqual("-3i+1k", c6.ToString());
 
-            Assert.AreEqual("-2+3s-1u", c7.ToString());
+            Assert.AreEqual("-2+3i-1k", c7.ToString());
             Assert.AreEqual("-2", c8.ToString());
-            Assert.AreEqual("-2-3s-1t-1u", c9.ToString());
+            Assert.AreEqual("-2-3i-1j-1k", c9.ToString());
 
             Assert.AreEqual("0", Octonion.Zero.ToString());
             Assert.AreEqual(double.NaN.ToString(), Octonion.NaN.ToString());
 
-            Assert.AreEqual("3.333e-1+1.667e-1s+1.333e0t+1.167e0u", $"{c10:e3}");
-            Assert.AreEqual("1.667e-1s+1.333e0t+1.167e0u", $"{c11:e3}");
-            Assert.AreEqual("1.333e0t+1.167e0u", $"{c12:e3}");
-            Assert.AreEqual("1.167e0u", $"{c13:e3}");
+            Assert.AreEqual("3.333e-1+1.667e-1i+1.333e0j+1.167e0k", $"{c10:e3}");
+            Assert.AreEqual("1.667e-1i+1.333e0j+1.167e0k", $"{c11:e3}");
+            Assert.AreEqual("1.333e0j+1.167e0k", $"{c12:e3}");
+            Assert.AreEqual("1.167e0k", $"{c13:e3}");
             Assert.AreEqual("0", $"{c14:e3}");
-            Assert.AreEqual("3.333e-1+1.333e0t+1.167e0u", $"{c15:e3}");
-            Assert.AreEqual("3.333e-1+1.167e0u", $"{c16:e3}");
+            Assert.AreEqual("3.333e-1+1.333e0j+1.167e0k", $"{c15:e3}");
+            Assert.AreEqual("3.333e-1+1.167e0k", $"{c16:e3}");
             Assert.AreEqual("3.333e-1", $"{c17:e3}");
-            Assert.AreEqual("3.333e-1+1.667e-1s+1.167e0u", $"{c18:e3}");
-            Assert.AreEqual("3.333e-1+1.667e-1s", $"{c19:e3}");
-            Assert.AreEqual("3.333e-1+1.667e-1s+1.333e0t", $"{c20:e3}");
-            Assert.AreEqual("-3.333e-1+1.667e-1s+1.333e0t+1.167e0u", $"{c21:e3}");
-            Assert.AreEqual("3.333e-1-1.667e-1s+1.333e0t+1.167e0u", $"{c22:e3}");
-            Assert.AreEqual("3.333e-1+1.667e-1s-1.333e0t+1.167e0u", $"{c23:e3}");
-            Assert.AreEqual("3.333e-1+1.667e-1s+1.333e0t-1.167e0u", $"{c24:e3}");
+            Assert.AreEqual("3.333e-1+1.667e-1i+1.167e0k", $"{c18:e3}");
+            Assert.AreEqual("3.333e-1+1.667e-1i", $"{c19:e3}");
+            Assert.AreEqual("3.333e-1+1.667e-1i+1.333e0j", $"{c20:e3}");
+            Assert.AreEqual("-3.333e-1+1.667e-1i+1.333e0j+1.167e0k", $"{c21:e3}");
+            Assert.AreEqual("3.333e-1-1.667e-1i+1.333e0j+1.167e0k", $"{c22:e3}");
+            Assert.AreEqual("3.333e-1+1.667e-1i-1.333e0j+1.167e0k", $"{c23:e3}");
+            Assert.AreEqual("3.333e-1+1.667e-1i+1.333e0j-1.167e0k", $"{c24:e3}");
 
             Octonion d1 = (0, 0, 0, 0, 2, 3, 0, 1);
             Octonion d2 = (0, 0, 0, 0, 2, 0, 1, 0);
