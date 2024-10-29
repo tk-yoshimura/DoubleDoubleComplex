@@ -214,7 +214,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Octonion operator /(Octonion a, Complex b) {
-            if (IsFinite(b) && !IsZero(b)) {
+            if (Complex.IsFinite(b) && !Complex.IsZero(b)) {
                 int exp = ILogB(b);
                 (a, b) = (Ldexp(a, -exp), Complex.Ldexp(b, -exp));
             }
@@ -254,7 +254,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Octonion operator /(Octonion a, Quaternion b) {
-            if (IsFinite(b) && !IsZero(b)) {
+            if (Quaternion.IsFinite(b) && !Quaternion.IsZero(b)) {
                 int exp = ILogB(b);
                 (a, b) = (Ldexp(a, -exp), Quaternion.Ldexp(b, -exp));
             }
