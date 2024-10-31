@@ -37,9 +37,9 @@
 | Complex.Asin(z) | Accuracy deteriorates near z=-1,1. |
 | Complex.Acos(z) | Accuracy deteriorates near z=-1,1. |
 | Complex.Atan(z) | |
-| Complex.Arsinh(z) | |
-| Complex.Arcosh(z) | |
-| Complex.Artanh(z) | Accuracy deteriorates near z=-1,1. |
+| Complex.Asinh(z) | |
+| Complex.Acosh(z) | |
+| Complex.Atanh(z) | Accuracy deteriorates near z=-1,1. |
 | Complex.Gamma(z) | Accuracy deteriorates near non-positive intergers. <br/> If z is Natual number lass than 35, an exact integer value is returned. |
 | Complex.LogGamma(z) | |
 | Complex.Digamma(z) | Near the positive root, polynomial interpolation is used. |
