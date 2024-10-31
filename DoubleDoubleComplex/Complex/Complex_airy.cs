@@ -36,7 +36,7 @@ namespace DoubleDoubleComplex {
                 Complex v = Sqrt(z), w = Ldexp(v * v * v * Rcp3, 1);
 
                 if (ddouble.IsPositive(z.R)) {
-                    Complex y = v * ddouble.RcpPI * RcpSqrt3 * BesselK(Rcp3, w);
+                    Complex y = v * ddouble.RcpPi * RcpSqrt3 * BesselK(Rcp3, w);
 
                     return y;
                 }
@@ -100,7 +100,7 @@ namespace DoubleDoubleComplex {
             public static ddouble Cbrt3 { get; } = ddouble.Cbrt(3);
             public static ddouble NearZero { get; } = double.ScaleB(1, -4);
 
-            public static ddouble AiNearZeroC = Cbrt3 * Cbrt3 * ddouble.PI, BiNearZeroC = ddouble.Sqrt(Cbrt3) * ddouble.PI;
+            public static ddouble AiNearZeroC = Cbrt3 * Cbrt3 * ddouble.Pi, BiNearZeroC = ddouble.Sqrt(Cbrt3) * ddouble.Pi;
 
             public static ddouble Gamma1d3 = (+1, 1, 0xAB73BA9CA4178B3BuL, 0xB234FA4B356011B6uL);
             public static ddouble Gamma2d3 = (+1, 0, 0xAD53BC9461B3C655uL, 0x97A7F5B815934C85uL);

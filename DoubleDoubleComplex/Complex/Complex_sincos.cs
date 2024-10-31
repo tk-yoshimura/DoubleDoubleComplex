@@ -11,12 +11,12 @@ namespace DoubleDoubleComplex {
             );
         }
 
-        public static Complex SinPI(Complex z) {
-            ddouble i_pi = z.I * ddouble.PI;
+        public static Complex SinPi(Complex z) {
+            ddouble i_pi = z.I * ddouble.Pi;
 
             return new Complex(
-                ddouble.SinPI(z.R) * ddouble.Cosh(i_pi),
-                ddouble.CosPI(z.R) * ddouble.Sinh(i_pi)
+                ddouble.SinPi(z.R) * ddouble.Cosh(i_pi),
+                ddouble.CosPi(z.R) * ddouble.Sinh(i_pi)
             );
         }
 
@@ -27,12 +27,12 @@ namespace DoubleDoubleComplex {
             );
         }
 
-        public static Complex CosPI(Complex z) {
-            ddouble i_pi = z.I * ddouble.PI;
+        public static Complex CosPi(Complex z) {
+            ddouble i_pi = z.I * ddouble.Pi;
 
             return new Complex(
-                ddouble.CosPI(z.R) * ddouble.Cosh(i_pi),
-                -ddouble.SinPI(z.R) * ddouble.Sinh(i_pi)
+                ddouble.CosPi(z.R) * ddouble.Cosh(i_pi),
+                -ddouble.SinPi(z.R) * ddouble.Sinh(i_pi)
             );
         }
 
@@ -53,8 +53,8 @@ namespace DoubleDoubleComplex {
                 return c;
             }
             else {
-                ddouble x = z.R * ddouble.RcpPI - 0.5d;
-                x = (x - ddouble.Round(x)) * ddouble.PI;
+                ddouble x = z.R * ddouble.RcpPi - 0.5d;
+                x = (x - ddouble.Round(x)) * ddouble.Pi;
 
                 Complex w = (x, z.I), w2 = w * w;
 
@@ -69,17 +69,17 @@ namespace DoubleDoubleComplex {
             }
         }
 
-        public static Complex TanPI(Complex z) {
-            ddouble u = ddouble.Exp(-ddouble.Abs(2d * z.I * ddouble.PI));
+        public static Complex TanPi(Complex z) {
+            ddouble u = ddouble.Exp(-ddouble.Abs(2d * z.I * ddouble.Pi));
 
             if (u == 1.0) {
-                return ddouble.TanPI(z.R);
+                return ddouble.TanPi(z.R);
             }
 
-            ddouble n = 1d + u * (2d * ddouble.CosPI(2d * z.R) + u);
+            ddouble n = 1d + u * (2d * ddouble.CosPi(2d * z.R) + u);
 
             if (ddouble.Abs(n) > 0.00390625) {
-                ddouble r = 2d * u * ddouble.SinPI(2d * z.R) / n;
+                ddouble r = 2d * u * ddouble.SinPi(2d * z.R) / n;
                 ddouble i = (u + 1d) * (u - 1d) / n;
                 Complex c = (z.I > 0d) ? (r, -i) : (r, i);
 
@@ -87,9 +87,9 @@ namespace DoubleDoubleComplex {
             }
             else {
                 ddouble x = z.R - 0.5d;
-                x = (x - ddouble.Round(x)) * ddouble.PI;
+                x = (x - ddouble.Round(x)) * ddouble.Pi;
 
-                Complex w = (x, z.I * ddouble.PI), w2 = w * w;
+                Complex w = (x, z.I * ddouble.Pi), w2 = w * w;
 
                 Complex c = -1856156927625d /
                     (w * (1856156927625d + w2 * (618718975875d

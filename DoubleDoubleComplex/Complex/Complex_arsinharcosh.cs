@@ -4,11 +4,11 @@ namespace DoubleDoubleComplex {
 
     public partial class Complex {
 
-        public static Complex Arsinh(Complex z) {
+        public static Complex Asinh(Complex z) {
             return MulI(Asin(MulMinusI(z)));
         }
 
-        public static Complex Arcosh(Complex z) {
+        public static Complex Acosh(Complex z) {
             Complex y = MulI(Acos(z));
 
             if (ddouble.IsNegative(y.R)) {
@@ -18,7 +18,7 @@ namespace DoubleDoubleComplex {
             return y;
         }
 
-        public static Complex Artanh(Complex z) {
+        public static Complex Atanh(Complex z) {
             return MulMinusI(Atan(MulI(z)));
         }
     }

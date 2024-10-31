@@ -14,7 +14,7 @@ namespace DoubleDoubleComplex {
             }
 
             if (z.R < ddouble.Point5) {
-                Complex y = ddouble.PI / (SinPI(z) * Gamma(One - z));
+                Complex y = ddouble.Pi / (SinPi(z) * Gamma(One - z));
 
                 return y;
             }
@@ -33,7 +33,7 @@ namespace DoubleDoubleComplex {
 
                 Complex p = (z - 0.5d) * Log2(z);
 
-                Complex y = Consts.Gamma.SqrtPI2 * Pow2(p + (x - z) * ddouble.LbE);
+                Complex y = Consts.Gamma.SqrtPi2 * Pow2(p + (x - z) * ddouble.LbE);
 
                 return y;
             }
@@ -74,11 +74,11 @@ namespace DoubleDoubleComplex {
             }
 
             static Complex pv(Complex z) {
-                return (z.R, z.I % ddouble.Ldexp(ddouble.PI, 1));
+                return (z.R, z.I % ddouble.Ldexp(ddouble.Pi, 1));
             };
 
             if (z.R < ddouble.Point5) {
-                Complex y = Log(ddouble.PI / SinPI(z)) - LogGamma(One - z);
+                Complex y = Log(ddouble.Pi / SinPi(z)) - LogGamma(One - z);
 
                 return pv(y);
             }
@@ -131,8 +131,8 @@ namespace DoubleDoubleComplex {
         internal static partial class Consts {
             public static class Gamma {
                 public const double StirlingConvergenceNorm = 230.5d;
-                public static readonly ddouble SqrtPI2 = (+1, 1, 0xA06C98FFB1382CB2uL, 0xBE520FD739167717uL);
-                public static readonly ddouble StirlingLogBias = ddouble.Log(SqrtPI2);
+                public static readonly ddouble SqrtPi2 = (+1, 1, 0xA06C98FFB1382CB2uL, 0xBE520FD739167717uL);
+                public static readonly ddouble StirlingLogBias = ddouble.Log(SqrtPi2);
 
                 public static readonly ReadOnlyCollection<ddouble> StirlingTable = new([
                     (+1, -4, 0xAAAAAAAAAAAAAAAAuL, 0xAAAAAAAAAAAAAAAAuL),

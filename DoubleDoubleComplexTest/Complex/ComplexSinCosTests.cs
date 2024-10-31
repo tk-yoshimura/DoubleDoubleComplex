@@ -20,10 +20,10 @@ namespace DoubleDoubleComplexTests {
         }
 
         [TestMethod()]
-        public void SinPITest() {
+        public void SinPiTest() {
             foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
-                Complex c = Complex.SinPI(z);
-                NComplex nc = NComplex.Sin((NComplex)(z * ddouble.PI));
+                Complex c = Complex.SinPi(z);
+                NComplex nc = NComplex.Sin((NComplex)(z * ddouble.Pi));
 
                 ComplexAssert.AreEqual(nc, c, 1e-2);
             }
@@ -40,10 +40,10 @@ namespace DoubleDoubleComplexTests {
         }
 
         [TestMethod()]
-        public void CosPITest() {
+        public void CosPiTest() {
             foreach (Complex z in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
-                Complex c = Complex.CosPI(z);
-                NComplex nc = NComplex.Cos((NComplex)(z * ddouble.PI));
+                Complex c = Complex.CosPi(z);
+                NComplex nc = NComplex.Cos((NComplex)(z * ddouble.Pi));
 
                 ComplexAssert.AreEqual(nc, c, 1e-2);
             }
@@ -67,8 +67,8 @@ namespace DoubleDoubleComplexTests {
                 foreach (ddouble x in new[] { -4.5, -3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5, 4.5 }) {
                     foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
 
-                        Complex c = Complex.Tan((z + x) * ddouble.PI);
-                        NComplex nc = -1 / NComplex.Tan((NComplex)(z * ddouble.PI));
+                        Complex c = Complex.Tan((z + x) * ddouble.Pi);
+                        NComplex nc = -1 / NComplex.Tan((NComplex)(z * ddouble.Pi));
 
                         Console.WriteLine(z);
                         Console.WriteLine(c);
@@ -82,9 +82,9 @@ namespace DoubleDoubleComplexTests {
 
             for (ddouble eps = 1d / 4; eps >= 1d / 262144; eps /= 2) {
                 foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
-                    Complex expected = -Complex.CosPI(z) / Complex.SinPI(z);
+                    Complex expected = -Complex.CosPi(z) / Complex.SinPi(z);
 
-                    Complex actual = Complex.Tan((z + 0.5) * ddouble.PI);
+                    Complex actual = Complex.Tan((z + 0.5) * ddouble.Pi);
 
                     Console.WriteLine(z);
                     Console.WriteLine(expected);
@@ -97,12 +97,12 @@ namespace DoubleDoubleComplexTests {
         }
 
         [TestMethod()]
-        public void TanPITest() {
+        public void TanPiTest() {
             foreach (Complex z in new[] { (0, 0), (0, 0.25), (1, 2), (2, 5), (6, -3), (7, -4), (-6, -3), (-7, -4),
                 (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1),
                 (-2, 23), (-2, -23), (-2, 24), (-2, -24), (-2, 1024), (-2, -1024) }) {
-                Complex c = Complex.TanPI(z);
-                NComplex nc = NComplex.Tan((NComplex)(z * ddouble.PI));
+                Complex c = Complex.TanPi(z);
+                NComplex nc = NComplex.Tan((NComplex)(z * ddouble.Pi));
 
                 ComplexAssert.AreEqual(nc, c, 1e-7);
             }
@@ -110,13 +110,13 @@ namespace DoubleDoubleComplexTests {
 
 
         [TestMethod()]
-        public void TanPINearPoleTest() {
+        public void TanPiNearPoleTest() {
             for (ddouble eps = "0.1"; eps >= "1e-8"; eps /= 10) {
                 foreach (ddouble x in new[] { -4.5, -3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5, 4.5 }) {
                     foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
 
-                        Complex c = Complex.TanPI(z + x);
-                        NComplex nc = -1 / NComplex.Tan((NComplex)(z * ddouble.PI));
+                        Complex c = Complex.TanPi(z + x);
+                        NComplex nc = -1 / NComplex.Tan((NComplex)(z * ddouble.Pi));
 
                         Console.WriteLine(z);
                         Console.WriteLine(c);
@@ -130,9 +130,9 @@ namespace DoubleDoubleComplexTests {
 
             for (ddouble eps = 1d / 4; eps >= 1d / 262144; eps /= 2) {
                 foreach (Complex z in new[] { (eps, eps), (eps, 0), (eps, -eps), (0, eps), (0, -eps), (-eps, eps), (-eps, 0), (-eps, -eps) }) {
-                    Complex expected = -Complex.CosPI(z) / Complex.SinPI(z);
+                    Complex expected = -Complex.CosPi(z) / Complex.SinPi(z);
 
-                    Complex actual = Complex.TanPI(z + 0.5);
+                    Complex actual = Complex.TanPi(z + 0.5);
 
                     Console.WriteLine(z);
                     Console.WriteLine(expected);

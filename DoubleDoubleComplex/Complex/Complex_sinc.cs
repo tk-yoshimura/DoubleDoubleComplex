@@ -5,11 +5,11 @@ namespace DoubleDoubleComplex {
     public partial class Complex {
         public static Complex Sinc(Complex z, bool normalized = true) {
             if (ILogB(z) > -53) {
-                return normalized ? (SinPI(z) / (z * ddouble.PI)) : (Sin(z) / z);
+                return normalized ? (SinPi(z) / (z * ddouble.Pi)) : (Sin(z) / z);
             }
             else {
                 if (normalized) {
-                    z *= ddouble.PI;
+                    z *= ddouble.Pi;
                 }
 
                 Complex z2 = z * z;

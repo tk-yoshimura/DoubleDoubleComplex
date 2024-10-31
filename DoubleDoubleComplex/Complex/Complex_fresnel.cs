@@ -32,9 +32,9 @@ namespace DoubleDoubleComplex {
 
         internal static partial class Consts {
             public static class Fresnel {
-                public static readonly ddouble SqrtPID2 = (+1, -1, 0xE2DFC48DA77B553CuL, 0xE1D82906AEDC9C1FuL);
-                public static readonly Complex CPlus = new Complex(1, 1) * SqrtPID2;
-                public static readonly Complex CMinus = new Complex(1, -1) * SqrtPID2;
+                public static readonly ddouble SqrtPiD2 = (+1, -1, 0xE2DFC48DA77B553CuL, 0xE1D82906AEDC9C1FuL);
+                public static readonly Complex CPlus = new Complex(1, 1) * SqrtPiD2;
+                public static readonly Complex CMinus = new Complex(1, -1) * SqrtPiD2;
             }
         }
     }

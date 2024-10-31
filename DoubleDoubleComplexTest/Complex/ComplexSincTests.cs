@@ -32,7 +32,7 @@ namespace DoubleDoubleComplexTests {
         }
 
         [TestMethod()]
-        public void SincPITest() {
+        public void SincPiTest() {
             for (int exp = -25; exp >= -80; exp--) {
                 double x = double.ScaleB(1, exp);
 

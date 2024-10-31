@@ -28,9 +28,9 @@
 | Complex.Sin(z) | |
 | Complex.Cos(z) | |
 | Complex.Tan(z) | |
-| Complex.SinPI(z) | sin(&pi;z) |
-| Complex.CosPI(z) | cos(&pi;z) |
-| Complex.TanPI(z) | tan(&pi;z) |
+| Complex.SinPi(z) | sin(&pi;z) |
+| Complex.CosPi(z) | cos(&pi;z) |
+| Complex.TanPi(z) | tan(&pi;z) |
 | Complex.Sinh(z) | |
 | Complex.Cosh(z) | |
 | Complex.Tanh(z) | |

@@ -27,12 +27,12 @@ namespace DoubleDoubleComplex {
             if (ErfUtil.UseNeroZero(z)) {
                 Complex c = ErfUtil.ErfNearZero(w);
 
-                Complex y = c * z * (2 * ErfUtil.RcpSqrtPI);
+                Complex y = c * z * (2 * ErfUtil.RcpSqrtPi);
 
                 return y;
             }
             else {
-                Complex c = z * Exp(-w) * ErfUtil.RcpSqrtPI;
+                Complex c = z * Exp(-w) * ErfUtil.RcpSqrtPi;
 
                 Complex f = ErfUtil.ErfcxCFrac(z, w);
 
@@ -62,7 +62,7 @@ namespace DoubleDoubleComplex {
             }
             else {
                 Complex w = z * z;
-                Complex c = z * Exp(-w) * ErfUtil.RcpSqrtPI;
+                Complex c = z * Exp(-w) * ErfUtil.RcpSqrtPi;
 
                 Complex f = ErfUtil.ErfcxCFrac(z, w);
 
@@ -92,7 +92,7 @@ namespace DoubleDoubleComplex {
             else if (ddouble.IsPositive(z.R)) {
                 Complex f = ErfUtil.ErfcxCFrac(z, w);
 
-                Complex y = z * ErfUtil.RcpSqrtPI / f;
+                Complex y = z * ErfUtil.RcpSqrtPi / f;
 
                 return y;
             }
@@ -101,7 +101,7 @@ namespace DoubleDoubleComplex {
 
                 Complex f = ErfUtil.ErfcxCFrac(z_neg, Conjugate(w));
 
-                Complex erfcx = z_neg * ErfUtil.RcpSqrtPI / f;
+                Complex erfcx = z_neg * ErfUtil.RcpSqrtPi / f;
                 Complex erfc = erfcx * Exp((-w.R, w.I));
 
                 if (IsFinite(erfc)) {
@@ -119,7 +119,7 @@ namespace DoubleDoubleComplex {
 
 
         internal static class ErfUtil {
-            public static readonly ddouble RcpSqrtPI = 1d / ddouble.Sqrt(ddouble.PI);
+            public static readonly ddouble RcpSqrtPi = 1d / ddouble.Sqrt(ddouble.Pi);
 
             const int min_c_frac_iter = 8;
             static readonly int[,] c_frac_iter_table =

@@ -11,7 +11,7 @@ namespace DoubleDoubleComplex {
                     return -ddouble.Ei(-z.R);
                 }
                 else {
-                    return (-ddouble.Ei(-z.R), -ddouble.PI);
+                    return (-ddouble.Ei(-z.R), -ddouble.Pi);
                 }
             }
 
@@ -35,7 +35,7 @@ namespace DoubleDoubleComplex {
                 return ddouble.Ei(z.R);
             }
 
-            return -E1(-z) + (0d, ddouble.Sign(z.I) * ddouble.PI);
+            return -E1(-z) + (0d, ddouble.Sign(z.I) * ddouble.Pi);
         }
 
         public static Complex Ein(Complex z) {
@@ -78,10 +78,10 @@ namespace DoubleDoubleComplex {
 
         public static Complex Ci(Complex z) {
             if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
-                return ddouble.IsPositive(z.R) ? ddouble.Ci(z.R) : (ddouble.Ci(-z.R), ddouble.PI);
+                return ddouble.IsPositive(z.R) ? ddouble.Ci(z.R) : (ddouble.Ci(-z.R), ddouble.Pi);
             }
             if (!ddouble.IsFinite(z.I) || AlmostImag(z)) {
-                return (ddouble.Chi(ddouble.Abs(z.I)), ddouble.Sign(z.I) * ddouble.PI / 2d);
+                return (ddouble.Chi(ddouble.Abs(z.I)), ddouble.Sign(z.I) * ddouble.Pi / 2d);
             }
 
             if (z.Magnitude <= NearZeroThreshold) {
@@ -114,10 +114,10 @@ namespace DoubleDoubleComplex {
 
         public static Complex Chi(Complex z) {
             if (!ddouble.IsFinite(z.R) || AlmostReal(z)) {
-                return ddouble.IsPositive(z.R) ? ddouble.Chi(z.R) : (ddouble.Chi(-z.R), ddouble.PI);
+                return ddouble.IsPositive(z.R) ? ddouble.Chi(z.R) : (ddouble.Chi(-z.R), ddouble.Pi);
             }
             if (!ddouble.IsFinite(z.I) || AlmostImag(z)) {
-                return ddouble.IsPositive(z.I) ? (ddouble.Ci(z.I), ddouble.PI / 2d) : (ddouble.Ci(-z.I), ddouble.PI / -2d);
+                return ddouble.IsPositive(z.I) ? (ddouble.Ci(z.I), ddouble.Pi / 2d) : (ddouble.Ci(-z.I), ddouble.Pi / -2d);
             }
 
             if (z.Magnitude <= NearZeroThreshold) {

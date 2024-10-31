@@ -14,7 +14,7 @@ namespace DoubleDoubleComplex {
             }
 
             if (z.R < ddouble.Point5) {
-                Complex y = Digamma(One - z) - ddouble.PI / TanPI(z);
+                Complex y = Digamma(One - z) - ddouble.Pi / TanPi(z);
 
                 return y;
             }

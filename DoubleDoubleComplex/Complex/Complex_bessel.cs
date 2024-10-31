@@ -26,7 +26,7 @@ namespace DoubleDoubleComplex {
             }
 
             if (ddouble.IsNegative(z.R)) {
-                return (SinCosPICache.CosPI(nu), SinCosPICache.SinPI(nu)) * BesselJ(nu, (-z.R, z.I)).Conj;
+                return (SinCosPiCache.CosPi(nu), SinCosPiCache.SinPi(nu)) * BesselJ(nu, (-z.R, z.I)).Conj;
             }
 
             if (UseRecurrence(nu)) {
@@ -43,7 +43,7 @@ namespace DoubleDoubleComplex {
                 return MillerBackward.BesselJ(nu, z);
             }
             else {
-                return (SinCosPICache.CosPI(nu / 2d), SinCosPICache.SinPI(nu / 2d)) * MillerBackward.BesselI(nu, (z.I, z.R)).Conj;
+                return (SinCosPiCache.CosPi(nu / 2d), SinCosPiCache.SinPi(nu / 2d)) * MillerBackward.BesselI(nu, (z.I, z.R)).Conj;
             }
         }
 
@@ -63,8 +63,8 @@ namespace DoubleDoubleComplex {
             }
 
             if (ddouble.IsNegative(z.R)) {
-                return (SinCosPICache.CosPI(nu), -SinCosPICache.SinPI(nu)) * BesselY(nu, (-z.R, z.I)).Conj
-                        + (0d, 2d * SinCosPICache.CosPI(nu)) * BesselJ(nu, (-z.R, z.I)).Conj;
+                return (SinCosPiCache.CosPi(nu), -SinCosPiCache.SinPi(nu)) * BesselY(nu, (-z.R, z.I)).Conj
+                        + (0d, 2d * SinCosPiCache.CosPi(nu)) * BesselJ(nu, (-z.R, z.I)).Conj;
             }
 
             if (UseRecurrence(nu)) {
@@ -86,7 +86,7 @@ namespace DoubleDoubleComplex {
                 return MillerBackward.BesselY(nu, z);
             }
             {
-                Complex c = (SinCosPICache.CosPI(nu / 2d), SinCosPICache.SinPI(nu / 2d));
+                Complex c = (SinCosPiCache.CosPi(nu / 2d), SinCosPiCache.SinPi(nu / 2d));
 
                 Complex bi = (z.R <= PowerSeriesThreshold(nu, z.I))
                     ? PowerSeries.BesselI(nu, (z.I, z.R))
@@ -94,7 +94,7 @@ namespace DoubleDoubleComplex {
 
                 Complex bk = YoshidaPade.BesselK(nu, (z.I, z.R));
 
-                Complex y = MulI(c * bi.Conj) - 2d * ddouble.RcpPI * (c * bk).Conj;
+                Complex y = MulI(c * bi.Conj) - 2d * ddouble.RcpPi * (c * bk).Conj;
 
                 return y;
             }
@@ -116,7 +116,7 @@ namespace DoubleDoubleComplex {
             }
 
             if (ddouble.IsNegative(z.R)) {
-                return (SinCosPICache.CosPI(nu), SinCosPICache.SinPI(nu)) * BesselI(nu, (-z.R, z.I)).Conj;
+                return (SinCosPiCache.CosPi(nu), SinCosPiCache.SinPi(nu)) * BesselI(nu, (-z.R, z.I)).Conj;
             }
 
             if (UseRecurrence(nu)) {
@@ -152,8 +152,8 @@ namespace DoubleDoubleComplex {
             }
 
             if (ddouble.IsNegative(z.R)) {
-                return (SinCosPICache.CosPI(nu), -SinCosPICache.SinPI(nu)) * BesselK(nu, (-z.R, z.I)).Conj
-                        - (0d, ddouble.PI) * BesselI(nu, (-z.R, z.I)).Conj;
+                return (SinCosPiCache.CosPi(nu), -SinCosPiCache.SinPi(nu)) * BesselK(nu, (-z.R, z.I)).Conj
+                        - (0d, ddouble.Pi) * BesselI(nu, (-z.R, z.I)).Conj;
             }
 
             if (UseRecurrence(nu)) {
@@ -175,7 +175,7 @@ namespace DoubleDoubleComplex {
                 return YoshidaPade.BesselK(nu, z);
             }
             else {
-                Complex c = (SinCosPICache.CosPI(nu / 2d), -SinCosPICache.SinPI(nu / 2d));
+                Complex c = (SinCosPiCache.CosPi(nu / 2d), -SinCosPiCache.SinPi(nu / 2d));
 
                 Complex bi = (z.I <= PowerSeriesThreshold(nu, z.R))
                     ? PowerSeries.BesselI(nu, z)
@@ -187,7 +187,7 @@ namespace DoubleDoubleComplex {
                     ? PowerSeries.BesselY(nu, (z.I, z.R))
                     : MillerBackward.BesselY(nu, (z.I, z.R));
 
-                Complex y = c * (MulMinusI(c * bi) - by.Conj) * ddouble.PI / 2d;
+                Complex y = c * (MulMinusI(c * bi) - by.Conj) * ddouble.Pi / 2d;
 
                 return y;
             }
@@ -198,10 +198,10 @@ namespace DoubleDoubleComplex {
                 return BesselJ(nu, z) + MulI(BesselY(nu, z));
             }
             else {
-                Complex c = (-SinCosPICache.SinPI(nu / 2), -SinCosPICache.CosPI(nu / 2));
+                Complex c = (-SinCosPiCache.SinPi(nu / 2), -SinCosPiCache.CosPi(nu / 2));
                 Complex f = BesselK(nu, (z.I, z.R)).Conj;
 
-                Complex y = 2d * ddouble.RcpPI * c * f;
+                Complex y = 2d * ddouble.RcpPi * c * f;
 
                 return y;
             }
@@ -212,10 +212,10 @@ namespace DoubleDoubleComplex {
                 return BesselJ(nu, z) - MulI(BesselY(nu, z));
             }
             else {
-                Complex c = (-SinCosPICache.SinPI(nu / 2), SinCosPICache.CosPI(nu / 2));
+                Complex c = (-SinCosPiCache.SinPi(nu / 2), SinCosPiCache.CosPi(nu / 2));
                 Complex f = BesselK(nu, (-z.I, z.R));
 
-                Complex y = 2d * ddouble.RcpPI * c * f;
+                Complex y = 2d * ddouble.RcpPi * c * f;
 
                 return y;
             }
@@ -268,22 +268,22 @@ namespace DoubleDoubleComplex {
                 return ddouble.ILogB(nu - n) < EpsExponent;
             }
 
-            public static class SinCosPICache {
+            public static class SinCosPiCache {
                 private static readonly Dictionary<ddouble, ddouble> cospi_table = [];
                 private static readonly Dictionary<ddouble, ddouble> sinpi_table = [];
 
-                public static ddouble CosPI(ddouble theta) {
+                public static ddouble CosPi(ddouble theta) {
                     if (!cospi_table.TryGetValue(theta, out ddouble cospi)) {
-                        cospi = ddouble.CosPI(theta);
+                        cospi = ddouble.CosPi(theta);
                         cospi_table[theta] = cospi;
                     }
 
                     return cospi;
                 }
 
-                public static ddouble SinPI(ddouble theta) {
+                public static ddouble SinPi(ddouble theta) {
                     if (!sinpi_table.TryGetValue(theta, out ddouble sinpi)) {
-                        sinpi = ddouble.SinPI(theta);
+                        sinpi = ddouble.SinPi(theta);
                         sinpi_table[theta] = sinpi;
                     }
 
@@ -430,7 +430,7 @@ namespace DoubleDoubleComplex {
 
                     YCoefTable r = y_coef_table;
 
-                    ddouble cos = SinCosPICache.CosPI(nu), sin = SinCosPICache.SinPI(nu);
+                    ddouble cos = SinCosPiCache.CosPi(nu), sin = SinCosPiCache.SinPi(nu);
                     Complex p = IsZero(cos) ? 0d : Pow(z, Ldexp(nu, 1)) * cos;
                     Complex s = Ldexp(Pow(Ldexp(z, 1), nu), 2);
 
@@ -499,7 +499,7 @@ namespace DoubleDoubleComplex {
                         return NaN;
                     }
 
-                    Complex c = 0d, u = Ldexp(ddouble.RcpPI, 1);
+                    Complex c = 0d, u = Ldexp(ddouble.RcpPi, 1);
 
                     for (int k = 0; k <= terms; k++) {
                         Complex s = u * r[k], t = h - ddouble.HarmonicNumber(2 * k);
@@ -537,7 +537,7 @@ namespace DoubleDoubleComplex {
                         return NaN;
                     }
 
-                    Complex c = -2d / (z * ddouble.PI), u = z / Ldexp(ddouble.PI, 1);
+                    Complex c = -2d / (z * ddouble.Pi), u = z / Ldexp(ddouble.Pi, 1);
 
                     for (int k = 0; k <= terms; k++) {
                         Complex s = u * r[k], t = h - ddouble.HarmonicNumber(2 * k) - ddouble.HarmonicNumber(2 * k + 1);
@@ -604,7 +604,7 @@ namespace DoubleDoubleComplex {
                         u *= z4;
                     }
 
-                    Complex y = c * ddouble.RcpPI * Pow(Ldexp(z, -1), n);
+                    Complex y = c * ddouble.RcpPi * Pow(Ldexp(z, -1), n);
 
                     return y;
                 }
@@ -671,7 +671,7 @@ namespace DoubleDoubleComplex {
                         return NaN;
                     }
 
-                    Complex c = 0d, u = ddouble.PI / Ldexp(ddouble.SinPI(nu), 1);
+                    Complex c = 0d, u = ddouble.Pi / Ldexp(ddouble.SinPi(nu), 1);
 
                     for (int k = 0; k <= terms; k++) {
                         c = SeriesUtil.Add(c, u * r[k], tn * gn[k], -tp * gp[k], out bool convergence);
@@ -1129,7 +1129,7 @@ namespace DoubleDoubleComplex {
 
                     Complex cos = Cos(omega), sin = Sin(omega);
 
-                    Complex y = Sqrt(2d / (ddouble.PI * z)) * (cos * c_even - sin * c_odd);
+                    Complex y = Sqrt(2d / (ddouble.Pi * z)) * (cos * c_even - sin * c_odd);
 
                     return y;
                 }
@@ -1153,7 +1153,7 @@ namespace DoubleDoubleComplex {
 
                     Complex cos = Cos(omega), sin = Sin(omega);
 
-                    Complex y = Sqrt(2d / (ddouble.PI * z)) * (sin * c_even + cos * c_odd);
+                    Complex y = Sqrt(2d / (ddouble.Pi * z)) * (sin * c_even + cos * c_odd);
 
                     return y;
                 }
@@ -1169,9 +1169,9 @@ namespace DoubleDoubleComplex {
 
                     Complex ci = hankel.BesselICoef(z), ck = hankel.BesselKCoef(z);
 
-                    Complex y = Sqrt(1d / (2d * ddouble.PI * z)) * (
+                    Complex y = Sqrt(1d / (2d * ddouble.Pi * z)) * (
                         Exp(z) * ci -
-                        (SinCosPICache.SinPI(nu), -SinCosPICache.CosPI(nu)) * Exp(-z) * ck
+                        (SinCosPiCache.SinPi(nu), -SinCosPiCache.CosPi(nu)) * Exp(-z) * ck
                     );
 
                     if (!IsFinite(z) || IsZero(y)) {
@@ -1193,7 +1193,7 @@ namespace DoubleDoubleComplex {
 
                     Complex c = hankel.BesselKCoef(z);
 
-                    Complex y = Sqrt(ddouble.PI / (2d * z)) * Exp(-z) * c;
+                    Complex y = Sqrt(ddouble.Pi / (2d * z)) * Exp(-z) * c;
 
                     if (!IsFinite(z) || IsZero(y)) {
                         return NaN;
@@ -1222,7 +1222,7 @@ namespace DoubleDoubleComplex {
                     }
 
                     public Complex Omega(Complex z) {
-                        Complex omega = z - ddouble.Ldexp(2d * Nu + 1d, -2) * ddouble.PI;
+                        Complex omega = z - ddouble.Ldexp(2d * Nu + 1d, -2) * ddouble.Pi;
 
                         return omega;
                     }
@@ -1610,9 +1610,9 @@ namespace DoubleDoubleComplex {
                     lambda += f0 * phi[0];
                     lambda *= s;
 
-                    ddouble rcot = 1d / ddouble.TanPI(alpha), rgamma = ddouble.Gamma(1d + alpha), rsqgamma = rgamma * rgamma;
-                    Complex r = Ldexp(ddouble.RcpPI * sqs, 1);
-                    Complex p = sqs * rsqgamma * ddouble.RcpPI;
+                    ddouble rcot = 1d / ddouble.TanPi(alpha), rgamma = ddouble.Gamma(1d + alpha), rsqgamma = rgamma * rgamma;
+                    Complex r = Ldexp(ddouble.RcpPi * sqs, 1);
+                    Complex p = sqs * rsqgamma * ddouble.RcpPi;
 
                     Complex xi0 = -Ldexp(v, 1) * p;
 
@@ -1699,7 +1699,7 @@ namespace DoubleDoubleComplex {
 
                     lambda = Ldexp(lambda, 1) + f0;
 
-                    Complex y0 = Ldexp((se + f0 * (Log(Ldexp(z, -1)) + ddouble.EulerGamma)) / (ddouble.PI * lambda), 1);
+                    Complex y0 = Ldexp((se + f0 * (Log(Ldexp(z, -1)) + ddouble.EulerGamma)) / (ddouble.Pi * lambda), 1);
 
                     return y0;
                 }
@@ -1734,7 +1734,7 @@ namespace DoubleDoubleComplex {
 
                     lambda = Ldexp(lambda, 1) + f0;
 
-                    Complex y1 = Ldexp((sx - v * f0 + (Log(Ldexp(z, -1)) + ddouble.EulerGamma - 1d) * f1) / (lambda * ddouble.PI), 1);
+                    Complex y1 = Ldexp((sx - v * f0 + (Log(Ldexp(z, -1)) + ddouble.EulerGamma - 1d) * f1) / (lambda * ddouble.Pi), 1);
 
                     return y1;
                 }
@@ -1779,7 +1779,7 @@ namespace DoubleDoubleComplex {
                         (y1, y0) = (2 * k * v * y1 - y0, y1);
                     }
 
-                    Complex yn = Ldexp(y1 / (lambda * ddouble.PI), 1);
+                    Complex yn = Ldexp(y1 / (lambda * ddouble.Pi), 1);
 
                     return yn;
                 }
@@ -2165,7 +2165,7 @@ namespace DoubleDoubleComplex {
                         sd = sd * t + d;
                     }
 
-                    Complex y = Sqrt(Ldexp(t * ddouble.PI, -1)) * sc / sd;
+                    Complex y = Sqrt(Ldexp(t * ddouble.Pi, -1)) * sc / sd;
 
                     y *= Exp(-z);
 
@@ -2449,7 +2449,7 @@ namespace DoubleDoubleComplex {
                             return (near_n & 1) == 0 ? BesselJ(-near_n, z) : -BesselJ(-near_n, z);
                         }
 
-                        return (SinCosPICache.CosPI(nu / 2), SinCosPICache.SinPI(nu / 2)) * BesselI(nu, (z.I, z.R)).Conj;
+                        return (SinCosPiCache.CosPi(nu / 2), SinCosPiCache.SinPi(nu / 2)) * BesselI(nu, (z.I, z.R)).Conj;
                     }
                 }
 
@@ -2464,18 +2464,18 @@ namespace DoubleDoubleComplex {
 
                     ddouble nu_abs = ddouble.Abs(nu);
 
-                    Complex c = (SinCosPICache.CosPI(nu_abs / 2), SinCosPICache.SinPI(nu_abs / 2));
+                    Complex c = (SinCosPiCache.CosPi(nu_abs / 2), SinCosPiCache.SinPi(nu_abs / 2));
                     Complex bi = BesselI(nu_abs, (z.I, z.R));
                     Complex bk = BesselK(nu_abs, (z.I, z.R));
 
                     if (ddouble.IsPositive(nu)) {
-                        Complex y = MulI(c) * bi.Conj - 2 * ddouble.RcpPI * (c * bk).Conj;
+                        Complex y = MulI(c) * bi.Conj - 2 * ddouble.RcpPi * (c * bk).Conj;
 
                         return y;
                     }
                     else {
                         Complex y = MulI((c * bi).Conj)
-                            + 2 * ddouble.RcpPI * (MulI(c.Conj) * SinCosPICache.SinPI(nu_abs) - c) * bk.Conj;
+                            + 2 * ddouble.RcpPi * (MulI(c.Conj) * SinCosPiCache.SinPi(nu_abs) - c) * bk.Conj;
 
                         return y;
                     }
@@ -2542,7 +2542,7 @@ namespace DoubleDoubleComplex {
                     ) * (s_overone ? 1d : s);
 
                     if (ddouble.IsNegative(nu) && !ddouble.IsInteger(nu_abs)) {
-                        Complex bk = 2d * ddouble.RcpPI * SinCosPICache.SinPI(nu_abs) * Complex.BesselK(nu_abs, z);
+                        Complex bk = 2d * ddouble.RcpPi * SinCosPiCache.SinPi(nu_abs) * Complex.BesselK(nu_abs, z);
 
                         y += bk;
                     }
