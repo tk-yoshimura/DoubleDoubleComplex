@@ -13,7 +13,7 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            if (z.R < ddouble.Point5) {
+            if (z.R < 0.5d) {
                 Complex y = Digamma(1d - z) - ddouble.Pi / TanPi(z);
 
                 return y;

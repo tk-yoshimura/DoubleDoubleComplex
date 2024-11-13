@@ -14,7 +14,7 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            if (z.R < ddouble.Point5) {
+            if (z.R < 0.5d) {
                 Complex y = ddouble.Pi / (SinPi(z) * Gamma(1d - z));
 
                 return y;
@@ -85,7 +85,7 @@ namespace DoubleDoubleComplex {
                 return (z.R, z.I % ddouble.Ldexp(ddouble.Pi, 1));
             };
 
-            if (z.R < ddouble.Point5) {
+            if (z.R < 0.5d) {
                 Complex y = Log(ddouble.Pi / SinPi(z)) - LogGamma(1d - z);
 
                 return pv(y);

@@ -11,7 +11,7 @@ namespace DoubleDoubleComplex {
 
             ddouble qnorm = q.Magnitude;
 
-            ddouble phi = ddouble.Acos(q.R / qnorm) / 2;
+            ddouble phi = ddouble.Acos(q.R / qnorm) / 2d;
 
             Quaternion vec = VectorPart(q);
             Quaternion vnormal = vec / vec.Magnitude;
@@ -33,7 +33,7 @@ namespace DoubleDoubleComplex {
 
             ddouble qnorm = q.Magnitude;
 
-            ddouble phi = ddouble.Acos(q.R / qnorm) / 3;
+            ddouble phi = ddouble.Acos(q.R / qnorm) / 3d;
 
             Quaternion vec = VectorPart(q);
             Quaternion vnormal = vec / vec.Magnitude;
