@@ -26,6 +26,7 @@ namespace DoubleDoubleComplex {
         public override bool Equals(object obj) {
             return (obj is not null && obj is Quaternion q) && q == this;
         }
+
         public bool Equals(Quaternion other) {
             return this == other;
         }
