@@ -90,7 +90,7 @@ namespace DoubleDoubleComplex {
 
                 return pv(y);
             }
-            else if ((z - 1d).Norm <= Consts.LogGamma.NearRoot) { 
+            else if ((z - 1d).Norm <= Consts.LogGamma.NearRoot) {
                 Complex v = 1d - z;
 
                 ReadOnlyCollection<ddouble> table = Consts.LogGamma.Near2BackwardCoefTable;
@@ -106,7 +106,7 @@ namespace DoubleDoubleComplex {
 
                 return y;
             }
-            else if ((z - 2d).Norm <= Consts.LogGamma.NearRoot) { 
+            else if ((z - 2d).Norm <= Consts.LogGamma.NearRoot) {
                 Complex v = 2d - z;
 
                 ReadOnlyCollection<ddouble> table = Consts.LogGamma.Near2BackwardCoefTable;
@@ -189,7 +189,7 @@ namespace DoubleDoubleComplex {
 
             public static class LogGamma {
                 public const double NearRoot = 0.25d;
-                 public static readonly ReadOnlyCollection<ddouble> Near2BackwardCoefTable;
+                public static readonly ReadOnlyCollection<ddouble> Near2BackwardCoefTable;
 
                 static LogGamma() {
                     List<ddouble> near2_coef = [ddouble.EulerGamma - 1d];
