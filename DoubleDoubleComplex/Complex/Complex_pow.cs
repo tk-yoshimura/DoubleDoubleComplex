@@ -28,10 +28,10 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Pow2(Complex z) {
-            ddouble phi = z.I * ddouble.Ln2;
+            ddouble phi = z.I * Consts.Pow.Ln2RcpPi;
             ddouble s = ddouble.Pow2(z.R);
 
-            return new Complex(ddouble.Cos(phi) * s, ddouble.Sin(phi) * s);
+            return new Complex(ddouble.CosPi(phi) * s, ddouble.SinPi(phi) * s);
         }
 
         public static Complex Pow(ddouble x, Complex z) {
@@ -39,6 +39,12 @@ namespace DoubleDoubleComplex {
             ddouble s = ddouble.Pow(x, z.R);
 
             return new Complex(ddouble.Cos(phi) * s, ddouble.Sin(phi) * s);
+        }
+
+        internal static partial class Consts {
+            public static class Pow {
+                public static readonly ddouble Ln2RcpPi = (+1, -3, 0xE1EE4C7BF4B4DDD9uL, 0x6C10B05CABFDE7BBuL);
+            }
         }
     }
 }

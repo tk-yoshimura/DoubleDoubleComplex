@@ -1,4 +1,5 @@
 ﻿using DoubleDouble;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace DoubleDoubleComplex {
@@ -18,30 +19,22 @@ namespace DoubleDoubleComplex {
 
                 return y;
             }
+            else {
+                static Complex stirling(Complex z) {
+                    Complex x = Zero, u = One;
+                    Complex v = One / z, w = v * v;
 
-            static Complex stirling(Complex z) {
-                Complex x = Zero, u = One;
-                Complex v = One / z, w = v * v;
+                    foreach (Complex t in Consts.Gamma.StirlingTable) {
+                        Complex c = u * t;
+                        x += c;
+                        u *= w;
+                    }
 
-                foreach (Complex t in Consts.Gamma.StirlingTable) {
-                    Complex c = u * t;
-                    x += c;
-                    u *= w;
+                    x *= v;
+
+                    return x;
                 }
 
-                x *= v;
-
-                Complex p = (z - 0.5d) * Log2(z);
-
-                Complex y = Consts.Gamma.SqrtPi2 * Pow2(p + (x - z) * ddouble.LbE);
-
-                return y;
-            }
-
-            if (z.Norm >= Consts.Gamma.StirlingConvergenceNorm) {
-                return stirling(z);
-            }
-            else {
                 int rn = (int)double.Floor((double)z.R);
                 ddouble rf = z.R - rn;
 
@@ -49,18 +42,33 @@ namespace DoubleDoubleComplex {
                 int rk = (int)double.Ceiling(zrd);
 
                 if (double.IsNaN(zrd) || rn >= rk) {
-                    return stirling(z);
+                    Complex x = stirling(z);
+                    Complex p = (z - 0.5d) * Log2(z);
+                    Complex y = Consts.Gamma.SqrtPi2 * Pow2(p + (x - z) * ddouble.LbE);
+
+                    return y;
                 }
+                else {
+                    Complex u = (rf + rk, z.I);
+                    Complex x = stirling(u);
+                    Complex p = (u - 0.5d) * Log2(u);
+                    Complex b = (x - u) * ddouble.LbE;
+                    Complex m = z;
 
-                Complex c = stirling((rf + rk, z.I));
-                Complex m = z;
-                for (int k = rn + 1; k < rk; k++) {
-                    m *= (rf + k, z.I);
+                    for (int k = rn + 1; k < rk; k++) {
+                        m *= (rf + k, z.I);
+                    }
+
+                    int prn = (int)ddouble.Floor(p.R), brn = (int)ddouble.Floor(b.R);
+
+                    p = (p.R - prn, p.I);
+                    b = (b.R - brn, b.I);
+                    Complex c = Consts.Gamma.SqrtPi2 * Pow2(p + b);
+
+                    Complex y = Ldexp(c / m, prn + brn);
+
+                    return y;
                 }
-
-                Complex y = c / m;
-
-                return y;
             }
         }
 
@@ -82,30 +90,56 @@ namespace DoubleDoubleComplex {
 
                 return pv(y);
             }
+            else if ((z - 1d).Norm <= Consts.LogGamma.NearRoot) { 
+                Complex v = 1d - z;
 
-            static Complex stirling(Complex z) {
-                Complex x = Zero, u = One;
-                Complex v = One / z, w = v * v;
+                ReadOnlyCollection<ddouble> table = Consts.LogGamma.Near2BackwardCoefTable;
 
-                foreach (Complex t in Consts.Gamma.StirlingTable) {
-                    Complex c = u * t;
-                    x += c;
-                    u *= w;
+                Complex s = table[0];
+                for (int i = 1; i < table.Count; i++) {
+                    s = s * v + table[i];
                 }
 
-                x *= v;
+                s *= v;
 
-                Complex r = Consts.Gamma.StirlingLogBias - z + (z - ddouble.Point5) * Log(z);
-
-                Complex y = r + x;
+                Complex y = s - Log1p(-v);
 
                 return y;
             }
+            else if ((z - 2d).Norm <= Consts.LogGamma.NearRoot) { 
+                Complex v = 2d - z;
 
-            if (z.Norm >= Consts.Gamma.StirlingConvergenceNorm) {
-                return pv(stirling(z));
+                ReadOnlyCollection<ddouble> table = Consts.LogGamma.Near2BackwardCoefTable;
+
+                Complex s = table[0];
+                for (int i = 1; i < table.Count; i++) {
+                    s = s * v + table[i];
+                }
+
+                Complex y = s * v;
+
+                return y;
             }
             else {
+                static Complex stirling(Complex z) {
+                    Complex x = Zero, u = One;
+                    Complex v = One / z, w = v * v;
+
+                    foreach (Complex t in Consts.Gamma.StirlingTable) {
+                        Complex c = u * t;
+                        x += c;
+                        u *= w;
+                    }
+
+                    x *= v;
+
+                    Complex r = Consts.Gamma.StirlingLogBias - z + (z - ddouble.Point5) * Log(z);
+
+                    Complex y = r + x;
+
+                    return y;
+                }
+
                 int rn = (int)double.Floor((double)z.R);
                 ddouble rf = z.R - rn;
 
@@ -151,6 +185,29 @@ namespace DoubleDoubleComplex {
                     (-1, 15, 0x8D0CC570E255BF59uL, 0xFF6EEC24B48FF1B3uL),
                     (+1, 19, 0xA8D1044D3708D1C2uL, 0x19EE4FDC4469CCAEuL),
                 ]);
+            }
+
+            public static class LogGamma {
+                public const double NearRoot = 0.25d;
+                 public static readonly ReadOnlyCollection<ddouble> Near2BackwardCoefTable;
+
+                static LogGamma() {
+                    List<ddouble> near2_coef = [ddouble.EulerGamma - 1d];
+
+                    for (int i = 2; i < ddouble.TaylorSequence.Count; i++) {
+                        ddouble c = ddouble.HurwitzZeta(i, 2d) / i;
+
+                        if (ILogB(Ldexp(c, -i)) < -105) {
+                            break;
+                        }
+
+                        near2_coef.Add(c);
+                    }
+
+                    near2_coef.Reverse();
+
+                    Near2BackwardCoefTable = new(near2_coef.ToArray());
+                }
             }
         }
     }
