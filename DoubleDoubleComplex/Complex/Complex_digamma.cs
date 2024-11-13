@@ -29,7 +29,7 @@ namespace DoubleDoubleComplex {
                         u *= w;
                     }
 
-                    x += v / 2d;
+                    x += Ldexp(v, -1);
 
                     Complex y = Log(z) - x;
 

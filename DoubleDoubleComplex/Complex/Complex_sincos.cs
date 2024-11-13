@@ -37,18 +37,18 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Tan(Complex z) {
-            ddouble u = ddouble.Exp(-ddouble.Abs(2d * z.I));
+            ddouble u = ddouble.Exp(-ddouble.Abs(ddouble.Ldexp(z.I, 1)));
 
             if (u == 1.0) {
                 return ddouble.Tan(z.R);
             }
 
-            ddouble n = 1d + u * (2d * ddouble.Cos(2d * z.R) + u);
+            ddouble n = 1d + u * (ddouble.Ldexp(ddouble.Cos(ddouble.Ldexp(z.R, 1)), 1) + u);
 
             if (ddouble.Abs(n) > 0.00390625) {
-                ddouble r = 2d * u * ddouble.Sin(2d * z.R) / n;
+                ddouble r = ddouble.Ldexp(u * ddouble.Sin(ddouble.Ldexp(z.R, 1)) / n, 1);
                 ddouble i = (u + 1d) * (u - 1d) / n;
-                Complex c = (z.I > 0d) ? (r, -i) : (r, i);
+                Complex c = ddouble.IsPositive(z.I) ? (r, -i) : (r, i);
 
                 return c;
             }
@@ -70,18 +70,18 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex TanPi(Complex z) {
-            ddouble u = ddouble.Exp(-ddouble.Abs(2d * z.I * ddouble.Pi));
+            ddouble u = ddouble.Exp(-ddouble.Abs(ddouble.Ldexp(z.I * ddouble.Pi, 1)));
 
             if (u == 1.0) {
                 return ddouble.TanPi(z.R);
             }
 
-            ddouble n = 1d + u * (2d * ddouble.CosPi(2d * z.R) + u);
+            ddouble n = 1d + u * (ddouble.Ldexp(ddouble.CosPi(ddouble.Ldexp(z.R, 1)), 1) + u);
 
             if (ddouble.Abs(n) > 0.00390625) {
-                ddouble r = 2d * u * ddouble.SinPi(2d * z.R) / n;
+                ddouble r = ddouble.Ldexp(u * ddouble.SinPi(ddouble.Ldexp(z.R, 1)) / n, 1);
                 ddouble i = (u + 1d) * (u - 1d) / n;
-                Complex c = (z.I > 0d) ? (r, -i) : (r, i);
+                Complex c = ddouble.IsPositive(z.I) ? (r, -i) : (r, i);
 
                 return c;
             }

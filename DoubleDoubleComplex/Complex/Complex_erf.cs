@@ -180,9 +180,9 @@ namespace DoubleDoubleComplex {
 
                 for (int k = 4 * n - 3; k >= 1; k -= 4) {
                     Complex c0 = (k + 2) * f;
-                    Complex c1 = w * ((k + 3) + f * 2d);
+                    Complex c1 = w * ((k + 3) + Ldexp(f, 1));
                     Complex d0 = (k + 1) * (k + 3) + (4 * k + 6) * f;
-                    Complex d1 = c1 * 2d;
+                    Complex d1 = Ldexp(c1, 1);
 
                     f = w + k * (c0 + c1) / (d0 + d1);
                 }

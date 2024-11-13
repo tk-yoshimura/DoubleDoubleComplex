@@ -70,7 +70,7 @@ namespace DoubleDoubleComplex {
                 return SiPowerSeries(z);
             }
             else {
-                Complex y = MulMinusI(Ein(MulI(z)) - Ein(MulMinusI(z))) / 2d;
+                Complex y = Ldexp(MulMinusI(Ein(MulI(z)) - Ein(MulMinusI(z))), -1);
 
                 return y;
             }
@@ -81,14 +81,14 @@ namespace DoubleDoubleComplex {
                 return ddouble.IsPositive(z.R) ? ddouble.Ci(z.R) : (ddouble.Ci(-z.R), ddouble.Pi);
             }
             if (!ddouble.IsFinite(z.I) || AlmostImag(z)) {
-                return (ddouble.Chi(ddouble.Abs(z.I)), ddouble.Sign(z.I) * ddouble.Pi / 2d);
+                return (ddouble.Chi(ddouble.Abs(z.I)), ddouble.Sign(z.I) * ddouble.Ldexp(ddouble.Pi, -1));
             }
 
             if (z.Magnitude <= NearZeroThreshold) {
                 return CiPowerSeries(z) + Log(z);
             }
             else {
-                Complex y = (Ein(MulI(z)) + Ein(MulMinusI(z))) / -2d + ddouble.EulerGamma + Log(z);
+                Complex y = ddouble.EulerGamma + Log(z) - Ldexp(Ein(MulI(z)) + Ein(MulMinusI(z)), -1);
 
                 return y;
             }
@@ -106,7 +106,7 @@ namespace DoubleDoubleComplex {
                 return MulMinusI(SiPowerSeries(MulI(z)));
             }
             else {
-                Complex y = (Ein(-z) - Ein(z)) / -2d;
+                Complex y = Ldexp(Ein(z) - Ein(-z), -1);
 
                 return y;
             }
@@ -117,14 +117,14 @@ namespace DoubleDoubleComplex {
                 return ddouble.IsPositive(z.R) ? ddouble.Chi(z.R) : (ddouble.Chi(-z.R), ddouble.Pi);
             }
             if (!ddouble.IsFinite(z.I) || AlmostImag(z)) {
-                return ddouble.IsPositive(z.I) ? (ddouble.Ci(z.I), ddouble.Pi / 2d) : (ddouble.Ci(-z.I), ddouble.Pi / -2d);
+                return ddouble.IsPositive(z.I) ? (ddouble.Ci(z.I), ddouble.Ldexp(ddouble.Pi, -1)) : (ddouble.Ci(-z.I), -ddouble.Ldexp(ddouble.Pi, -1));
             }
 
             if (z.Magnitude <= NearZeroThreshold) {
                 return CiPowerSeries(MulI(z)) + Log(z);
             }
             else {
-                Complex y = (Ein(-z) + Ein(z)) / -2d + ddouble.EulerGamma + Log(z);
+                Complex y = ddouble.EulerGamma + Log(z) - Ldexp(Ein(-z) + Ein(z), -1);
 
                 return y;
             }
@@ -240,7 +240,7 @@ namespace DoubleDoubleComplex {
             }
 
             public static Complex CiPowerSeries(Complex z, int max_terms = 1024) {
-                Complex z2 = z * z, c = ddouble.EulerGamma, u = -z2 / 2d;
+                Complex z2 = z * z, c = ddouble.EulerGamma, u = Ldexp(-z2, -1);
 
                 for (int k = 1; k <= max_terms; k++) {
                     Complex dc = u / (2 * k);
