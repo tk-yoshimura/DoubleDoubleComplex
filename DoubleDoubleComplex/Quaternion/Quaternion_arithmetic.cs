@@ -30,7 +30,15 @@ namespace DoubleDoubleComplex {
             return new(a.R + b, a.I, a.J, a.K);
         }
 
+        public static Quaternion operator +(Quaternion a, double b) {
+            return new(a.R + b, a.I, a.J, a.K);
+        }
+
         public static Quaternion operator +(ddouble a, Quaternion b) {
+            return new(a + b.R, b.I, b.J, b.K);
+        }
+
+        public static Quaternion operator +(double a, Quaternion b) {
             return new(a + b.R, b.I, b.J, b.K);
         }
 
@@ -42,7 +50,15 @@ namespace DoubleDoubleComplex {
             return new(a.R - b, a.I, a.J, a.K);
         }
 
+        public static Quaternion operator -(Quaternion a, double b) {
+            return new(a.R - b, a.I, a.J, a.K);
+        }
+
         public static Quaternion operator -(ddouble a, Quaternion b) {
+            return new(a - b.R, -b.I, -b.J, -b.K);
+        }
+
+        public static Quaternion operator -(double a, Quaternion b) {
             return new(a - b.R, -b.I, -b.J, -b.K);
         }
 
@@ -77,7 +93,15 @@ namespace DoubleDoubleComplex {
             return new(a.R * b, a.I * b, a.J * b, a.K * b);
         }
 
+        public static Quaternion operator *(Quaternion a, double b) {
+            return new(a.R * b, a.I * b, a.J * b, a.K * b);
+        }
+
         public static Quaternion operator *(ddouble a, Quaternion b) {
+            return new(a * b.R, a * b.I, a * b.J, a * b.K);
+        }
+
+        public static Quaternion operator *(double a, Quaternion b) {
             return new(a * b.R, a * b.I, a * b.J, a * b.K);
         }
 
@@ -101,6 +125,17 @@ namespace DoubleDoubleComplex {
             if (IsFinite(b) && !IsZero(b)) {
                 int exp = ILogB(b);
                 (a, b) = (ddouble.Ldexp(a, -exp), Ldexp(b, -exp));
+            }
+
+            ddouble s = a / b.Norm;
+
+            return new(b.R * s, -b.I * s, -b.J * s, -b.K * s);
+        }
+
+        public static Quaternion operator /(double a, Quaternion b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (double.ScaleB(a, -exp), Ldexp(b, -exp));
             }
 
             ddouble s = a / b.Norm;

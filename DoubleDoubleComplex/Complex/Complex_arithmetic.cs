@@ -30,7 +30,15 @@ namespace DoubleDoubleComplex {
             return new(a.R + b, a.I);
         }
 
+        public static Complex operator +(Complex a, double b) {
+            return new(a.R + b, a.I);
+        }
+
         public static Complex operator +(ddouble a, Complex b) {
+            return new(a + b.R, b.I);
+        }
+
+        public static Complex operator +(double a, Complex b) {
             return new(a + b.R, b.I);
         }
 
@@ -42,7 +50,15 @@ namespace DoubleDoubleComplex {
             return new(a.R - b, a.I);
         }
 
+        public static Complex operator -(Complex a, double b) {
+            return new(a.R - b, a.I);
+        }
+
         public static Complex operator -(ddouble a, Complex b) {
+            return new(a - b.R, -b.I);
+        }
+
+        public static Complex operator -(double a, Complex b) {
             return new(a - b.R, -b.I);
         }
 
@@ -54,7 +70,15 @@ namespace DoubleDoubleComplex {
             return new(a.R * b, a.I * b);
         }
 
+        public static Complex operator *(Complex a, double b) {
+            return new(a.R * b, a.I * b);
+        }
+
         public static Complex operator *(ddouble a, Complex b) {
+            return new(a * b.R, a * b.I);
+        }
+
+        public static Complex operator *(double a, Complex b) {
             return new(a * b.R, a * b.I);
         }
 
@@ -73,6 +97,17 @@ namespace DoubleDoubleComplex {
             if (IsFinite(b) && !IsZero(b)) {
                 int exp = ILogB(b);
                 (a, b) = (ddouble.Ldexp(a, -exp), Ldexp(b, -exp));
+            }
+
+            ddouble s = a / b.Norm;
+
+            return new(b.R * s, -b.I * s);
+        }
+
+        public static Complex operator /(double a, Complex b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (double.ScaleB(a, -exp), Ldexp(b, -exp));
             }
 
             ddouble s = a / b.Norm;

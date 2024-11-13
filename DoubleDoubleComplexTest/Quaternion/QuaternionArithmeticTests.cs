@@ -35,6 +35,24 @@ namespace DoubleDoubleComplexTests {
                     QuaternionAssert.AreEqual(nc, c, 1e-7);
                 }
             }
+
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                foreach (double b in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
+                    Quaternion c = a + b;
+                    NQuaternion nc = (NQuaternion)a + new NQuaternion(0, 0, 0, (float)b);
+
+                    QuaternionAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
+
+            foreach (double a in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                    Quaternion c = a + b;
+                    NQuaternion nc = new NQuaternion(0, 0, 0, (float)a) + (NQuaternion)b;
+
+                    QuaternionAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
         }
 
         [TestMethod()]
@@ -65,6 +83,24 @@ namespace DoubleDoubleComplexTests {
                     QuaternionAssert.AreEqual(nc, c, 1e-7);
                 }
             }
+
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                foreach (double b in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
+                    Quaternion c = a - b;
+                    NQuaternion nc = (NQuaternion)a - new NQuaternion(0, 0, 0, (float)b);
+
+                    QuaternionAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
+
+            foreach (double a in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                    Quaternion c = a - b;
+                    NQuaternion nc = new NQuaternion(0, 0, 0, (float)a) - (NQuaternion)b;
+
+                    QuaternionAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
         }
 
         [TestMethod()]
@@ -88,6 +124,24 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                    Quaternion c = a * b;
+                    NQuaternion nc = new NQuaternion(0, 0, 0, (float)a) * (NQuaternion)b;
+
+                    QuaternionAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
+
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                foreach (double b in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
+                    Quaternion c = a * b;
+                    NQuaternion nc = (NQuaternion)a * new NQuaternion(0, 0, 0, (float)b);
+
+                    QuaternionAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
+
+            foreach (double a in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
                 foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                     Quaternion c = a * b;
                     NQuaternion nc = new NQuaternion(0, 0, 0, (float)a) * (NQuaternion)b;
@@ -129,6 +183,24 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
+                foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                    Quaternion c = a / b;
+                    NQuaternion nc = new NQuaternion(0, 0, 0, (float)a) / (NQuaternion)b;
+
+                    QuaternionAssert.AreEqual(nc, c, 1e-6);
+                }
+            }
+
+            foreach (Quaternion a in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
+                foreach (double b in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
+                    Quaternion c = a / b;
+                    NQuaternion nc = (NQuaternion)a / new NQuaternion(0, 0, 0, (float)b);
+
+                    QuaternionAssert.AreEqual(nc, c, 1e-6);
+                }
+            }
+
+            foreach (double a in new[] { 1, 2, 3, 4, -1, -3, -5 }) {
                 foreach (Quaternion b in new[] { (1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -4, 5, 1), (3, -9, 2, 4), (7, 1, -3, 2), (-3, 5, 2, -1) }) {
                     Quaternion c = a / b;
                     NQuaternion nc = new NQuaternion(0, 0, 0, (float)a) / (NQuaternion)b;

@@ -11,6 +11,9 @@ namespace DoubleDoubleComplexTests {
             Quaternion c2 = (4, 5, 7, -2);
             Quaternion c3 = 6;
 
+            Assert.AreEqual((2, 3, -1, 6), +c1);
+            Assert.AreEqual((-2, -3, 1, -6), -c1);
+
             Assert.AreEqual(2, c1.R);
             Assert.AreEqual(3, c1.I);
             Assert.AreEqual(-1, c1.J);

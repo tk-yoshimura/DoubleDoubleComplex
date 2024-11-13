@@ -12,6 +12,9 @@ namespace DoubleDoubleComplexTests {
             Octonion c3 = 6;
             Octonion c4 = c2.Conj;
 
+            Assert.AreEqual((2, 3, -1, 6, 4, 7, -2, 8), +c1);
+            Assert.AreEqual((-2, -3, 1, -6, -4, -7, 2, -8), -c1);
+
             Assert.AreEqual(2, c1.R);
             Assert.AreEqual(3, c1.I);
             Assert.AreEqual(-1, c1.J);

@@ -35,6 +35,24 @@ namespace DoubleDoubleComplexTests {
                     ComplexAssert.AreEqual(nc, c, 1e-7);
                 }
             }
+
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                foreach (double b in new[] { 1, 3, 4, -1, 2, 7 }) {
+                    Complex c = a + b;
+                    NComplex nc = (NComplex)a + new NComplex((double)b, 0);
+
+                    ComplexAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
+
+            foreach (double a in new[] { 1, 3, 4, -1, 2, 7 }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                    Complex c = a + b;
+                    NComplex nc = new NComplex((double)a, 0) + (NComplex)b;
+
+                    ComplexAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
         }
 
         [TestMethod()]
@@ -58,6 +76,24 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 3, 4, -1, 2, 7 }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                    Complex c = a - b;
+                    NComplex nc = new NComplex((double)a, 0) - (NComplex)b;
+
+                    ComplexAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
+
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                foreach (double b in new[] { 1, 3, 4, -1, 2, 7 }) {
+                    Complex c = a - b;
+                    NComplex nc = (NComplex)a - new NComplex((double)b, 0);
+
+                    ComplexAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
+
+            foreach (double a in new[] { 1, 3, 4, -1, 2, 7 }) {
                 foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                     Complex c = a - b;
                     NComplex nc = new NComplex((double)a, 0) - (NComplex)b;
@@ -95,6 +131,24 @@ namespace DoubleDoubleComplexTests {
                     ComplexAssert.AreEqual(nc, c, 1e-7);
                 }
             }
+
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                foreach (double b in new[] { 1, 3, 4, -1, 2, 7 }) {
+                    Complex c = a * b;
+                    NComplex nc = (NComplex)a * new NComplex((double)b, 0);
+
+                    ComplexAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
+
+            foreach (double a in new[] { 1, 3, 4, -1, 2, 7 }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                    Complex c = a * b;
+                    NComplex nc = new NComplex((double)a, 0) * (NComplex)b;
+
+                    ComplexAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
         }
 
         [TestMethod()]
@@ -119,6 +173,24 @@ namespace DoubleDoubleComplexTests {
             }
 
             foreach (ddouble a in new[] { 1, 3, 4, -1, 2, 7 }) {
+                foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                    Complex c = a / b;
+                    NComplex nc = new NComplex((double)a, 0) / (NComplex)b;
+
+                    ComplexAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
+
+            foreach (Complex a in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
+                foreach (double b in new[] { 1, 3, 4, -1, 2, 7 }) {
+                    Complex c = a / b;
+                    NComplex nc = (NComplex)a / new NComplex((double)b, 0);
+
+                    ComplexAssert.AreEqual(nc, c, 1e-7);
+                }
+            }
+
+            foreach (double a in new[] { 1, 3, 4, -1, 2, 7 }) {
                 foreach (Complex b in new[] { (1, 2), (2, 5), (6, -3), (7, -4), (3, -9), (7, 1), (-3, -4), (-1, -9), (-2, 1) }) {
                     Complex c = a / b;
                     NComplex nc = new NComplex((double)a, 0) / (NComplex)b;

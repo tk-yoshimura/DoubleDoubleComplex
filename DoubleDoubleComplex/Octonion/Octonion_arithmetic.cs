@@ -30,6 +30,10 @@ namespace DoubleDoubleComplex {
             return new(a.R + b, a.I, a.J, a.K, a.W, a.X, a.Y, a.Z);
         }
 
+        public static Octonion operator +(Octonion a, double b) {
+            return new(a.R + b, a.I, a.J, a.K, a.W, a.X, a.Y, a.Z);
+        }
+
         public static Octonion operator +(Octonion a, Complex b) {
             return new(a.R + b.R, a.I + b.I, a.J, a.K, a.W, a.X, a.Y, a.Z);
         }
@@ -39,6 +43,10 @@ namespace DoubleDoubleComplex {
         }
 
         public static Octonion operator +(ddouble a, Octonion b) {
+            return new(a + b.R, b.I, b.J, b.K, b.W, b.X, b.Y, b.Z);
+        }
+
+        public static Octonion operator +(double a, Octonion b) {
             return new(a + b.R, b.I, b.J, b.K, b.W, b.X, b.Y, b.Z);
         }
 
@@ -58,6 +66,10 @@ namespace DoubleDoubleComplex {
             return new(a.R - b, a.I, a.J, a.K, a.W, a.X, a.Y, a.Z);
         }
 
+        public static Octonion operator -(Octonion a, double b) {
+            return new(a.R - b, a.I, a.J, a.K, a.W, a.X, a.Y, a.Z);
+        }
+
         public static Octonion operator -(Octonion a, Complex b) {
             return new(a.R - b.R, a.I - b.I, a.J, a.K, a.W, a.X, a.Y, a.Z);
         }
@@ -67,6 +79,10 @@ namespace DoubleDoubleComplex {
         }
 
         public static Octonion operator -(ddouble a, Octonion b) {
+            return new(a - b.R, -b.I, -b.J, -b.K, -b.W, -b.X, -b.Y, -b.Z);
+        }
+
+        public static Octonion operator -(double a, Octonion b) {
             return new(a - b.R, -b.I, -b.J, -b.K, -b.W, -b.X, -b.Y, -b.Z);
         }
 
@@ -104,7 +120,33 @@ namespace DoubleDoubleComplex {
             return new(r, i, j, k, w, x, y, z);
         }
 
+        public static Octonion operator *(Octonion a, double b) {
+            ddouble r = a.R * b;
+            ddouble i = a.I * b;
+            ddouble j = a.J * b;
+            ddouble k = a.K * b;
+            ddouble w = a.W * b;
+            ddouble x = a.X * b;
+            ddouble y = a.Y * b;
+            ddouble z = a.Z * b;
+
+            return new(r, i, j, k, w, x, y, z);
+        }
+
         public static Octonion operator *(ddouble a, Octonion b) {
+            ddouble r = a * b.R;
+            ddouble i = a * b.I;
+            ddouble j = a * b.J;
+            ddouble k = a * b.K;
+            ddouble w = a * b.W;
+            ddouble x = a * b.X;
+            ddouble y = a * b.Y;
+            ddouble z = a * b.Z;
+
+            return new(r, i, j, k, w, x, y, z);
+        }
+
+        public static Octonion operator *(double a, Octonion b) {
             ddouble r = a * b.R;
             ddouble i = a * b.I;
             ddouble j = a * b.J;
@@ -193,6 +235,26 @@ namespace DoubleDoubleComplex {
             if (IsFinite(b) && !IsZero(b)) {
                 int exp = ILogB(b);
                 (a, b) = (ddouble.Ldexp(a, -exp), Ldexp(b, -exp));
+            }
+
+            ddouble n = a / b.Norm;
+
+            ddouble r = +b.R * n;
+            ddouble i = -b.I * n;
+            ddouble j = -b.J * n;
+            ddouble k = -b.K * n;
+            ddouble w = -b.W * n;
+            ddouble x = -b.X * n;
+            ddouble y = -b.Y * n;
+            ddouble z = -b.Z * n;
+
+            return new(r, i, j, k, w, x, y, z);
+        }
+
+        public static Octonion operator /(double a, Octonion b) {
+            if (IsFinite(b) && !IsZero(b)) {
+                int exp = ILogB(b);
+                (a, b) = (double.ScaleB(a, -exp), Ldexp(b, -exp));
             }
 
             ddouble n = a / b.Norm;

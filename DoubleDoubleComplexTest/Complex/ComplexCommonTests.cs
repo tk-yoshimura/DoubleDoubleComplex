@@ -12,6 +12,8 @@ namespace DoubleDoubleComplexTests {
             Complex c3 = 6;
 
             Assert.AreEqual(2, c1.R);
+            Assert.AreEqual((2, 3), +c1);
+            Assert.AreEqual((-2, -3), -c1);
             Assert.AreEqual(3, c1.I);
             Assert.AreEqual((double)0.98279, (double)c1.Phase, 1e-4);
 
