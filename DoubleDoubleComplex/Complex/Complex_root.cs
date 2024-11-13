@@ -5,7 +5,7 @@ namespace DoubleDoubleComplex {
     public partial class Complex {
 
         public static Complex Sqrt(Complex z) {
-            return FromPolarCoordinates(ddouble.Sqrt(z.Magnitude), z.Phase / 2d);
+            return FromPolarCoordinates(ddouble.Sqrt(z.Magnitude), ddouble.Ldexp(z.Phase, -1));
         }
 
         public static Complex Cbrt(Complex z) {
