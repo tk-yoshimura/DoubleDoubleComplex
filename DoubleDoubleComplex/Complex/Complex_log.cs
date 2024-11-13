@@ -48,7 +48,7 @@ namespace DoubleDoubleComplex {
                 return y;
             }
             else {
-                Complex y = Log(One + z);
+                Complex y = Log(1d + z);
 
                 return y;
             }

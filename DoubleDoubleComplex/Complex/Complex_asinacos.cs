@@ -29,7 +29,7 @@ namespace DoubleDoubleComplex {
         }
 
         public static Complex Atan(Complex z) {
-            return ImaginaryOne / 2d * (Log1p(MulMinusI(z)) - Log1p(MulI(z)));
+            return Ldexp(MulI(Log1p(MulMinusI(z)) - Log1p(MulI(z))), -1);
         }
 
         internal static partial class Consts {

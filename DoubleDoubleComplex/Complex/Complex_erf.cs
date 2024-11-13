@@ -36,7 +36,7 @@ namespace DoubleDoubleComplex {
 
                 Complex f = ErfUtil.ErfcxCFrac(z, w);
 
-                Complex y = One - c / f;
+                Complex y = 1d - c / f;
 
                 return y;
             }
@@ -58,7 +58,7 @@ namespace DoubleDoubleComplex {
             }
 
             if (ddouble.IsNegative(z.R) || ErfUtil.UseNeroZero(z)) {
-                return One - Erf(z);
+                return 1d - Erf(z);
             }
             else {
                 Complex w = z * z;
@@ -87,7 +87,7 @@ namespace DoubleDoubleComplex {
             Complex w = z * z;
 
             if (ErfUtil.UseNeroZero((ddouble.Abs(z.R), z.I))) {
-                return (One - Erf(z)) * Exp(w);
+                return (1d - Erf(z)) * Exp(w);
             }
             else if (ddouble.IsPositive(z.R)) {
                 Complex f = ErfUtil.ErfcxCFrac(z, w);

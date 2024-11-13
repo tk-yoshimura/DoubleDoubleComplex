@@ -15,14 +15,14 @@ namespace DoubleDoubleComplex {
             }
 
             if (z.R < ddouble.Point5) {
-                Complex y = ddouble.Pi / (SinPi(z) * Gamma(One - z));
+                Complex y = ddouble.Pi / (SinPi(z) * Gamma(1d - z));
 
                 return y;
             }
             else {
                 static Complex stirling(Complex z) {
                     Complex x = Zero, u = One;
-                    Complex v = One / z, w = v * v;
+                    Complex v = 1d / z, w = v * v;
 
                     foreach (Complex t in Consts.Gamma.StirlingTable) {
                         Complex c = u * t;
@@ -86,7 +86,7 @@ namespace DoubleDoubleComplex {
             };
 
             if (z.R < ddouble.Point5) {
-                Complex y = Log(ddouble.Pi / SinPi(z)) - LogGamma(One - z);
+                Complex y = Log(ddouble.Pi / SinPi(z)) - LogGamma(1d - z);
 
                 return pv(y);
             }
@@ -123,7 +123,7 @@ namespace DoubleDoubleComplex {
             else {
                 static Complex stirling(Complex z) {
                     Complex x = Zero, u = One;
-                    Complex v = One / z, w = v * v;
+                    Complex v = 1d / z, w = v * v;
 
                     foreach (Complex t in Consts.Gamma.StirlingTable) {
                         Complex c = u * t;

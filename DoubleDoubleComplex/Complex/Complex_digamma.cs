@@ -14,32 +14,28 @@ namespace DoubleDoubleComplex {
             }
 
             if (z.R < ddouble.Point5) {
-                Complex y = Digamma(One - z) - ddouble.Pi / TanPi(z);
+                Complex y = Digamma(1d - z) - ddouble.Pi / TanPi(z);
 
                 return y;
-            }
-
-            static Complex stirling(Complex z) {
-                Complex v = One / z, w = v * v;
-                Complex x = Zero, u = w;
-
-                foreach (Complex t in Consts.Digamma.StirlingTable) {
-                    Complex c = u * t;
-                    x += c;
-                    u *= w;
-                }
-
-                x += v / 2d;
-
-                Complex y = Log(z) - x;
-
-                return y;
-            }
-
-            if (z.Norm >= Consts.Digamma.StirlingConvergenceNorm) {
-                return stirling(z);
             }
             else {
+                static Complex stirling(Complex z) {
+                    Complex v = 1d / z, w = v * v;
+                    Complex x = Zero, u = w;
+
+                    foreach (Complex t in Consts.Digamma.StirlingTable) {
+                        Complex c = u * t;
+                        x += c;
+                        u *= w;
+                    }
+
+                    x += v / 2d;
+
+                    Complex y = Log(z) - x;
+
+                    return y;
+                }
+
                 int rn = (int)double.Floor((double)z.R);
                 ddouble rf = z.R - rn;
 
@@ -51,9 +47,9 @@ namespace DoubleDoubleComplex {
                 }
 
                 Complex c = stirling((rf + rk, z.I));
-                Complex m = One / z;
+                Complex m = 1d / z;
                 for (int k = rn + 1; k < rk; k++) {
-                    m += One / (rf + k, z.I);
+                    m += 1d / new Complex(rf + k, z.I);
                 }
 
                 Complex y = c - m;
