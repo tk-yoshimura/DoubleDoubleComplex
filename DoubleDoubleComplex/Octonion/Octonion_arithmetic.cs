@@ -275,6 +275,10 @@ namespace DoubleDoubleComplex {
             return a * (1d / b);
         }
 
+        public static Octonion operator /(Octonion a, double b) {
+            return (a.R / b, a.I / b, a.J / b, a.K / b, a.W / b, a.X / b, a.Y / b, a.Z / b);
+        }
+
         public static Octonion operator /(Octonion a, Complex b) {
             if (Complex.IsFinite(b) && !Complex.IsZero(b)) {
                 int exp = ILogB(b);

@@ -147,6 +147,10 @@ namespace DoubleDoubleComplex {
             return a * (1d / b);
         }
 
+        public static Quaternion operator /(Quaternion a, double b) {
+            return (a.R / b, a.I / b, a.J / b, a.K / b);
+        }
+
         public static Quaternion operator /(Quaternion a, Complex b) {
             if (Complex.IsFinite(b) && !Complex.IsZero(b)) {
                 int exp = ILogB(b);

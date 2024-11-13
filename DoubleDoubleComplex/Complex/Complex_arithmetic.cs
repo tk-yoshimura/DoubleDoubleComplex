@@ -119,6 +119,10 @@ namespace DoubleDoubleComplex {
             return a * (1d / b);
         }
 
+        public static Complex operator /(Complex a, double b) {
+            return (a.R / b, a.I / b);
+        }
+
         public static Complex Inverse(Complex z) {
             int exp = 0;
             if (IsFinite(z) && !IsZero(z)) {
