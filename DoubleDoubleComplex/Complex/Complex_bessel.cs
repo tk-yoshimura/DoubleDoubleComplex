@@ -1125,9 +1125,9 @@ namespace DoubleDoubleComplex {
 
                     (Complex c_even, Complex c_odd) = hankel.BesselJYCoef(z);
 
-                    Complex omega = hankel.Omega(z);
+                    Complex omega = hankel.OmegaPi(z);
 
-                    Complex cos = Cos(omega), sin = Sin(omega);
+                    Complex cos = CosPi(omega), sin = SinPi(omega);
 
                     Complex y = Sqrt(2d / (ddouble.Pi * z)) * (cos * c_even - sin * c_odd);
 
@@ -1149,9 +1149,9 @@ namespace DoubleDoubleComplex {
 
                     (Complex c_even, Complex c_odd) = hankel.BesselJYCoef(z);
 
-                    Complex omega = hankel.Omega(z);
+                    Complex omega = hankel.OmegaPi(z);
 
-                    Complex cos = Cos(omega), sin = Sin(omega);
+                    Complex cos = CosPi(omega), sin = SinPi(omega);
 
                     Complex y = Sqrt(2d / (ddouble.Pi * z)) * (sin * c_even + cos * c_odd);
 
@@ -1205,11 +1205,13 @@ namespace DoubleDoubleComplex {
                 private class HankelExpansion {
                     public ddouble Nu { get; }
 
+                    private readonly ddouble omega_bias;
                     private readonly List<ddouble> a_coef;
 
                     public HankelExpansion(ddouble nu) {
                         Nu = nu;
                         a_coef = [1];
+                        omega_bias = ddouble.Ldexp(ddouble.Ldexp(Nu, 1) + 1d, -2);
                     }
 
                     private ddouble ACoef(int n) {
@@ -1227,8 +1229,8 @@ namespace DoubleDoubleComplex {
                         }
                     }
 
-                    public Complex Omega(Complex z) {
-                        Complex omega = z - ddouble.Ldexp(ddouble.Ldexp(Nu, 1) + 1d, -2) * ddouble.Pi;
+                    public Complex OmegaPi(Complex z) {
+                        Complex omega = z * ddouble.RcpPi - omega_bias;
 
                         return omega;
                     }
