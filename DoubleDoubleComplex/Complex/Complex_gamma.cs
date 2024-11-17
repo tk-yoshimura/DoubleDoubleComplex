@@ -133,7 +133,7 @@ namespace DoubleDoubleComplex {
 
                     x *= v;
 
-                    Complex r = Consts.Gamma.StirlingLogBias - z + (z - ddouble.Point5) * Log(z);
+                    Complex r = Consts.Gamma.StirlingLogBias - z + (z - 0.5d) * Log(z);
 
                     Complex y = r + x;
 
