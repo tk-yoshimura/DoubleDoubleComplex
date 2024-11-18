@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using DoubleDouble;
+using System.Collections.Generic;
 using System.Linq;
-using DoubleDouble;
 
 namespace DoubleDoubleComplex {
 
