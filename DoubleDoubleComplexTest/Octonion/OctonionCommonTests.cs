@@ -56,6 +56,8 @@ namespace DoubleDoubleComplexTests {
             Assert.AreEqual(0, c3.X);
             Assert.AreEqual(0, c3.Y);
             Assert.AreEqual(0, c3.Z);
+
+            Assert.IsTrue((1 - c2.Normal.Norm) < 1e-30);
         }
 
         [TestMethod()]

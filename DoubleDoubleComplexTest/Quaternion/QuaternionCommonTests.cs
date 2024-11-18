@@ -32,6 +32,8 @@ namespace DoubleDoubleComplexTests {
             Assert.AreEqual(0, c3.K);
 
             Assert.AreEqual((3, -1, 6), c1.Vector);
+
+            Assert.IsTrue((1 - c2.Normal.Norm) < 1e-30);
         }
 
         [TestMethod()]
