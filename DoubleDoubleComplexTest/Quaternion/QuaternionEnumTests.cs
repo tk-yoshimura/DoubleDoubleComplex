@@ -52,7 +52,7 @@ namespace DoubleDoubleComplexTests {
         public void QuaternionNormTest() {
             Quaternion[] qs = [(1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1)];
 
-            CollectionAssert.AreEqual(new ddouble[] { qs[0].SquareNorm, qs[1].SquareNorm, qs[2].SquareNorm, qs[3].SquareNorm }, qs.Norm().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { qs[0].Norm, qs[1].Norm, qs[2].Norm, qs[3].Norm }, qs.Norm().ToArray());
         }
 
         [TestMethod()]

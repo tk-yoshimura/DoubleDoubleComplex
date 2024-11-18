@@ -38,7 +38,7 @@ namespace DoubleDoubleComplexTests {
         public void ComplexNormTest() {
             Complex[] cs = [(1, 2), (2, 5), (6, -3), (7, -3)];
 
-            CollectionAssert.AreEqual(new ddouble[] { cs[0].SquareNorm, cs[1].SquareNorm, cs[2].SquareNorm, cs[3].SquareNorm }, cs.Norm().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { cs[0].Norm, cs[1].Norm, cs[2].Norm, cs[3].Norm }, cs.Norm().ToArray());
         }
 
         [TestMethod()]
