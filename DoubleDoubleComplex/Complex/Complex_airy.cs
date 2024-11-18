@@ -19,7 +19,7 @@ namespace DoubleDoubleComplex {
                 return AiryAi(z.Conj).Conj;
             }
 
-            if (z.Magnitude < NearZero) {
+            if (z.Norm < NearZero) {
                 Complex x2 = z * z;
                 Complex s = z * NearZeroCoefs[0] + NearZeroCoefs[1];
 
@@ -63,7 +63,7 @@ namespace DoubleDoubleComplex {
                 return AiryBi(z.Conj).Conj;
             }
 
-            if (z.Magnitude < NearZero) {
+            if (z.Norm < NearZero) {
                 Complex z2 = z * z;
                 Complex s = z * NearZeroCoefs[0] + NearZeroCoefs[1];
 

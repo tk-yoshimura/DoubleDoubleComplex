@@ -47,6 +47,12 @@ namespace DoubleDoubleComplex {
             }
         }
 
+        public static IEnumerable<ddouble> SquareNorm(this IEnumerable<Quaternion> source) {
+            foreach (var v in source) {
+                yield return v.SquareNorm;
+            }
+        }
+
         public static IEnumerable<ddouble> Norm(this IEnumerable<Quaternion> source) {
             foreach (var v in source) {
                 yield return v.Norm;
@@ -67,7 +73,7 @@ namespace DoubleDoubleComplex {
 
         public static IEnumerable<Quaternion> Normal(this IEnumerable<Quaternion> source) {
             foreach (var v in source) {
-                yield return Quaternion.Normal(v);
+                yield return v.Normal;
             }
         }
     }

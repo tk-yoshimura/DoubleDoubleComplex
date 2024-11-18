@@ -13,10 +13,16 @@ namespace DoubleDoubleComplex {
 
         public readonly ddouble R, I;
 
-        public ddouble Norm => R * R + I * I;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ddouble SquareNorm => R * R + I * I;
 
-        public ddouble Magnitude => ddouble.Hypot(R, I);
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ddouble Norm => ddouble.Hypot(R, I);
 
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ddouble Magnitude => Norm;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Phase => ddouble.Atan2(I, R);
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -36,7 +42,8 @@ namespace DoubleDoubleComplex {
 
         public static Complex Conjugate(Complex c) => new(c.R, -c.I);
 
-        public static Complex Normal(Complex c) => c / c.Norm;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Complex Normal => this / Norm;
 
         public Complex(ddouble r, ddouble i) {
             this.R = r;

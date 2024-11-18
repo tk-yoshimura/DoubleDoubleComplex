@@ -10,9 +10,11 @@ namespace DoubleDoubleComplex {
     public partial class Quaternion : IFormattable {
         public readonly ddouble R, I, J, K;
 
-        public ddouble Norm => R * R + I * I + J * J + K * K;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ddouble SquareNorm => R * R + I * I + J * J + K * K;
 
-        public ddouble Magnitude {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ddouble Norm {
             get {
                 if (ddouble.IsInfinity(R) || ddouble.IsInfinity(I) || ddouble.IsInfinity(J) || ddouble.IsInfinity(K)) {
                     return ddouble.PositiveInfinity;
@@ -25,6 +27,9 @@ namespace DoubleDoubleComplex {
                 return w;
             }
         }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ddouble Magnitude => Norm;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public (ddouble x, ddouble y, ddouble z) Vector => (I, J, K);
@@ -52,7 +57,8 @@ namespace DoubleDoubleComplex {
 
         public static Quaternion Conjugate(Quaternion q) => new(q.R, -q.I, -q.J, -q.K);
 
-        public static Quaternion Normal(Quaternion q) => q / q.Norm;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Quaternion Normal => this / Norm;
 
         public static Quaternion VectorPart(Quaternion q) {
             return new Quaternion(ddouble.Zero, q.I, q.J, q.K);

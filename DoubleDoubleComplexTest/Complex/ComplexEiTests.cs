@@ -1397,7 +1397,7 @@ namespace DoubleDoubleComplexTests {
                     Complex z = (r, i);
 
                     Complex actual = Complex.E1(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
@@ -2160,7 +2160,7 @@ namespace DoubleDoubleComplexTests {
                     Complex z = (r, i);
 
                     Complex actual = Complex.Ei(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
@@ -3560,14 +3560,14 @@ namespace DoubleDoubleComplexTests {
                     Complex z = (r, i);
 
                     Complex actual = Complex.Ein(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
                     Console.WriteLine(actual);
 
                     if (r == 0 && i == 0) {
-                        Assert.IsTrue(actual.Magnitude <= 0d);
+                        Assert.IsTrue(actual.Norm <= 0d);
                     }
                     else {
                         Assert.IsTrue(err < 8e-29, $"\n{expected}\n{actual}");
@@ -4325,14 +4325,14 @@ namespace DoubleDoubleComplexTests {
                     Complex z = (r, i);
 
                     Complex actual = Complex.Si(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
                     Console.WriteLine(actual);
 
                     if (r == 0 && i == 0) {
-                        Assert.IsTrue(actual.Magnitude <= 0d);
+                        Assert.IsTrue(actual.Norm <= 0d);
                     }
                     else {
                         Assert.IsTrue(err < 8e-29, $"\n{expected}\n{actual}");
@@ -5093,7 +5093,7 @@ namespace DoubleDoubleComplexTests {
                     Complex z = (r, i);
 
                     Complex actual = Complex.Ci(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
@@ -5853,14 +5853,14 @@ namespace DoubleDoubleComplexTests {
                     Complex z = (r, i);
 
                     Complex actual = Complex.Shi(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
                     Console.WriteLine(actual);
 
                     if (r == 0 && i == 0) {
-                        Assert.IsTrue(actual.Magnitude <= 0d);
+                        Assert.IsTrue(actual.Norm <= 0d);
                     }
                     else {
                         Assert.IsTrue(err < 8e-29, $"\n{expected}\n{actual}");
@@ -6621,7 +6621,7 @@ namespace DoubleDoubleComplexTests {
                     Complex z = (r, i);
 
                     Complex actual = Complex.Chi(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);

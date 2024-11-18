@@ -34,7 +34,7 @@ namespace DoubleDoubleComplex {
                 return Recurrence.BesselJ(nu, z);
             }
 
-            if (z.Magnitude >= HankelThreshold) {
+            if (z.Norm >= HankelThreshold) {
                 return Limit.BesselJ(nu, z);
             }
             else if (z.R <= PowerSeriesThreshold(nu, z.I)) {
@@ -72,7 +72,7 @@ namespace DoubleDoubleComplex {
                 return Recurrence.BesselY(nu, z);
             }
 
-            if (z.Magnitude >= HankelThreshold) {
+            if (z.Norm >= HankelThreshold) {
                 return Limit.BesselY(nu, z);
             }
             else if (z.R <= PowerSeriesThreshold(nu, z.I) - BesselJYPowerseriesBias) {
@@ -124,7 +124,7 @@ namespace DoubleDoubleComplex {
                 return Recurrence.BesselI(nu, z);
             }
 
-            if (z.Magnitude >= HankelThreshold) {
+            if (z.Norm >= HankelThreshold) {
                 return Limit.BesselI(nu, z);
             }
             else if (z.I <= PowerSeriesThreshold(nu, z.R)) {
@@ -161,10 +161,10 @@ namespace DoubleDoubleComplex {
                 return Recurrence.BesselK(nu, z);
             }
 
-            if (z.Magnitude >= HankelThreshold) {
+            if (z.Norm >= HankelThreshold) {
                 return Limit.BesselK(nu, z);
             }
-            else if (z.Magnitude <= BesselKNearZeroThreshold) {
+            else if (z.Norm <= BesselKNearZeroThreshold) {
                 if (NearlyInteger(nu, out int n) || ddouble.ILogB(n - nu) >= BesselYKNearIntegerExponent) {
                     return PowerSeries.BesselK(nu, z);
                 }
@@ -2428,14 +2428,14 @@ namespace DoubleDoubleComplex {
 
                             if (i > 0 && (i & 3) == 0) {
                                 Complex r0 = a0 * b1, r1 = a1 * b0;
-                                if (!((r0 - r1).Magnitude > ddouble.Min(r0.Magnitude, r1.Magnitude) * 1e-30)) {
+                                if (!((r0 - r1).Norm > ddouble.Min(r0.Norm, r1.Norm) * 1e-30)) {
                                     break;
                                 }
                             }
                         }
 
                         long exp_sum = 0;
-                        bool s_overone = s.Magnitude > 1d;
+                        bool s_overone = s.Norm > 1d;
                         (Complex j0, Complex j1) = s_overone ? (One, 1d / s) : (s, 1d);
 
                         for (int k = n - 1; k >= DirectMaxN - 1; k--) {
@@ -2450,7 +2450,7 @@ namespace DoubleDoubleComplex {
                         }
 
                         Complex y = Ldexp(
-                            j0.Magnitude >= j1.Magnitude
+                            j0.Norm >= j1.Norm
                             ? Complex.BesselJ(alpha + (DirectMaxN - 1), z) / j0
                             : Complex.BesselJ(alpha + (DirectMaxN - 2), z) / j1,
                             (int)long.Clamp(-exp_sum, int.MinValue, int.MaxValue)
@@ -2523,7 +2523,7 @@ namespace DoubleDoubleComplex {
 
                         if (i > 0 && (i & 3) == 0) {
                             Complex r0 = a0 * b1, r1 = a1 * b0;
-                            if (!((r0 - r1).Magnitude > ddouble.Min(r0.Magnitude, r1.Magnitude) * 1e-30)) {
+                            if (!((r0 - r1).Norm > ddouble.Min(r0.Norm, r1.Norm) * 1e-30)) {
                                 break;
                             }
                         }
@@ -2534,7 +2534,7 @@ namespace DoubleDoubleComplex {
                     }
 
                     long exp_sum = 0;
-                    bool s_overone = s.Magnitude > 1d;
+                    bool s_overone = s.Norm > 1d;
                     (Complex i0, Complex i1) = s_overone ? (One, 1d / s) : (s, 1d);
 
                     for (int k = n - 1; k >= DirectMaxN - 1; k--) {
@@ -2549,7 +2549,7 @@ namespace DoubleDoubleComplex {
                     }
 
                     Complex y = Ldexp(
-                        i0.Magnitude >= i1.Magnitude
+                        i0.Norm >= i1.Norm
                         ? Complex.BesselI(alpha + (DirectMaxN - 1), z) / i0
                         : Complex.BesselI(alpha + (DirectMaxN - 2), z) / i1,
                         (int)long.Clamp(-exp_sum, int.MinValue, int.MaxValue)

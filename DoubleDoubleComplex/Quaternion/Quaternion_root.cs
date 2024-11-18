@@ -9,12 +9,12 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            ddouble qnorm = q.Magnitude;
+            ddouble qnorm = q.Norm;
 
             ddouble phi = ddouble.Ldexp(ddouble.Acos(q.R / qnorm), -1);
 
             Quaternion vec = VectorPart(q);
-            Quaternion vnormal = vec / vec.Magnitude;
+            Quaternion vnormal = vec / vec.Norm;
             if (IsNaN(vnormal)) {
                 return Complex.Sqrt(q.R);
             }
@@ -31,12 +31,12 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            ddouble qnorm = q.Magnitude;
+            ddouble qnorm = q.Norm;
 
             ddouble phi = ddouble.Acos(q.R / qnorm) / 3d;
 
             Quaternion vec = VectorPart(q);
-            Quaternion vnormal = vec / vec.Magnitude;
+            Quaternion vnormal = vec / vec.Norm;
             if (IsNaN(vnormal)) {
                 return ddouble.Cbrt(q.R);
             }
@@ -53,12 +53,12 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            ddouble qnorm = q.Magnitude;
+            ddouble qnorm = q.Norm;
 
             ddouble phi = ddouble.Acos(q.R / qnorm) / n;
 
             Quaternion vec = VectorPart(q);
-            Quaternion vnormal = vec / vec.Magnitude;
+            Quaternion vnormal = vec / vec.Norm;
             if (IsNaN(vnormal)) {
                 return ((n & 1) == 0) ? Complex.RootN(q.R, n) : ddouble.RootN(q.R, n);
             }

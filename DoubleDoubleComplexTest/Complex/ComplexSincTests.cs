@@ -21,7 +21,7 @@ namespace DoubleDoubleComplexTests {
                     Complex actual = Complex.Sinc(z, normalized: false);
                     Complex expected = (Complex<Pow2.N8>.Sin(z) / z).ToString();
 
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine(expected);
                     Console.WriteLine(actual);
@@ -43,7 +43,7 @@ namespace DoubleDoubleComplexTests {
                     Complex expected = (Complex<Pow2.N8>.Sin((Complex<Pow2.N8>)z * MultiPrecision<Pow2.N8>.Pi) /
                         ((Complex<Pow2.N8>)z * MultiPrecision<Pow2.N8>.Pi)).ToString();
 
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine(expected);
                     Console.WriteLine(actual);
@@ -64,7 +64,7 @@ namespace DoubleDoubleComplexTests {
                     Complex actual = Complex.Sinhc(z);
                     Complex expected = (Complex<Pow2.N8>.Sinh(z) / z).ToString();
 
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine(expected);
                     Console.WriteLine(actual);

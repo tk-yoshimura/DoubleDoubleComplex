@@ -1358,7 +1358,7 @@ namespace DoubleDoubleComplexTests {
                     Complex expected = expecteds[index];
 
                     Complex actual = Complex.Erf(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
@@ -1379,7 +1379,7 @@ namespace DoubleDoubleComplexTests {
                     Complex expected = expecteds[index];
 
                     Complex actual = Complex.Erf(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
@@ -1403,7 +1403,7 @@ namespace DoubleDoubleComplexTests {
             foreach (Complex zero in zeros) {
                 Complex c = Complex.Erf(zero);
 
-                Assert.IsTrue(c.Magnitude < 8e-10);
+                Assert.IsTrue(c.Norm < 8e-10);
             }
         }
 
@@ -2190,7 +2190,7 @@ namespace DoubleDoubleComplexTests {
                     Complex expected = expecteds[index];
 
                     Complex actual = Complex.Erfc(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
@@ -2211,7 +2211,7 @@ namespace DoubleDoubleComplexTests {
                     Complex expected = expecteds[index];
 
                     Complex actual = Complex.Erfc(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
@@ -4245,7 +4245,7 @@ namespace DoubleDoubleComplexTests {
                     Complex expected = expecteds[index];
 
                     Complex actual = Complex.Erfcx(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
@@ -4267,7 +4267,7 @@ namespace DoubleDoubleComplexTests {
                     Complex expected = expecteds[index];
 
                     Complex actual = Complex.Erfcx(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
@@ -4298,7 +4298,7 @@ namespace DoubleDoubleComplexTests {
 
             foreach ((Complex z, Complex expected) in expecteds) {
                 Complex actual = Complex.Erfcx(z);
-                ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                ddouble err = (expected - actual).Norm / expected.Norm;
 
                 Console.WriteLine($"{z}, err={err:e4}");
                 Console.WriteLine(expected);

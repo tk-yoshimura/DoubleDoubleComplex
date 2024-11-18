@@ -26,7 +26,7 @@ namespace DoubleDoubleComplexTests {
                         Complex expected = BesselN4.BesselJ(nu, (r, i)).ToString();
                         Complex actual = Complex.BesselJ(nu, (r, i));
 
-                        ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                        ddouble err = (expected - actual).Norm / expected.Norm;
 
                         Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
                         Console.WriteLine(expected);
@@ -54,7 +54,7 @@ namespace DoubleDoubleComplexTests {
                         Complex expected = BesselN4.BesselY(nu, (r, i)).ToString();
                         Complex actual = Complex.BesselY(nu, (r, i));
 
-                        ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                        ddouble err = (expected - actual).Norm / expected.Norm;
 
                         Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
                         Console.WriteLine(expected);
@@ -82,7 +82,7 @@ namespace DoubleDoubleComplexTests {
                         Complex expected = BesselN4.BesselI(nu, (r, i)).ToString();
                         Complex actual = Complex.BesselI(nu, (r, i));
 
-                        ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                        ddouble err = (expected - actual).Norm / expected.Norm;
 
                         Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
                         Console.WriteLine(expected);
@@ -110,7 +110,7 @@ namespace DoubleDoubleComplexTests {
                         Complex expected = BesselN4.BesselK(nu, (r, i)).ToString();
                         Complex actual = Complex.BesselK(nu, (r, i));
 
-                        ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                        ddouble err = (expected - actual).Norm / expected.Norm;
 
                         Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
                         Console.WriteLine(expected);
@@ -135,7 +135,7 @@ namespace DoubleDoubleComplexTests {
                             Complex expected = BesselN4.BesselY(n + alpha, (r, i)).ToString();
                             Complex actual = Complex.BesselY(n + alpha, (r, i));
 
-                            ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                            ddouble err = (expected - actual).Norm / expected.Norm;
 
                             Console.WriteLine($"{n + alpha}, {(r, i)}, {err:e4}");
                             Console.WriteLine(expected);
@@ -156,7 +156,7 @@ namespace DoubleDoubleComplexTests {
                             Complex expected = BesselN4.BesselY(n - alpha, (r, i)).ToString();
                             Complex actual = Complex.BesselY(n - alpha, (r, i));
 
-                            ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                            ddouble err = (expected - actual).Norm / expected.Norm;
 
                             Console.WriteLine($"{n - alpha}, {(r, i)}, {err:e4}");
                             Console.WriteLine(expected);
@@ -182,7 +182,7 @@ namespace DoubleDoubleComplexTests {
                             Complex expected = BesselN4.BesselK(n + alpha, (r, i)).ToString();
                             Complex actual = Complex.BesselK(n + alpha, (r, i));
 
-                            ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                            ddouble err = (expected - actual).Norm / expected.Norm;
 
                             Console.WriteLine($"{n + alpha}, {(r, i)}, {err:e4}");
                             Console.WriteLine(expected);
@@ -203,7 +203,7 @@ namespace DoubleDoubleComplexTests {
                             Complex expected = BesselN4.BesselK(n - alpha, (r, i)).ToString();
                             Complex actual = Complex.BesselK(n - alpha, (r, i));
 
-                            ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                            ddouble err = (expected - actual).Norm / expected.Norm;
 
                             Console.WriteLine($"{n - alpha}, {(r, i)}, {err:e4}");
                             Console.WriteLine(expected);
@@ -240,7 +240,7 @@ namespace DoubleDoubleComplexTests {
                             Complex expected = BesselN4.BesselJ(nu, (r, i)).ToString();
                             Complex actual = Complex.BesselJ(nu, (r, i));
 
-                            ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                            ddouble err = (expected - actual).Norm / expected.Norm;
 
                             Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
                             Console.WriteLine(expected);
@@ -255,8 +255,8 @@ namespace DoubleDoubleComplexTests {
                                 continue;
                             }
 
-                            if (expected.Magnitude < 1e-292) {
-                                Assert.IsTrue(actual.Magnitude < 1e-291);
+                            if (expected.Norm < 1e-292) {
+                                Assert.IsTrue(actual.Norm < 1e-291);
                                 continue;
                             }
 
@@ -291,7 +291,7 @@ namespace DoubleDoubleComplexTests {
                             Complex expected = BesselN4.BesselY(nu, (r, i)).ToString();
                             Complex actual = Complex.BesselY(nu, (r, i));
 
-                            ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                            ddouble err = (expected - actual).Norm / expected.Norm;
 
                             Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
                             Console.WriteLine(expected);
@@ -306,8 +306,8 @@ namespace DoubleDoubleComplexTests {
                                 continue;
                             }
 
-                            if (expected.Magnitude < 1e-292) {
-                                Assert.IsTrue(actual.Magnitude < 1e-291);
+                            if (expected.Norm < 1e-292) {
+                                Assert.IsTrue(actual.Norm < 1e-291);
                                 continue;
                             }
 
@@ -342,7 +342,7 @@ namespace DoubleDoubleComplexTests {
                             Complex expected = BesselN4.BesselI(nu, (r, i)).ToString();
                             Complex actual = Complex.BesselI(nu, (r, i));
 
-                            ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                            ddouble err = (expected - actual).Norm / expected.Norm;
 
                             Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
                             Console.WriteLine(expected);
@@ -357,8 +357,8 @@ namespace DoubleDoubleComplexTests {
                                 continue;
                             }
 
-                            if (expected.Magnitude < 1e-292) {
-                                Assert.IsTrue(actual.Magnitude < 1e-291);
+                            if (expected.Norm < 1e-292) {
+                                Assert.IsTrue(actual.Norm < 1e-291);
                                 continue;
                             }
 
@@ -394,7 +394,7 @@ namespace DoubleDoubleComplexTests {
 
                             Complex actual = Complex.BesselK(nu, (r, i));
 
-                            ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                            ddouble err = (expected - actual).Norm / expected.Norm;
 
                             Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
                             Console.WriteLine(expected);
@@ -409,8 +409,8 @@ namespace DoubleDoubleComplexTests {
                                 continue;
                             }
 
-                            if (expected.Magnitude < 1e-292) {
-                                Assert.IsTrue(actual.Magnitude < 1e-291);
+                            if (expected.Norm < 1e-292) {
+                                Assert.IsTrue(actual.Norm < 1e-291);
                                 continue;
                             }
 
@@ -443,7 +443,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -467,7 +467,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -491,7 +491,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -515,7 +515,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -539,7 +539,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -563,7 +563,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -587,7 +587,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -611,7 +611,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -635,7 +635,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -659,7 +659,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -683,7 +683,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -707,7 +707,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -730,7 +730,7 @@ namespace DoubleDoubleComplexTests {
                         Complex expected = BesselN4.HankelH1(nu, (r, i)).ToString();
                         Complex actual = Complex.HankelH1(nu, (r, i));
 
-                        ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                        ddouble err = (expected - actual).Norm / expected.Norm;
 
                         Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
                         Console.WriteLine(expected);
@@ -740,7 +740,7 @@ namespace DoubleDoubleComplexTests {
                             Assert.IsTrue(err < 2e-27, $"\n{nu}, {(r, i)}\n{expected}\n{actual}\n{err}");
                         }
                         else {
-                            Assert.IsTrue(actual.Magnitude < 1e-30, $"\n{nu}, {(r, i)}\n{expected}\n{actual}\n{err}");
+                            Assert.IsTrue(actual.Norm < 1e-30, $"\n{nu}, {(r, i)}\n{expected}\n{actual}\n{err}");
                         }
                     }
                 }
@@ -768,7 +768,7 @@ namespace DoubleDoubleComplexTests {
                         Complex expected = BesselN4.HankelH2(nu, (r, i)).ToString();
                         Complex actual = Complex.HankelH2(nu, (r, i));
 
-                        ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                        ddouble err = (expected - actual).Norm / expected.Norm;
 
                         Console.WriteLine($"{nu}, {(r, i)}, {err:e4}");
                         Console.WriteLine(expected);
@@ -778,7 +778,7 @@ namespace DoubleDoubleComplexTests {
                             Assert.IsTrue(err < 2e-27, $"\n{nu}, {(r, i)}\n{expected}\n{actual}\n{err}");
                         }
                         else {
-                            Assert.IsTrue(actual.Magnitude < 1e-30, $"\n{nu}, {(r, i)}\n{expected}\n{actual}\n{err}");
+                            Assert.IsTrue(actual.Norm < 1e-30, $"\n{nu}, {(r, i)}\n{expected}\n{actual}\n{err}");
                         }
                     }
                 }
@@ -807,7 +807,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
 
@@ -831,7 +831,7 @@ namespace DoubleDoubleComplexTests {
                 Console.WriteLine(expected);
                 Console.WriteLine(actual);
 
-                Assert.IsTrue((actual - expected).Magnitude / expected.Magnitude < 2e-30);
+                Assert.IsTrue((actual - expected).Norm / expected.Norm < 2e-30);
             }
         }
     }

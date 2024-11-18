@@ -113,7 +113,7 @@ namespace DoubleDoubleComplexTests {
                 Complex expected = expecteds_realneg[index];
 
                 Complex actual = Complex.Log1p(z);
-                ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                ddouble err = (expected - actual).Norm / expected.Norm;
 
                 Console.WriteLine($"{z}, err={err:e4}");
                 Console.WriteLine(expected);
@@ -130,7 +130,7 @@ namespace DoubleDoubleComplexTests {
                 Complex expected = expecteds_realpos[index];
 
                 Complex actual = Complex.Log1p(z);
-                ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                ddouble err = (expected - actual).Norm / expected.Norm;
 
                 Console.WriteLine($"{z}, err={err:e4}");
                 Console.WriteLine(expected);

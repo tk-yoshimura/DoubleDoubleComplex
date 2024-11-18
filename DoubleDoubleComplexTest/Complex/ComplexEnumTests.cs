@@ -38,14 +38,14 @@ namespace DoubleDoubleComplexTests {
         public void ComplexNormTest() {
             Complex[] cs = [(1, 2), (2, 5), (6, -3), (7, -3)];
 
-            CollectionAssert.AreEqual(new ddouble[] { cs[0].Norm, cs[1].Norm, cs[2].Norm, cs[3].Norm }, cs.Norm().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { cs[0].SquareNorm, cs[1].SquareNorm, cs[2].SquareNorm, cs[3].SquareNorm }, cs.Norm().ToArray());
         }
 
         [TestMethod()]
         public void ComplexMagnitudeTest() {
             Complex[] cs = [(1, 2), (2, 5), (6, -3), (7, -3)];
 
-            CollectionAssert.AreEqual(new ddouble[] { cs[0].Magnitude, cs[1].Magnitude, cs[2].Magnitude, cs[3].Magnitude }, cs.Magnitude().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { cs[0].Norm, cs[1].Norm, cs[2].Norm, cs[3].Norm }, cs.Magnitude().ToArray());
         }
 
         [TestMethod()]
@@ -66,7 +66,7 @@ namespace DoubleDoubleComplexTests {
         public void ComplexNormalTest() {
             Complex[] cs = [(1, 2), (2, 5), (6, -3), (7, -3)];
 
-            CollectionAssert.AreEqual(new Complex[] { Complex.Normal(cs[0]), Complex.Normal(cs[1]), Complex.Normal(cs[2]), Complex.Normal(cs[3]) }, cs.Normal().ToArray());
+            CollectionAssert.AreEqual(new Complex[] { cs[0].Normal, cs[1].Normal, cs[2].Normal, cs[3].Normal }, cs.Normal().ToArray());
         }
     }
 }

@@ -210,7 +210,7 @@ namespace DoubleDoubleComplexTests {
                 Complex expected = expecteds_r0p125[index];
 
                 Complex actual = Complex.Asin(z);
-                ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                ddouble err = (expected - actual).Norm / expected.Norm;
 
                 Console.WriteLine($"{z}, err={err:e4}");
                 Console.WriteLine(expected);
@@ -225,7 +225,7 @@ namespace DoubleDoubleComplexTests {
                 Complex expected = expecteds_i0p125[index];
 
                 Complex actual = Complex.Asin(z);
-                ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                ddouble err = (expected - actual).Norm / expected.Norm;
 
                 Console.WriteLine($"{z}, err={err:e4}");
                 Console.WriteLine(expected);
@@ -240,7 +240,7 @@ namespace DoubleDoubleComplexTests {
                 Complex expected = expecteds_ri[index];
 
                 Complex actual = Complex.Asin(z);
-                ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                ddouble err = (expected - actual).Norm / expected.Norm;
 
                 Console.WriteLine($"{z}, err={err:e4}");
                 Console.WriteLine(expected);

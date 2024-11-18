@@ -10,9 +10,11 @@ namespace DoubleDoubleComplex {
     public partial class Octonion : IFormattable {
         public readonly ddouble R, I, J, K, W, X, Y, Z;
 
-        public ddouble Norm => R * R + I * I + J * J + K * K + W * W + X * X + Y * Y + Z * Z;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ddouble SquareNorm => R * R + I * I + J * J + K * K + W * W + X * X + Y * Y + Z * Z;
 
-        public ddouble Magnitude {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ddouble Norm {
             get {
                 if (ddouble.IsInfinity(R) || ddouble.IsInfinity(I) || ddouble.IsInfinity(J) || ddouble.IsInfinity(K) ||
                     ddouble.IsInfinity(W) || ddouble.IsInfinity(X) || ddouble.IsInfinity(Y) || ddouble.IsInfinity(Z)) {
@@ -38,6 +40,9 @@ namespace DoubleDoubleComplex {
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public ddouble Magnitude => Norm;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public static Octonion Zero { get; } = ddouble.Zero;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -51,7 +56,8 @@ namespace DoubleDoubleComplex {
 
         public static Octonion Conjugate(Octonion q) => new(q.R, -q.I, -q.J, -q.K, -q.W, -q.X, -q.Y, -q.Z);
 
-        public static Octonion Normal(Octonion q) => q / q.Norm;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        public Octonion Normal => this / Norm;
 
         public Octonion(ddouble r, ddouble i, ddouble j, ddouble k, ddouble w, ddouble x, ddouble y, ddouble z) {
             this.R = r;

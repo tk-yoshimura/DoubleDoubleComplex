@@ -38,7 +38,7 @@ namespace DoubleDoubleComplex {
                 int rn = (int)double.Floor((double)z.R);
                 ddouble rf = z.R - rn;
 
-                double zid = (double)z.I, zrd = double.Sqrt(Consts.Gamma.StirlingConvergenceNorm - zid * zid);
+                double zid = (double)z.I, zrd = double.Sqrt(Consts.Gamma.StirlingConvergenceSqNorm - zid * zid);
                 int rk = (int)double.Ceiling(zrd);
 
                 if (double.IsNaN(zrd) || rn >= rk) {
@@ -90,7 +90,7 @@ namespace DoubleDoubleComplex {
 
                 return pv(y);
             }
-            else if ((z - 1d).Norm <= Consts.LogGamma.NearRoot) {
+            else if ((z - 1d).SquareNorm <= Consts.LogGamma.NearRoot) {
                 Complex v = 1d - z;
 
                 ReadOnlyCollection<ddouble> table = Consts.LogGamma.Near2BackwardCoefTable;
@@ -106,7 +106,7 @@ namespace DoubleDoubleComplex {
 
                 return y;
             }
-            else if ((z - 2d).Norm <= Consts.LogGamma.NearRoot) {
+            else if ((z - 2d).SquareNorm <= Consts.LogGamma.NearRoot) {
                 Complex v = 2d - z;
 
                 ReadOnlyCollection<ddouble> table = Consts.LogGamma.Near2BackwardCoefTable;
@@ -143,7 +143,7 @@ namespace DoubleDoubleComplex {
                 int rn = (int)double.Floor((double)z.R);
                 ddouble rf = z.R - rn;
 
-                double zid = (double)z.I, zrd = double.Sqrt(Consts.Gamma.StirlingConvergenceNorm - zid * zid);
+                double zid = (double)z.I, zrd = double.Sqrt(Consts.Gamma.StirlingConvergenceSqNorm - zid * zid);
                 int rk = (int)double.Ceiling(zrd);
 
                 if (double.IsNaN(zrd) || rn >= rk) {
@@ -164,7 +164,7 @@ namespace DoubleDoubleComplex {
 
         internal static partial class Consts {
             public static class Gamma {
-                public const double StirlingConvergenceNorm = 230.5d;
+                public const double StirlingConvergenceSqNorm = 230.5d;
                 public static readonly ddouble SqrtPi2 = (+1, 1, 0xA06C98FFB1382CB2uL, 0xBE520FD739167717uL);
                 public static readonly ddouble StirlingLogBias = ddouble.Log(SqrtPi2);
 
@@ -206,7 +206,7 @@ namespace DoubleDoubleComplex {
 
                     near2_coef.Reverse();
 
-                    Near2BackwardCoefTable = new(near2_coef.ToArray());
+                    Near2BackwardCoefTable = new([.. near2_coef]);
                 }
             }
         }

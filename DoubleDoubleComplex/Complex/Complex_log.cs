@@ -8,21 +8,21 @@ namespace DoubleDoubleComplex {
 
         public static Complex Log(Complex z) {
             return new Complex(
-                ddouble.Log(z.Magnitude),
+                ddouble.Log(z.Norm),
                 z.Phase
             );
         }
 
         public static Complex Log2(Complex z) {
             return new Complex(
-                ddouble.Log2(z.Magnitude),
+                ddouble.Log2(z.Norm),
                 z.Phase * ddouble.LbE
             );
         }
 
         public static Complex Log10(Complex z) {
             return new Complex(
-                ddouble.Log10(z.Magnitude),
+                ddouble.Log10(z.Norm),
                 z.Phase / ddouble.Log(10)
             );
         }

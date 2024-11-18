@@ -111,7 +111,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (Ldexp(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble s = 1d / b.Norm;
+            ddouble s = 1d / b.SquareNorm;
 
             return new(
                 (a.R * b.R + a.I * b.I + a.J * b.J + a.K * b.K) * s,
@@ -127,7 +127,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (ddouble.Ldexp(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble s = a / b.Norm;
+            ddouble s = a / b.SquareNorm;
 
             return new(b.R * s, -b.I * s, -b.J * s, -b.K * s);
         }
@@ -138,7 +138,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (double.ScaleB(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble s = a / b.Norm;
+            ddouble s = a / b.SquareNorm;
 
             return new(b.R * s, -b.I * s, -b.J * s, -b.K * s);
         }
@@ -157,7 +157,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (Ldexp(a, -exp), Complex.Ldexp(b, -exp));
             }
 
-            ddouble s = 1d / b.Norm;
+            ddouble s = 1d / b.SquareNorm;
 
             return new(
                 (a.R * b.R + a.I * b.I) * s,
@@ -173,7 +173,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (Complex.Ldexp(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble s = 1d / b.Norm;
+            ddouble s = 1d / b.SquareNorm;
 
             return new(
                 (a.R * b.R + a.I * b.I) * s,
@@ -190,7 +190,7 @@ namespace DoubleDoubleComplex {
                 q = Ldexp(q, -exp);
             }
 
-            ddouble s = 1d / q.Norm;
+            ddouble s = 1d / q.SquareNorm;
 
             return Ldexp(new(q.R * s, -q.I * s, -q.J * s, -q.K * s), -exp);
         }

@@ -39,7 +39,7 @@ namespace DoubleDoubleComplex {
                 int rn = (int)double.Floor((double)z.R);
                 ddouble rf = z.R - rn;
 
-                double zid = (double)z.I, zrd = double.Sqrt(Consts.Digamma.StirlingConvergenceNorm - zid * zid);
+                double zid = (double)z.I, zrd = double.Sqrt(Consts.Digamma.StirlingConvergenceSqNorm - zid * zid);
                 int rk = (int)double.Ceiling(zrd);
 
                 if (double.IsNaN(zrd) || rn >= rk) {
@@ -60,7 +60,7 @@ namespace DoubleDoubleComplex {
 
         internal static partial class Consts {
             public static class Digamma {
-                public const double StirlingConvergenceNorm = 462.25d;
+                public const double StirlingConvergenceSqNorm = 462.25d;
 
                 public static readonly ReadOnlyCollection<ddouble> StirlingTable = new([
                     (+1, -4, 0xAAAAAAAAAAAAAAAAuL, 0xAAAAAAAAAAAAAAAAuL),

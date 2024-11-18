@@ -23,8 +23,8 @@ namespace DoubleDoubleComplexTests {
             Assert.AreEqual(5, c2.I);
             Assert.AreEqual(7, c2.J);
             Assert.AreEqual(-2, c2.K);
-            Assert.AreEqual(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2, c2.Norm);
-            Assert.AreEqual(ddouble.Sqrt(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2), c2.Magnitude);
+            Assert.AreEqual(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2, c2.SquareNorm);
+            Assert.AreEqual(ddouble.Sqrt(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2), c2.Norm);
 
             Assert.AreEqual(6, c3.R);
             Assert.AreEqual(0, c3.I);

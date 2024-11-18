@@ -88,7 +88,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (Ldexp(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble s = 1d / b.Norm;
+            ddouble s = 1d / b.SquareNorm;
 
             return new((a.R * b.R + a.I * b.I) * s, (a.I * b.R - a.R * b.I) * s);
         }
@@ -99,7 +99,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (ddouble.Ldexp(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble s = a / b.Norm;
+            ddouble s = a / b.SquareNorm;
 
             return new(b.R * s, -b.I * s);
         }
@@ -110,7 +110,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (double.ScaleB(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble s = a / b.Norm;
+            ddouble s = a / b.SquareNorm;
 
             return new(b.R * s, -b.I * s);
         }
@@ -130,7 +130,7 @@ namespace DoubleDoubleComplex {
                 z = Ldexp(z, -exp);
             }
 
-            ddouble s = 1d / z.Norm;
+            ddouble s = 1d / z.SquareNorm;
 
             return Ldexp(new(z.R * s, -z.I * s), -exp);
         }

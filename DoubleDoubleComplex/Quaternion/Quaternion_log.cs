@@ -9,8 +9,8 @@ namespace DoubleDoubleComplex {
                 return NaN;
             }
 
-            ddouble qnorm = q.Magnitude;
-            ddouble vnorm = VectorPart(q).Magnitude;
+            ddouble qnorm = q.Norm;
+            ddouble vnorm = VectorPart(q).Norm;
 
             if (IsZero(vnorm)) {
                 return Complex.Log(qnorm);

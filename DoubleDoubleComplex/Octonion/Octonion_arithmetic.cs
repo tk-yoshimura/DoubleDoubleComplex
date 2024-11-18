@@ -217,7 +217,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (Ldexp(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble n = 1d / b.Norm;
+            ddouble n = 1d / b.SquareNorm;
 
             ddouble r = (+a.R * b.R + a.I * b.I + a.J * b.J + a.K * b.K + a.W * b.W + a.X * b.X + a.Y * b.Y + a.Z * b.Z) * n;
             ddouble i = (-a.R * b.I + a.I * b.R - a.J * b.K + a.K * b.J - a.W * b.X + a.X * b.W + a.Y * b.Z - a.Z * b.Y) * n;
@@ -237,7 +237,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (ddouble.Ldexp(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble n = a / b.Norm;
+            ddouble n = a / b.SquareNorm;
 
             ddouble r = +b.R * n;
             ddouble i = -b.I * n;
@@ -257,7 +257,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (double.ScaleB(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble n = a / b.Norm;
+            ddouble n = a / b.SquareNorm;
 
             ddouble r = +b.R * n;
             ddouble i = -b.I * n;
@@ -285,7 +285,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (Ldexp(a, -exp), Complex.Ldexp(b, -exp));
             }
 
-            ddouble n = 1d / b.Norm;
+            ddouble n = 1d / b.SquareNorm;
 
             ddouble r = (+a.R * b.R + a.I * b.I) * n;
             ddouble i = (-a.R * b.I + a.I * b.R) * n;
@@ -305,7 +305,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (Complex.Ldexp(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble n = 1d / b.Norm;
+            ddouble n = 1d / b.SquareNorm;
 
             ddouble r = (+a.R * b.R + a.I * b.I) * n;
             ddouble i = (-a.R * b.I + a.I * b.R) * n;
@@ -325,7 +325,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (Ldexp(a, -exp), Quaternion.Ldexp(b, -exp));
             }
 
-            ddouble n = 1d / b.Norm;
+            ddouble n = 1d / b.SquareNorm;
 
             ddouble r = (+a.R * b.R + a.I * b.I + a.J * b.J + a.K * b.K) * n;
             ddouble i = (-a.R * b.I + a.I * b.R - a.J * b.K + a.K * b.J) * n;
@@ -345,7 +345,7 @@ namespace DoubleDoubleComplex {
                 (a, b) = (Quaternion.Ldexp(a, -exp), Ldexp(b, -exp));
             }
 
-            ddouble n = 1d / b.Norm;
+            ddouble n = 1d / b.SquareNorm;
 
             ddouble r = (+a.R * b.R + a.I * b.I + a.J * b.J + a.K * b.K) * n;
             ddouble i = (-a.R * b.I + a.I * b.R - a.J * b.K + a.K * b.J) * n;
@@ -366,7 +366,7 @@ namespace DoubleDoubleComplex {
                 o = Ldexp(o, -exp);
             }
 
-            ddouble n = 1d / o.Norm;
+            ddouble n = 1d / o.SquareNorm;
 
             ddouble r = +o.R * n;
             ddouble i = -o.I * n;

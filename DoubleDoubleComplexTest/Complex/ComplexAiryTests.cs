@@ -1250,7 +1250,7 @@ namespace DoubleDoubleComplexTests {
                     Complex z = (r, i);
 
                     Complex actual = Complex.AiryAi(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
@@ -2506,7 +2506,7 @@ namespace DoubleDoubleComplexTests {
                     Complex z = (r, i);
 
                     Complex actual = Complex.AiryBi(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);

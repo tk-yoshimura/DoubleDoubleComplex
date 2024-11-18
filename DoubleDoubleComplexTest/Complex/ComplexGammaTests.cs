@@ -1106,7 +1106,7 @@ namespace DoubleDoubleComplexTests {
                         }
 
                         Complex actual = Complex.Gamma(z);
-                        ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                        ddouble err = (expected - actual).Norm / expected.Norm;
 
                         Console.WriteLine($"{z}, err={err:e4}");
                         Console.WriteLine(expected);
@@ -1126,7 +1126,7 @@ namespace DoubleDoubleComplexTests {
                     Complex expected = expecteds[index];
 
                     Complex actual = Complex.Gamma(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);
@@ -1188,7 +1188,7 @@ namespace DoubleDoubleComplexTests {
 
                 Console.WriteLine($"lngamma({test})={z}");
 
-                ComplexAssert.AreEqual(Complex.Gamma(test), Complex.Exp(z), Complex.Gamma(test).Magnitude * 1e-29, $"{test}");
+                ComplexAssert.AreEqual(Complex.Gamma(test), Complex.Exp(z), Complex.Gamma(test).Norm * 1e-29, $"{test}");
             }
         }
 
@@ -1594,7 +1594,7 @@ namespace DoubleDoubleComplexTests {
                 Complex expected = expected_r1[i];
                 Complex actual = Complex.LogGamma((1, x));
 
-                ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                ddouble err = (expected - actual).Norm / expected.Norm;
 
                 Console.WriteLine($"{(1, x)}, err={err:e4}");
                 Console.WriteLine(expected);
@@ -1612,7 +1612,7 @@ namespace DoubleDoubleComplexTests {
                 Complex expected = expected_r2[i];
                 Complex actual = Complex.LogGamma((2, x));
 
-                ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                ddouble err = (expected - actual).Norm / expected.Norm;
 
                 Console.WriteLine($"{(2, x)}, err={err:e4}");
                 Console.WriteLine(expected);
@@ -1630,7 +1630,7 @@ namespace DoubleDoubleComplexTests {
                 Complex expected = expected_i0p0625[i];
                 Complex actual = Complex.LogGamma((x, 0.0625));
 
-                ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                ddouble err = (expected - actual).Norm / expected.Norm;
 
                 Console.WriteLine($"{(x, 0.0625)}, err={err:e4}");
                 Console.WriteLine(expected);
@@ -1648,7 +1648,7 @@ namespace DoubleDoubleComplexTests {
                 Complex expected = expected_i0p0625[i].Conj;
                 Complex actual = Complex.LogGamma((x, -0.0625));
 
-                ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                ddouble err = (expected - actual).Norm / expected.Norm;
 
                 Console.WriteLine($"{(x, -0.0625)}, err={err:e4}");
                 Console.WriteLine(expected);

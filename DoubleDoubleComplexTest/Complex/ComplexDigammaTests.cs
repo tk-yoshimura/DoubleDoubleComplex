@@ -1591,7 +1591,7 @@ namespace DoubleDoubleComplexTests {
                         }
 
                         Complex actual = Complex.Digamma(z);
-                        ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                        ddouble err = (expected - actual).Norm / expected.Norm;
 
                         Console.WriteLine($"{z}, err={err:e4}");
                         Console.WriteLine(expected);
@@ -1611,7 +1611,7 @@ namespace DoubleDoubleComplexTests {
                     Complex expected = expecteds[index];
 
                     Complex actual = Complex.Digamma(z);
-                    ddouble err = (expected - actual).Magnitude / expected.Magnitude;
+                    ddouble err = (expected - actual).Norm / expected.Norm;
 
                     Console.WriteLine($"{z}, err={err:e4}");
                     Console.WriteLine(expected);

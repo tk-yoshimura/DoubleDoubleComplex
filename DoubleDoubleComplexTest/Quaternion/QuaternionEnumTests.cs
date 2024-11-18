@@ -52,14 +52,14 @@ namespace DoubleDoubleComplexTests {
         public void QuaternionNormTest() {
             Quaternion[] qs = [(1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1)];
 
-            CollectionAssert.AreEqual(new ddouble[] { qs[0].Norm, qs[1].Norm, qs[2].Norm, qs[3].Norm }, qs.Norm().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { qs[0].SquareNorm, qs[1].SquareNorm, qs[2].SquareNorm, qs[3].SquareNorm }, qs.Norm().ToArray());
         }
 
         [TestMethod()]
         public void QuaternionMagnitudeTest() {
             Quaternion[] qs = [(1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1)];
 
-            CollectionAssert.AreEqual(new ddouble[] { qs[0].Magnitude, qs[1].Magnitude, qs[2].Magnitude, qs[3].Magnitude }, qs.Magnitude().ToArray());
+            CollectionAssert.AreEqual(new ddouble[] { qs[0].Norm, qs[1].Norm, qs[2].Norm, qs[3].Norm }, qs.Magnitude().ToArray());
         }
 
         [TestMethod()]
@@ -73,7 +73,7 @@ namespace DoubleDoubleComplexTests {
         public void QuaternionNormalTest() {
             Quaternion[] qs = [(1, 2, 3, 4), (2, 5, -2, 6), (6, -3, 1, 2), (7, -3, 5, 1)];
 
-            CollectionAssert.AreEqual(new Quaternion[] { Quaternion.Normal(qs[0]), Quaternion.Normal(qs[1]), Quaternion.Normal(qs[2]), Quaternion.Normal(qs[3]) }, qs.Normal().ToArray());
+            CollectionAssert.AreEqual(new Quaternion[] { qs[0].Normal, qs[1].Normal, qs[2].Normal, qs[3].Normal }, qs.Normal().ToArray());
         }
     }
 }

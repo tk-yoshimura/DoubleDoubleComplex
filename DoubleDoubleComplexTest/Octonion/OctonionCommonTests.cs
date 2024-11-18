@@ -42,11 +42,11 @@ namespace DoubleDoubleComplexTests {
             Assert.AreEqual(-1, c4.Y);
             Assert.AreEqual(3, c4.Z);
 
-            Assert.AreEqual(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2 + 3 * 3 + 4 * 4 + 1 * 1 + 3 * 3, c2.Norm);
-            Assert.AreEqual(ddouble.Sqrt(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2 + 3 * 3 + 4 * 4 + 1 * 1 + 3 * 3), c2.Magnitude);
-            Assert.AreEqual(Octonion.Ldexp(ddouble.Sqrt(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2 + 3 * 3 + 4 * 4 + 1 * 1 + 3 * 3), 800), Octonion.Ldexp(c2, 800).Magnitude);
-            Assert.AreEqual(Octonion.Ldexp(ddouble.Sqrt(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2 + 3 * 3 + 4 * 4 + 1 * 1 + 3 * 3), -800), Octonion.Ldexp(c2, -800).Magnitude);
-            Assert.AreEqual(0d, Octonion.Zero.Magnitude);
+            Assert.AreEqual(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2 + 3 * 3 + 4 * 4 + 1 * 1 + 3 * 3, c2.SquareNorm);
+            Assert.AreEqual(ddouble.Sqrt(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2 + 3 * 3 + 4 * 4 + 1 * 1 + 3 * 3), c2.Norm);
+            Assert.AreEqual(Octonion.Ldexp(ddouble.Sqrt(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2 + 3 * 3 + 4 * 4 + 1 * 1 + 3 * 3), 800), Octonion.Ldexp(c2, 800).Norm);
+            Assert.AreEqual(Octonion.Ldexp(ddouble.Sqrt(4 * 4 + 5 * 5 + 7 * 7 + 2 * 2 + 3 * 3 + 4 * 4 + 1 * 1 + 3 * 3), -800), Octonion.Ldexp(c2, -800).Norm);
+            Assert.AreEqual(0d, Octonion.Zero.Norm);
 
             Assert.AreEqual(6, c3.R);
             Assert.AreEqual(0, c3.I);

@@ -22,7 +22,7 @@ namespace DoubleDoubleComplex {
             if (z.R <= NearZeroThreshold && z.R >= -LimitThreshold && ddouble.Abs(z.I) <= PowerSeriesImagThreshold) {
                 return E1PowerSeries(z) - Log(z);
             }
-            else if (z.Magnitude <= LimitThreshold) {
+            else if (z.Norm <= LimitThreshold) {
                 return E1ContinuedFraction(z);
             }
             else {
@@ -50,7 +50,7 @@ namespace DoubleDoubleComplex {
             if (z.R <= NearZeroThreshold && z.R >= -LimitThreshold && ddouble.Abs(z.I) <= PowerSeriesImagThreshold) {
                 return EinPowerSeries(z);
             }
-            else if (z.Magnitude <= LimitThreshold) {
+            else if (z.Norm <= LimitThreshold) {
                 return E1ContinuedFraction(z) + ddouble.EulerGamma + Log(z);
             }
             else {
@@ -66,7 +66,7 @@ namespace DoubleDoubleComplex {
                 return (0d, ddouble.Shi(z.I));
             }
 
-            if (z.Magnitude <= NearZeroThreshold) {
+            if (z.Norm <= NearZeroThreshold) {
                 return SiPowerSeries(z);
             }
             else {
@@ -84,7 +84,7 @@ namespace DoubleDoubleComplex {
                 return (ddouble.Chi(ddouble.Abs(z.I)), ddouble.Sign(z.I) * ddouble.Ldexp(ddouble.Pi, -1));
             }
 
-            if (z.Magnitude <= NearZeroThreshold) {
+            if (z.Norm <= NearZeroThreshold) {
                 return CiPowerSeries(z) + Log(z);
             }
             else {
@@ -102,7 +102,7 @@ namespace DoubleDoubleComplex {
                 return (0d, ddouble.Si(z.I));
             }
 
-            if (z.Magnitude <= NearZeroThreshold) {
+            if (z.Norm <= NearZeroThreshold) {
                 return MulMinusI(SiPowerSeries(MulI(z)));
             }
             else {
@@ -120,7 +120,7 @@ namespace DoubleDoubleComplex {
                 return ddouble.IsPositive(z.I) ? (ddouble.Ci(z.I), ddouble.Ldexp(ddouble.Pi, -1)) : (ddouble.Ci(-z.I), -ddouble.Ldexp(ddouble.Pi, -1));
             }
 
-            if (z.Magnitude <= NearZeroThreshold) {
+            if (z.Norm <= NearZeroThreshold) {
                 return CiPowerSeries(MulI(z)) + Log(z);
             }
             else {
@@ -141,12 +141,12 @@ namespace DoubleDoubleComplex {
                 for (int k = 1; k <= max_terms; k += 2) {
                     Complex f = v * (k + 1);
 
-                    Debug.Assert(f.Magnitude < 0.5d);
+                    Debug.Assert(f.Norm < 0.5d);
 
                     Complex dc = u * (1d - f);
                     c -= dc;
 
-                    if (c.Magnitude * 1e-31 > dc.Magnitude) {
+                    if (c.Norm * 1e-31 > dc.Norm) {
                         break;
                     }
 
@@ -177,7 +177,7 @@ namespace DoubleDoubleComplex {
 
                     if (i > 0 && (i & 3) == 0) {
                         Complex r0 = a0 * b1, r1 = a1 * b0;
-                        if (!((r0 - r1).Magnitude > ddouble.Min(r0.Magnitude, r1.Magnitude) * 1e-30)) {
+                        if (!((r0 - r1).Norm > ddouble.Min(r0.Norm, r1.Norm) * 1e-30)) {
                             break;
                         }
                     }
@@ -195,7 +195,7 @@ namespace DoubleDoubleComplex {
                     Complex dc = u / k;
                     c += dc;
 
-                    if (c.Magnitude * 1e-31 > dc.Magnitude) {
+                    if (c.Norm * 1e-31 > dc.Norm) {
                         break;
                     }
 
@@ -212,7 +212,7 @@ namespace DoubleDoubleComplex {
                     Complex dc = u / k;
                     c += dc;
 
-                    if (c.Magnitude * 1e-31 > dc.Magnitude) {
+                    if (c.Norm * 1e-31 > dc.Norm) {
                         break;
                     }
 
@@ -229,7 +229,7 @@ namespace DoubleDoubleComplex {
                     Complex dc = u / (2 * k + 1);
                     c += dc;
 
-                    if (c.Magnitude * 1e-31 > dc.Magnitude) {
+                    if (c.Norm * 1e-31 > dc.Norm) {
                         break;
                     }
 
@@ -246,7 +246,7 @@ namespace DoubleDoubleComplex {
                     Complex dc = u / (2 * k);
                     c += dc;
 
-                    if (c.Magnitude * 1e-31 > dc.Magnitude) {
+                    if (c.Norm * 1e-31 > dc.Norm) {
                         break;
                     }
 

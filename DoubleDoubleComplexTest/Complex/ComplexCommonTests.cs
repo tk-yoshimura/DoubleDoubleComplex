@@ -1,6 +1,7 @@
 ﻿using DoubleDouble;
 using DoubleDoubleComplex;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MultiPrecisionComplex;
 
 namespace DoubleDoubleComplexTests {
     [TestClass()]
@@ -19,8 +20,8 @@ namespace DoubleDoubleComplexTests {
 
             Assert.AreEqual(4, c2.R);
             Assert.AreEqual(5, c2.I);
-            Assert.AreEqual(4 * 4 + 5 * 5, c2.Norm);
-            Assert.AreEqual(ddouble.Sqrt(4 * 4 + 5 * 5), c2.Magnitude);
+            Assert.AreEqual(4 * 4 + 5 * 5, c2.SquareNorm);
+            Assert.AreEqual(ddouble.Sqrt(4 * 4 + 5 * 5), c2.Norm);
 
             Assert.AreEqual(6, c3.R);
             Assert.AreEqual(0, c3.I);
