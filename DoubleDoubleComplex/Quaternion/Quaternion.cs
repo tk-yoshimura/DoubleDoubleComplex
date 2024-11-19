@@ -28,7 +28,6 @@ namespace DoubleDoubleComplex {
             }
         }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Magnitude => Norm;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

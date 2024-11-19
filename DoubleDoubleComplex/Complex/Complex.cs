@@ -19,10 +19,8 @@ namespace DoubleDoubleComplex {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Norm => ddouble.Hypot(R, I);
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Magnitude => Norm;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public ddouble Phase => ddouble.Atan2(I, R);
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
