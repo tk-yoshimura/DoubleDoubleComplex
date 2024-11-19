@@ -112,7 +112,7 @@ namespace DoubleDoubleComplex {
             }
 
             private static ReadOnlyCollection<ddouble> GenerateNearZeroCoefs() {
-                ddouble[] coefs = new ddouble[17];
+                ddouble[] coefs = new ddouble[20];
 
                 coefs[0] = ddouble.Ldexp(Gamma1d3 * ddouble.Sqrt(3), -1);
                 coefs[1] = ddouble.Ldexp(Gamma2d3 * Cbrt3 * ddouble.Sqrt(3), -1);
