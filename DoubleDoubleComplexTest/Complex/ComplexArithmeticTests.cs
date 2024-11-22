@@ -214,5 +214,47 @@ namespace DoubleDoubleComplexTests {
                 ComplexAssert.AreEqual(1, c * z, 1e-7);
             }
         }
+
+        [TestMethod()]
+        public void FromPhaseTest() {
+            foreach (double theta in new[] { 0.25, 0.5, 0.75 }) {
+
+                Complex c = Complex.FromPhase(theta);
+                NComplex nc = NComplex.FromPolarCoordinates(1, theta);
+
+                ComplexAssert.AreEqual(nc, c, 1e-6);
+            }
+            
+            foreach (double theta in new[] { 0.25, 0.5, 0.75 }) {
+
+                Complex c = Complex.FromPhasePi(theta);
+                NComplex nc = NComplex.FromPolarCoordinates(1, theta * double.Pi);
+
+                ComplexAssert.AreEqual(nc, c, 1e-6);
+            }
+        }
+
+        [TestMethod()]
+        public void FromPolarTest() {
+            foreach (double norm in new[] { 0.5, 1, 2, 4 }) {
+                foreach (double theta in new[] { 0.25, 0.5, 0.75 }) {
+
+                    Complex c = Complex.FromPolar(norm, theta);
+                    NComplex nc = NComplex.FromPolarCoordinates(norm, theta);
+
+                    ComplexAssert.AreEqual(nc, c, 1e-6);
+                }
+            }
+
+            foreach (double norm in new[] { 0.5, 1, 2, 4 }) {
+                foreach (double theta in new[] { 0.25, 0.5, 0.75 }) {
+
+                    Complex c = Complex.FromPolarPi(norm, theta);
+                    NComplex nc = NComplex.FromPolarCoordinates(norm, theta * double.Pi);
+
+                    ComplexAssert.AreEqual(nc, c, 1e-6);
+                }
+            }
+        }
     }
 }
