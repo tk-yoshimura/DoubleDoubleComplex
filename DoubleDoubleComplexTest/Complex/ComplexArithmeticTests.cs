@@ -224,7 +224,7 @@ namespace DoubleDoubleComplexTests {
 
                 ComplexAssert.AreEqual(nc, c, 1e-6);
             }
-            
+
             foreach (double theta in new[] { 0.25, 0.5, 0.75 }) {
 
                 Complex c = Complex.FromPhasePi(theta);

@@ -67,6 +67,14 @@ namespace DoubleDoubleComplex {
             return new Quaternion(q.R, ddouble.Zero, ddouble.Zero, ddouble.Zero);
         }
 
+        public static Quaternion FromVector(ddouble x, ddouble y, ddouble z) {
+            return new(ddouble.Zero, x, y, z);
+        }
+
+        public static Quaternion FromVector((ddouble x, ddouble y, ddouble z) v) {
+            return new(ddouble.Zero, v.x, v.y, v.z);
+        }
+
         public Quaternion(ddouble r, ddouble i, ddouble j, ddouble k) {
             this.R = r;
             this.I = i;
@@ -92,10 +100,6 @@ namespace DoubleDoubleComplex {
 
         public static implicit operator Quaternion(Complex z) {
             return new(z.R, z.I, ddouble.Zero, ddouble.Zero);
-        }
-
-        public static implicit operator Quaternion((ddouble x, ddouble y, ddouble z) v) {
-            return new(ddouble.Zero, v.x, v.y, v.z);
         }
 
         public static implicit operator (ddouble r, ddouble i, ddouble j, ddouble k)(Quaternion v) {
