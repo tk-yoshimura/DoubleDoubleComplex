@@ -2,7 +2,7 @@
  Double-Double Complex and Quaternion Implements 
 
 ## Requirement
-.NET 8.0  
+.NET 10.0  
 [DoubleDouble](https://github.com/tk-yoshimura/DoubleDouble)
 
 ## Install

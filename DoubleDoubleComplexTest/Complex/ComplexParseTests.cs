@@ -68,7 +68,7 @@ namespace DoubleDoubleComplexTests {
             foreach (string test in tests) {
                 Console.WriteLine(test);
 
-                Assert.ThrowsException<FormatException>(() => {
+                Assert.ThrowsExactly<FormatException>(() => {
                     Complex _ = test;
                 });
             }
